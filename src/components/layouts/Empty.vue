@@ -1,21 +1,14 @@
 <template>
-  <component :is="layout">
-    <RouterView />
-  </component>
+  <RouterView />
 </template>
 
 <script lang="ts">
 import { RouterView } from 'vue-router'
 
 export default {
-  name: 'App',
+  name: 'EmptyLayout',
   components: {
     RouterView,
-  },
-  computed: {
-    layout() {
-      return `${this.$route.meta.layout || 'Empty'}Layout`
-    },
   },
 }
 </script>

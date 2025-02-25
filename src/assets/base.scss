@@ -1,0 +1,46 @@
+:root {
+  --background: #181818;
+  --foreground: #e0e0e0;
+  --text: #cccccc;
+  --text-hover: #bbbbbb;
+  --link: #1e90ff;
+  --link-hover: #1a75d1;
+  --border: #333333;
+  --border-hover: #444444;
+  --success: #4caf50;
+  --success-hover: #43a047;
+  --error: #f44336;
+  --error-hover: #e53935;
+  --warning: #ff9800;
+  --warning-hover: #fb8c00;
+  --default: #9e9e9e;
+  --default-hover: #757575;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--text);
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--link-hover);
+  }
+}
