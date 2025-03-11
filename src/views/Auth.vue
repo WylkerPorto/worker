@@ -22,6 +22,7 @@ export default {
       form: { type: 'login' },
     }
   },
+  methods: {},
 }
 </script>
 <style lang="scss" scoped>

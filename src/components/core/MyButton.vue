@@ -1,11 +1,13 @@
 <template>
-  <button type="button" @click="$emit('click')" :disabled="loading">
+  <button :type="type" @click="$emit('click')" :disabled="loading">
     <slot v-if="!loading" />
-    <span v-else>Loading...</span>
+    <Icon v-else icon="svg-spinners:3-dots-move" />
   </button>
 </template>
 
 <script lang="ts">
+import { Icon } from 'vue-feather-icons'
+
 export default {
   name: 'MyButton',
   emits: ['click'],
@@ -19,16 +21,10 @@ export default {
       default: false,
     },
   },
+  components: {
+    Icon,
+  },
   computed: {
-    backgroundColor() {
-      return `var(--${this.type})`
-    },
-    hoverBackgroundColor() {
-      return `var(--${this.type}-hover)`
-    },
-    textColor() {
-      return `var(--${this.type}-text)`
-    },
     pointerStyle() {
       return this.loading ? 'progress' : 'pointer'
     },
@@ -38,18 +34,6 @@ export default {
 
 <style lang="scss" scoped>
 button {
-  padding: 0.5rem 2rem;
-  border-radius: 0.25rem;
-  border: none;
-  font-size: 16px;
-  font-weight: 500;
   cursor: v-bind(pointerStyle);
-  background-color: v-bind(backgroundColor);
-  color: v-bind(textColor);
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: v-bind(hoverBackgroundColor);
-  }
 }
 </style>

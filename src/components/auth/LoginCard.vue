@@ -1,10 +1,20 @@
 <template>
-  <form action="#" @submit.stop.prevent="true">
+  <form class="card" action="#" @submit.stop.prevent="loginAccount">
     <h2>Login</h2>
-    <FormInput label="E-mail" type="email" placeholder="Digite seu e-mail" />
-    <FormInput label="Senha" type="password" placeholder="Digite sua senha" />
+    <FormInput
+      label="E-mail"
+      v-model="localForm.email"
+      type="email"
+      placeholder="Digite seu e-mail"
+    />
+    <FormInput
+      label="Senha"
+      v-model="localForm.password"
+      type="password"
+      placeholder="Digite sua senha"
+    />
     <a href="#" @click="localForm.type = 'forgot-password'">Esqueci minha senha</a>
-    <MyButton type="login-button">Entrar</MyButton>
+    <MyButton type="submit" @click="loginAccount">Entrar</MyButton>
     <hr />
     <span>
       Ainda não tem conta?
@@ -32,19 +42,25 @@ export default {
       localForm: this.dataForm,
     }
   },
+  methods: {
+    loginAccount() {
+      switch (this.localForm.password) {
+        case 'admin':
+          this.$router.push({ name: 'adminDashboard' })
+          break
+        case 'recruter':
+          this.$router.push({ name: 'recruterDashboard' })
+          break
+        default:
+          this.$router.push({ name: 'userDashboard' })
+          break
+      }
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 3rem 2rem;
-  max-width: 500px;
-  background: var(--backgroundCardLogin);
-  border-radius: 1rem;
-  backdrop-filter: blur(10px);
-
   h2 {
     text-align: center;
   }

@@ -7,7 +7,7 @@
     </nav>
   </header>
   <main>
-    <aside>menu</aside>
+    <aside>recruter menu</aside>
     <RouterView />
   </main>
 </template>

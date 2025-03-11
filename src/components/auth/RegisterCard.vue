@@ -1,5 +1,5 @@
 <template>
-  <form action="#" @submit.stop.prevent="true">
+  <form class="card" action="#" @submit.stop.prevent="true">
     <h2>Criar conta</h2>
     <FormInput label="Nome" type="text" placeholder="Digite seu nome" />
     <FormInput label="E-mail" type="email" placeholder="Digite seu e-mail" />
@@ -36,15 +36,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 3rem 2rem;
-  max-width: 500px;
-  background: var(--backgroundCardLogin);
-  border-radius: 1rem;
-  backdrop-filter: blur(10px);
-
   h2 {
     text-align: center;
   }

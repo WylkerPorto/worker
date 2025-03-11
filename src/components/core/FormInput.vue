@@ -4,8 +4,10 @@
     <input
       :type="type"
       :placeholder="placeholder"
-      @input="$emit('update', $event.target.value)"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
       :id="label"
+      ref="input"
     />
   </main>
 </template>
@@ -25,29 +27,28 @@ export default {
       type: String,
       default: '',
     },
+    modelValue: {
+      type: String,
+      default: '',
+    },
   },
-  emits: ['update'],
+  emits: ['update:modelValue'],
+  methods: {
+    focus() {
+      this.$refs.input.focus()
+    },
+    blur() {
+      this.$refs.input.blur()
+    },
+    select() {
+      this.$refs.input.select()
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
 main {
   display: flex;
   flex-direction: column;
-
-  label {
-    margin-bottom: 0.2rem;
-    font-weight: 400;
-    font-size: 12px;
-  }
-
-  input {
-    padding: 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--border);
-    background: transparent;
-    font-size: 16px;
-    color: var(--text);
-    outline: none;
-  }
 }
 </style>

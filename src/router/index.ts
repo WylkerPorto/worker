@@ -22,10 +22,22 @@ const router = createRouter({
       meta: { layout: 'empty' },
     },
     {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: () => import('@/views/Auth.vue'),
-      meta: { layout: 'dashboard' },
+      path: '/admin/dashboard',
+      name: 'adminDashboard',
+      component: () => import('@/views/admin/Index.vue'),
+      meta: { layout: 'adminDashboard' },
+    },
+    {
+      path: '/user/dashboard',
+      name: 'userDashboard',
+      component: () => import('@/views/user/Index.vue'),
+      meta: { layout: 'userDashboard' },
+    },
+    {
+      path: '/recruter/dashboard',
+      name: 'recruterDashboard',
+      component: () => import('@/views/recruter/Index.vue'),
+      meta: { layout: 'recruterDashboard' },
     },
   ],
 })
