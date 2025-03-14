@@ -4,30 +4,12 @@
     <Icon icon="stash:burger-arrow-left-duotone" v-else @click="toggleSidebar" />
 
     <nav>
-      <routerLink :to="{ name: 'adminDashboard' }">
-        <Icon icon="stash:dashboard" />
-        <span>Dashboard</span>
-      </routerLink>
-      <routerLink :to="{ name: 'adminDashboard' }">
-        <Icon icon="mdi:administrator-outline" />
-        <span>Administradores</span>
-      </routerLink>
-      <routerLink :to="{ name: 'adminDashboard' }">
-        <Icon icon="mdi:leads" />
-        <span>Recrutadores</span>
-      </routerLink>
-      <routerLink :to="{ name: 'adminDashboard' }">
-        <Icon icon="icon-park-outline:log" />
-        <span>Log</span>
-      </routerLink>
-      <routerLink :to="{ name: 'adminDashboard' }">
-        <Icon icon="mdi:login" />
-        <span>Sair</span>
-      </routerLink>
+      <LinkMenu v-for="item in items" :key="item.label" :item="item" />
     </nav>
   </aside>
 </template>
 <script lang="ts">
+import LinkMenu from './LinkMenu.vue'
 import { Icon } from '@iconify/vue'
 
 export default {
@@ -39,6 +21,12 @@ export default {
   },
   components: {
     Icon,
+    LinkMenu,
+  },
+  props: {
+    items: {
+      type: Array,
+    },
   },
   methods: {
     toggleSidebar() {
@@ -62,60 +50,11 @@ aside {
   &:hover,
   &.show {
     width: 200px;
-
-    nav {
-      .iconify {
-        margin: 0 10px 0 0;
-      }
-
-      span {
-        display: block;
-        opacity: 1;
-        transition: opacity 0.5s;
-      }
-    }
   }
 
   > .iconify {
     font-size: 30px;
     margin-bottom: 30px;
-  }
-
-  nav {
-    display: flex;
-    flex-direction: column;
-
-    a {
-      color: var(--white);
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      width: 100%;
-      text-wrap: nowrap;
-      display: flex;
-      align-items: center;
-
-      &:hover {
-        background-color: var(--link);
-      }
-
-      .iconify {
-        font-size: 25px;
-        margin: 0 auto;
-      }
-
-      span {
-        display: none;
-        opacity: 0;
-      }
-    }
-  }
-
-  button {
-    background: none;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    margin-bottom: 1rem;
   }
 }
 </style>

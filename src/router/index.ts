@@ -28,6 +28,24 @@ const router = createRouter({
       meta: { layout: 'adminDashboard' },
     },
     {
+      path: '/admin/admins',
+      name: 'adminController',
+      component: () => import('@/views/admin/Admins.vue'),
+      meta: { layout: 'adminDashboard' },
+    },
+    {
+      path: '/admin/recruiters',
+      name: 'recruitersController',
+      component: () => import('@/views/admin/Recruiters.vue'),
+      meta: { layout: 'adminDashboard' },
+    },
+    {
+      path: '/admin/logs',
+      name: 'logsController',
+      component: () => import('@/views/admin/Logs.vue'),
+      meta: { layout: 'adminDashboard' },
+    },
+    {
       path: '/user/dashboard',
       name: 'userDashboard',
       component: () => import('@/views/user/Index.vue'),

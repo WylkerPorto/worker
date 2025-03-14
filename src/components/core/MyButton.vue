@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { Icon } from 'vue-feather-icons'
+import { Icon } from '@iconify/vue'
 
 export default {
   name: 'MyButton',

@@ -16,7 +16,7 @@
       </div>
     </header>
     <main>
-      <AdminAsideMenu />
+      <AdminAsideMenu :items="menuItems" />
       <section>
         <RouterView />
       </section>
@@ -46,6 +46,45 @@ export default {
   methods: {
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen
+    },
+    getMenuItems() {
+      return [
+        {
+          label: 'Dashboard',
+          name: 'adminDashboard',
+          active: true,
+          icon: 'stash:dashboard',
+        },
+        {
+          label: 'Administradores',
+          name: 'adminController',
+          active: true,
+          icon: 'mdi:administrator-outline',
+        },
+        {
+          label: 'Recrutadores',
+          name: 'recruitersController',
+          active: true,
+          icon: 'mdi:leads',
+        },
+        {
+          label: 'Log',
+          name: 'logsController',
+          active: true,
+          icon: 'icon-park-outline:log',
+        },
+        {
+          label: 'Sair',
+          name: 'adminDashboard',
+          active: true,
+          icon: 'mdi:login',
+        },
+      ]
+    },
+  },
+  computed: {
+    menuItems() {
+      return this.getMenuItems()
     },
   },
 }
@@ -99,7 +138,7 @@ export default {
     }
   }
 
-  main {
+  > main {
     display: flex;
     flex: 1;
 
