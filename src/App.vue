@@ -1,4 +1,5 @@
 <template>
+  <vue-snotify />
   <component :is="layout">
     <RouterView />
   </component>

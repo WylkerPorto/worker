@@ -20,7 +20,7 @@
       <tbody>
         <tr v-for="(item, index) in items" :key="index">
           <td v-for="(column, colIndex) in columns" :key="colIndex">{{ item[column.key] }}</td>
-          <td v-if="$slots['actions']">
+          <td class="actions" v-if="$slots['actions']">
             <slot name="actions" :item="item"></slot>
           </td>
         </tr>
@@ -70,8 +70,9 @@ export default {
 <style lang="scss" scoped>
 main.data-table {
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
+  max-height: 70vh;
+  overflow-y: auto;
 
   table {
     width: 100%;
@@ -125,6 +126,12 @@ main.data-table {
           padding: 0.5rem;
         }
       }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
     }
   }
 }

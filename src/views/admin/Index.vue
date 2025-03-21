@@ -1,16 +1,12 @@
 <template>
-  <main>
+  <main class="container">
     <div>admin dashboard</div>
-    <DataTableComponent :items="items" :columns="menuItems" :total="80" />
   </main>
 </template>
 <script lang="ts">
-import DataTableComponent from '@/components/core/DataTable.vue'
 export default {
   name: 'AdminIndex',
-  components: {
-    DataTableComponent,
-  },
+  components: {},
   data() {
     return {
       menuItems: [
@@ -64,12 +60,13 @@ export default {
         { name: 'Jorel', date: '18 anos', value: '48' },
         { name: 'Jorge', value: '-16', date: '19 anos' },
       ],
+      showModal: false,
     }
   },
 }
 </script>
 <style lang="scss" scoped>
-main {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;

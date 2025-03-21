@@ -1,8 +1,8 @@
 <template>
-  <div class="dashboard-layout">
+  <div class="dashboard-layout" @click="handleClickOutside">
     <header>
       <span>Bem-vindo, {{ userName }}</span>
-      <div class="dropdown">
+      <div class="dropdown" ref="dropdown">
         <div @click="toggleDropdown">
           <button>Perfil</button>
           <Icon v-if="!dropdownOpen" icon="iconamoon:arrow-down-2-bold" />
@@ -27,7 +27,6 @@
 <script lang="ts">
 import AdminAsideMenu from '@/components/admin/SideMenu.vue'
 import { Icon } from '@iconify/vue'
-
 import { RouterView } from 'vue-router'
 
 export default {
@@ -46,6 +45,12 @@ export default {
   methods: {
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen
+    },
+    handleClickOutside(event) {
+      const dropdown = this.$refs.dropdown
+      if (dropdown && !dropdown.contains(event.target)) {
+        this.dropdownOpen = false
+      }
     },
     getMenuItems() {
       return [
@@ -87,6 +92,12 @@ export default {
       return this.getMenuItems()
     },
   },
+  mounted() {
+    document.addEventListener('click', this.handleClickOutside)
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleClickOutside)
+  },
 }
 </script>
 
@@ -122,6 +133,7 @@ export default {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         border-radius: 0.25rem;
         overflow: hidden;
+        z-index: 5;
 
         a {
           display: block;

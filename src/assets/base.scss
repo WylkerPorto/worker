@@ -7,6 +7,10 @@
   --link: #006494;
   --border: #247ba0;
   --blue: #1b98e0;
+  --green: #2a9d43;
+  --red: #e75151;
+  --yellow: #f2c94c;
+  --grey: #808080;
   --glass: #e8f1f2;
   --background: #efefef;
   --white: #fff;
@@ -28,15 +32,48 @@ body {
   color: var(--text);
 }
 
-button {
+.btn {
   cursor: pointer;
-  padding: 0.5rem 2rem;
-  border-radius: 0.25rem;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
   border: none;
   font-size: 16px;
   font-weight: 500;
-  background-color: var(--blue);
+  background-color: var(--black);
+  color: var(--white);
   transition: background-color 0.3s;
+}
+
+.btn,
+.rounded {
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &.danger {
+    background-color: var(--red);
+    color: var(--white)
+  }
+
+  &.primary {
+    background-color: var(--blue);
+    color: var(--white);
+  }
+
+  &.success {
+    background-color: var(--green);
+    color: var(--white);
+  }
+
+  &.warning {
+    background-color: var(--yellow);
+    color: var(--white);
+  }
+
+  &.secondary {
+    background-color: var(--grey);
+    color: var(--white);
+  }
 }
 
 a {
@@ -50,10 +87,10 @@ input[type="password"],
 input[type="number"],
 input[type="tel"],
 input[type="url"] {
-  padding: 1rem;
+  padding: 0.7rem;
   border: 1px solid var(--border);
   border-radius: 1.5rem;
-  font-size: 16px;
+  font-size: 18px;
   width: 100%;
   outline: none;
   color: var(--text);
@@ -61,8 +98,9 @@ input[type="url"] {
 
 label {
   margin-bottom: 0.2rem;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
+  margin-left: 15px;
 }
 
 .card {
@@ -74,4 +112,8 @@ label {
   background: var(--white);
   border-radius: 1rem;
   backdrop-filter: blur(10px);
+}
+
+.rounded {
+  border-radius: 100%;
 }

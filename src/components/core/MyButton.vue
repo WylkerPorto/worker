@@ -1,5 +1,5 @@
 <template>
-  <button :type="type" @click="$emit('click')" :disabled="loading">
+  <button class="btn" :type="type" @click="$emit('click')" :disabled="loading">
     <slot v-if="!loading" />
     <Icon v-else icon="svg-spinners:3-dots-move" />
   </button>

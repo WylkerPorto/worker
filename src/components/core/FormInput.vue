@@ -8,7 +8,9 @@
       @input="$emit('update:modelValue', $event.target.value)"
       :id="label"
       ref="input"
+      :class="{ error: error }"
     />
+    <span>{{ error }}</span>
   </main>
 </template>
 <script lang="ts">
@@ -31,6 +33,10 @@ export default {
       type: String,
       default: '',
     },
+    error: {
+      type: String,
+      default: '',
+    },
   },
   emits: ['update:modelValue'],
   methods: {
@@ -50,5 +56,15 @@ export default {
 main {
   display: flex;
   flex-direction: column;
+
+  .error {
+    border: 1px solid red;
+  }
+
+  span {
+    color: red;
+    font-size: 0.8rem;
+    margin-left: 15px;
+  }
 }
 </style>
