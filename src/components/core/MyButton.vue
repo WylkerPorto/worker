@@ -1,7 +1,7 @@
 <template>
   <button class="btn" :type="type" @click="$emit('click')" :disabled="loading">
     <slot v-if="!loading" />
-    <Icon v-else icon="svg-spinners:3-dots-move" />
+    <Icon v-else class="loader" icon="svg-spinners:3-dots-scale" />
   </button>
 </template>
 
@@ -35,5 +35,9 @@ export default {
 <style lang="scss" scoped>
 button {
   cursor: v-bind(pointerStyle);
+
+  .loader {
+    font-size: 25px;
+  }
 }
 </style>

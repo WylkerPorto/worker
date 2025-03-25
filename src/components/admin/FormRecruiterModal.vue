@@ -1,7 +1,7 @@
 <template>
-  <ModalBase :open="show" :loading="loading" title="Novo Administrador" @onClose="closeModal">
+  <ModalBase :open="show" title="Novo Administrador" @onClose="closeModal">
     <template #content>
-      <form @submit.prevent="validate(saveAdmin)">
+      <form @submit.prevent="handleSubmit(saveRecruiter)">
         <FormInput
           label="Nome"
           type="text"
@@ -29,7 +29,7 @@
       </form>
     </template>
     <template #actions>
-      <MyButton class="btn success" :loading="loading" @click="validate(saveAdmin)">
+      <MyButton class="btn success" :loading="loading" @click="handleSubmit(saveRecruiter)">
         Salvar
       </MyButton>
     </template>
@@ -41,10 +41,15 @@ import * as yup from 'yup'
 import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
-import { IAdminForm } from '@/interfaces/IAdmin'
+
+interface Form {
+  name: string
+  email: string
+  password: string
+}
 
 export default {
-  name: 'FormAdminModal',
+  name: 'FormRecruiterModal',
   components: {
     ModalBase,
     FormInput,
@@ -62,8 +67,8 @@ export default {
   emits: ['onClose', 'onSave'],
   data() {
     return {
-      form: {} as IAdminForm,
-      errors: {} as IAdminForm,
+      form: {} as Form,
+      errors: {} as Form,
       loading: false,
     }
   },
@@ -73,36 +78,33 @@ export default {
     },
   },
   methods: {
-    async saveAdmin(values) {
+    async saveRecruiter(values) {
       this.loading = true
       try {
         //contador de 5 segundos que dispara um erro
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        console.log('saveAdmin', values)
+        await new Promise((resolve) => setTimeout(resolve, 5000))
+        console.log('saveRecruiter', values)
         this.$emit('onSave', values)
-        this.$snotify.success('Administrador salvo com sucesso!')
+        this.$snotify.success('Recrutador salvo com sucesso!')
       } catch (error) {
-        this.$snotify.error('Erro ao salvar o administrador: ' + error)
+        this.$snotify.error('Erro ao salvar o recrutador: ' + error)
       } finally {
         this.loading = false
       }
     },
-    validate(callback) {
+    handleSubmit(callback) {
       const schema = yup.object({
         name: yup.string().required('Nome é obrigatório'),
         email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
-        password: this.form.id
-          ? yup.string().min(6, 'Senha deve ter pelo menos 6 caracteres')
-          : yup
-              .string()
-              .min(6, 'Senha deve ter pelo menos 6 caracteres')
-              .required('Senha é obrigatória'),
+        password: yup
+          .string()
+          .min(6, 'Senha deve ter pelo menos 6 caracteres')
+          .required('Senha é obrigatória'),
       })
 
       schema
         .validate(this.form, { abortEarly: false })
         .then(() => {
-          this.errors = {}
           callback(this.form)
         })
         .catch((err) => {
@@ -114,8 +116,8 @@ export default {
         })
     },
     closeModal() {
-      this.form = {} as IAdminForm
-      this.errors = {} as IAdminForm
+      this.form = {} as Form
+      this.errors = {} as Form
       this.$emit('onClose')
     },
   },

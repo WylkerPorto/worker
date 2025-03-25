@@ -17,7 +17,14 @@
           <th v-if="$slots['actions']">Ações</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="loading">
+        <tr>
+          <td :colspan="columns.length + ($slots['actions'] ? 1 : 0)">
+            <Icon class="loader" icon="svg-spinners:3-dots-scale" />
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
         <tr v-for="(item, index) in items" :key="index">
           <td v-for="(column, colIndex) in columns" :key="colIndex">{{ item[column.key] }}</td>
           <td class="actions" v-if="$slots['actions']">
@@ -25,12 +32,20 @@
           </td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td :colspan="columns.length + ($slots['actions'] ? 1 : 0)">
+            <slot name="pagination"></slot>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </main>
 </template>
 
 <script lang="ts">
 import SearchInput from './SearchInput.vue'
+import { Icon } from '@iconify/vue'
 
 export default {
   name: 'DataTableComponent',
@@ -49,9 +64,14 @@ export default {
     total: {
       type: Number,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     SearchInput,
+    Icon,
   },
   emits: ['onSearch'],
   methods: {
@@ -124,6 +144,10 @@ main.data-table {
 
         td {
           padding: 0.5rem;
+
+          .loader {
+            font-size: 30px;
+          }
         }
       }
     }

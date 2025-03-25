@@ -3,7 +3,7 @@
     <section class="card">
       <header>
         <h1>{{ title }}</h1>
-        <button class="rounded" @click="$emit('onClose')">
+        <button class="rounded" @click="$emit('onClose')" :disabled="loading">
           <Icon icon="carbon:close-outline" />
         </button>
       </header>
@@ -22,6 +22,10 @@ export default {
       default: 'Modal title',
     },
     open: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
       type: Boolean,
       default: false,
     },

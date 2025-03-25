@@ -7,7 +7,13 @@
           <Icon icon="tdesign:user-add" />
         </button>
       </header>
-      <DataTable :items="items" :columns="columns" :total="1">
+      <DataTable
+        :items="items"
+        :columns="columns"
+        :loading="loading"
+        :total="1"
+        @onSearch="handleSearch"
+      >
         <template #actions="{ item }">
           <button class="rounded success" @click="handleEditAdmin(item)">
             <Icon icon="carbon:edit" />
@@ -19,25 +25,25 @@
       </DataTable>
     </section>
   </main>
-  <FormAdminModal :show="showFormAdminModal" :dataForm="editItem" @onClose="closeAllModals" />
-  <DeleteAlertModal :show="showAlertModal" :userName="editItem.name" @onClose="closeAllModals" />
+  <FormAdminModal
+    :show="showFormAdminModal"
+    :dataForm="editItem"
+    @onClose="closeAllModals"
+    @onSave="getAdmins"
+  />
+  <DeleteAdminModal
+    :show="showDeleteAdminModal"
+    :dataForm="editItem"
+    @onClose="closeAllModals"
+    @onConfirm="getAdmins"
+  />
 </template>
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
 import FormAdminModal from '@/components/admin/FormAdminModal.vue'
-import DeleteAlertModal from '@/components/admin/DeleteAlertModal.vue'
-
-interface Column {
-  title: string
-  key: string
-}
-
-interface Item {
-  name: string
-  email: string
-  created: string
-}
+import DeleteAdminModal from '@/components/admin/DeleteAdminModal.vue'
+import { IAdminItem, IAdminColumnItem } from '@/interfaces/IAdmin'
 
 export default {
   name: 'AdminController',
@@ -45,45 +51,64 @@ export default {
     DataTable,
     Icon,
     FormAdminModal,
-    DeleteAlertModal,
+    DeleteAdminModal,
   },
   data() {
     return {
       showFormAdminModal: false,
-      showAlertModal: false,
+      showDeleteAdminModal: false,
+      loading: false,
       columns: [
         { title: 'Nome', key: 'name' },
         { title: 'Email', key: 'email' },
         { title: 'Criado', key: 'created' },
-      ] as Column[],
-      items: [
-        {
-          name: 'Admin',
-          email: 'tRZQs@example.com',
-          created: '10/10/2020',
-        },
-      ] as Item[],
-      editItem: {} as Item,
+      ] as IAdminColumnItem[],
+      items: [] as IAdminItem[],
+      editItem: {} as IAdminItem,
     }
   },
-  mounted() {},
+  mounted() {
+    this.getAdmins()
+  },
   methods: {
+    async getAdmins() {
+      this.closeAllModals()
+      this.loading = true
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        this.items = [
+          {
+            id: 1,
+            name: 'João',
+            email: 'BZb3P@example.com',
+            created: '2022-01-01',
+          },
+        ]
+      } catch (error) {
+        this.$snotify.error('Erro ao buscar os administradores: ' + error)
+      } finally {
+        this.loading = false
+      }
+    },
+    handleSearch(el: string) {
+      console.log(el)
+    },
     handleNewAdmin() {
-      this.editItem = {} as Item
+      this.editItem = {} as IAdminItem
       this.showFormAdminModal = true
     },
-    handleEditAdmin(item: Item) {
+    handleEditAdmin(item: IAdminItem) {
       this.editItem = item
       this.showFormAdminModal = true
     },
-    handleConfirmDelete(item: Item) {
+    handleConfirmDelete(item: IAdminItem) {
       this.editItem = item
-      this.showAlertModal = true
+      this.showDeleteAdminModal = true
     },
     closeAllModals() {
-      this.editItem = {} as Item
+      this.editItem = {} as IAdminItem
       this.showFormAdminModal = false
-      this.showAlertModal = false
+      this.showDeleteAdminModal = false
     },
   },
 }
