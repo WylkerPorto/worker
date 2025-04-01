@@ -43,7 +43,7 @@ import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
 import FormAdminModal from '@/components/admin/FormAdminModal.vue'
 import DeleteAdminModal from '@/components/admin/DeleteAdminModal.vue'
-import { IAdminItem, IAdminColumnItem } from '@/interfaces/IAdmin'
+import { type IAdminItem, type IAdminColumnItem } from '@/interfaces/IAdmin'
 
 export default {
   name: 'AdminController',
@@ -147,6 +147,7 @@ main {
       button {
         padding: 5px;
         border: none;
+        display: flex;
 
         .iconify {
           font-size: 15px;

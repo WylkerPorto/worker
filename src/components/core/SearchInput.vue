@@ -4,6 +4,7 @@
       type="search"
       :placeholder="placeholder"
       :value="modelValue"
+      :class="{ show: modelValue }"
       @input="$emit('update:modelValue', $event.target.value)"
       ref="input"
     />
@@ -59,7 +60,9 @@ main {
     color: var(--text);
     transition: width 0.5s;
 
-    &:focus {
+    &:focus,
+    &:active,
+    &.show {
       width: 100%;
     }
   }

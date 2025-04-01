@@ -56,6 +56,20 @@ export default {
           break
       }
     },
+    setAuth(token: string, role: string) {
+      localStorage.setItem('login', 'true')
+      localStorage.setItem('token', token)
+      localStorage.setItem('role', role)
+
+      // Redirecionar para o painel apropriado
+      if (localStorage.getItem('role') === 'admin') {
+        this.$router.push({ name: 'adminDashboard' })
+      } else if (localStorage.getItem('role') === 'user') {
+        this.$router.push({ name: 'userDashboard' })
+      } else if (localStorage.getItem('role') === 'recruiter') {
+        this.$router.push({ name: 'recruterDashboard' })
+      }
+    },
   },
 }
 </script>

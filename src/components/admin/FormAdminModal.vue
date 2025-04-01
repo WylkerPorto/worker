@@ -41,7 +41,7 @@ import * as yup from 'yup'
 import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
-import { IAdminForm } from '@/interfaces/IAdmin'
+import { type IAdminForm } from '@/interfaces/IAdmin'
 
 export default {
   name: 'FormAdminModal',

@@ -1,7 +1,7 @@
 <template>
-  <ModalBase :open="show" title="Novo Administrador" @onClose="closeModal">
+  <ModalBase :open="show" :loading="loading" title="Novo Recrutador" @onClose="closeModal">
     <template #content>
-      <form @submit.prevent="handleSubmit(saveRecruiter)">
+      <form @submit.prevent="validate(saveRecruiter)">
         <FormInput
           label="Nome"
           type="text"
@@ -29,7 +29,7 @@
       </form>
     </template>
     <template #actions>
-      <MyButton class="btn success" :loading="loading" @click="handleSubmit(saveRecruiter)">
+      <MyButton class="btn success" :loading="loading" @click="validate(saveRecruiter)">
         Salvar
       </MyButton>
     </template>
@@ -41,12 +41,7 @@ import * as yup from 'yup'
 import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
-
-interface Form {
-  name: string
-  email: string
-  password: string
-}
+import { type IRecruiterForm } from '@/interfaces/IRecruiter'
 
 export default {
   name: 'FormRecruiterModal',
@@ -67,8 +62,8 @@ export default {
   emits: ['onClose', 'onSave'],
   data() {
     return {
-      form: {} as Form,
-      errors: {} as Form,
+      form: {} as IRecruiterForm,
+      errors: {} as IRecruiterForm,
       loading: false,
     }
   },
@@ -92,19 +87,22 @@ export default {
         this.loading = false
       }
     },
-    handleSubmit(callback) {
+    validate(callback) {
       const schema = yup.object({
         name: yup.string().required('Nome é obrigatório'),
         email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
-        password: yup
-          .string()
-          .min(6, 'Senha deve ter pelo menos 6 caracteres')
-          .required('Senha é obrigatória'),
+        password: this.form.id
+          ? yup.string().min(6, 'Senha deve ter pelo menos 6 caracteres')
+          : yup
+              .string()
+              .min(6, 'Senha deve ter pelo menos 6 caracteres')
+              .required('Senha é obrigatória'),
       })
 
       schema
         .validate(this.form, { abortEarly: false })
         .then(() => {
+          this.errors = {}
           callback(this.form)
         })
         .catch((err) => {
@@ -116,8 +114,8 @@ export default {
         })
     },
     closeModal() {
-      this.form = {} as Form
-      this.errors = {} as Form
+      this.form = {} as IRecruiterForm
+      this.errors = {} as IRecruiterForm
       this.$emit('onClose')
     },
   },
