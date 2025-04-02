@@ -1,19 +1,17 @@
-interface IRecruiterItem {
+export interface IRecruiterItem {
   id: string
   name: string
   email: string
   created: string
 }
 
-interface IRecruiterForm {
+export interface IRecruiterForm {
   name: string
   email: string
   password: string
 }
 
-interface IRecruiterColumnItem {
+export interface IRecruiterColumnItem {
   title: string
   key: string
 }
-
-export { IRecruiterItem, IRecruiterForm, IRecruiterColumnItem }

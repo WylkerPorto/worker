@@ -1,14 +1,7 @@
 import axios from 'axios'
 
 const getUrl = () => {
-  let url = ''
-  if (process.env.NODE_ENV === 'development') {
-    // url = localhost
-    url = `http://localhost:3000`
-  } else {
-    // url = production
-    url = 'https://production.com'
-  }
+  const url = import.meta.env.VITE_BASE_BACKEND_URL
   return url
 }
 

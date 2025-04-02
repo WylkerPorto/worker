@@ -1,19 +1,17 @@
-interface IAdminItem {
+export interface IAdminItem {
   id: string
   name: string
   email: string
   created: string
 }
 
-interface IAdminForm {
+export interface IAdminForm {
   name: string
   email: string
   password: string
 }
 
-interface IAdminColumnItem {
+export interface IAdminColumnItem {
   title: string
   key: string
 }
-
-export { IAdminItem, IAdminForm, IAdminColumnItem }

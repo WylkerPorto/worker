@@ -29,6 +29,7 @@ import * as yup from 'yup'
 import FormInput from '../core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
 import { authenticated } from '@/api/auth'
+import { ILoginForm } from '@/interfaces/IEnter'
 
 export default {
   name: 'LoginCard',
@@ -43,8 +44,8 @@ export default {
   },
   data() {
     return {
-      localForm: this.dataForm,
-      errors: {},
+      localForm: this.dataForm as ILoginForm,
+      errors: {} as ILoginForm,
       loading: false,
     }
   },
