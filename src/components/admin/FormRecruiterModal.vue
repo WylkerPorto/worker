@@ -1,7 +1,7 @@
 <template>
   <ModalBase :open="show" :loading="loading" title="Novo Recrutador" @onClose="closeModal">
     <template #content>
-      <form @submit.prevent="validate(saveRecruiter)">
+      <form @submit.prevent="validate">
         <FormInput
           label="Nome"
           type="text"
@@ -29,9 +29,7 @@
       </form>
     </template>
     <template #actions>
-      <MyButton class="btn success" :loading="loading" @click="validate(saveRecruiter)">
-        Salvar
-      </MyButton>
+      <MyButton class="btn success" :loading="loading" @click="validate"> Salvar </MyButton>
     </template>
   </ModalBase>
 </template>
@@ -73,21 +71,7 @@ export default {
     },
   },
   methods: {
-    async saveRecruiter(values) {
-      this.loading = true
-      try {
-        //contador de 5 segundos que dispara um erro
-        await new Promise((resolve) => setTimeout(resolve, 5000))
-        console.log('saveRecruiter', values)
-        this.$emit('onSave', values)
-        this.$snotify.success('Recrutador salvo com sucesso!')
-      } catch (error) {
-        this.$snotify.error('Erro ao salvar o recrutador: ' + error)
-      } finally {
-        this.loading = false
-      }
-    },
-    validate(callback) {
+    validate() {
       const schema = yup.object({
         name: yup.string().required('Nome é obrigatório'),
         email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
@@ -103,7 +87,7 @@ export default {
         .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          callback(this.form)
+          this.saveRecruiter()
         })
         .catch((err) => {
           const errors = {}
@@ -112,6 +96,20 @@ export default {
           })
           this.errors = errors
         })
+    },
+    async saveRecruiter() {
+      this.loading = true
+      try {
+        //contador de 5 segundos que dispara um erro
+        await new Promise((resolve) => setTimeout(resolve, 5000))
+        console.log('saveRecruiter', this.form)
+        this.$emit('onSave', this.form)
+        this.$snotify.success('Recrutador salvo com sucesso!')
+      } catch (error) {
+        this.$snotify.error('Erro ao salvar o recrutador: ' + error)
+      } finally {
+        this.loading = false
+      }
     },
     closeModal() {
       this.form = {} as IRecruiterForm

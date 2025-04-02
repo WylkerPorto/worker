@@ -73,21 +73,7 @@ export default {
     },
   },
   methods: {
-    async saveAdmin(values) {
-      this.loading = true
-      try {
-        //contador de 5 segundos que dispara um erro
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        console.log('saveAdmin', values)
-        this.$emit('onSave', values)
-        this.$snotify.success('Administrador salvo com sucesso!')
-      } catch (error) {
-        this.$snotify.error('Erro ao salvar o administrador: ' + error)
-      } finally {
-        this.loading = false
-      }
-    },
-    validate(callback) {
+    validate() {
       const schema = yup.object({
         name: yup.string().required('Nome é obrigatório'),
         email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
@@ -103,7 +89,7 @@ export default {
         .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          callback(this.form)
+          this.saveAdmin()
         })
         .catch((err) => {
           const errors = {}
@@ -112,6 +98,20 @@ export default {
           })
           this.errors = errors
         })
+    },
+    async saveAdmin() {
+      this.loading = true
+      try {
+        //contador de 5 segundos que dispara um erro
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        console.log('saveAdmin', this.form)
+        this.$emit('onSave', this.form)
+        this.$snotify.success('Administrador salvo com sucesso!')
+      } catch (error) {
+        this.$snotify.error('Erro ao salvar o administrador: ' + error)
+      } finally {
+        this.loading = false
+      }
     },
     closeModal() {
       this.form = {} as IAdminForm
