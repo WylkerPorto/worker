@@ -13,7 +13,7 @@ import DefaultLayout from '@/components/layouts/Default.vue'
 import EmptyLayout from '@/components/layouts/Empty.vue'
 import adminDashboardLayout from '@/components/layouts/AdminDashboard.vue'
 import userDashboardLayout from '@/components/layouts/UserDashboard.vue'
-import recruterDashboardLayout from '@/components/layouts/RecruterDashboard.vue'
+import recruterDashboardLayout from '@/components/layouts/SupervisorDashboard.vue'
 
 const app = createApp(App)
 

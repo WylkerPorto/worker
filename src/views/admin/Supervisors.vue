@@ -2,8 +2,8 @@
   <main>
     <section class="card">
       <header>
-        <h1>Recrutadores</h1>
-        <button class="rounded" @click="showFormRecruiterModal = true">
+        <h1>Supervisores</h1>
+        <button class="rounded" @click="showFormSupervisorModal = true">
           <Icon icon="tdesign:user-add"></Icon>
         </button>
       </header>
@@ -15,7 +15,7 @@
         @onSearch="handleSearch"
       >
         <template #actions="{ item }">
-          <button class="rounded success" @click="handleEditRecruiter(item)">
+          <button class="rounded success" @click="handleEditSupervisor(item)">
             <Icon icon="carbon:edit"></Icon>
           </button>
           <button class="rounded danger" @click="handleConfirmDelete(item)">
@@ -25,53 +25,53 @@
       </DataTable>
     </section>
   </main>
-  <FormRecruiterModal
-    :show="showFormRecruiterModal"
+  <FormSupervisorModal
+    :show="showFormSupervisorModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
-    @onSave="getRecruiters"
+    @onSave="getSupervisors"
   />
-  <DeleteRecruiterModal
-    :show="showDeleteRecruiterModal"
+  <DeleteSupervisorModal
+    :show="showDeleteSupervisorModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
-    @onConfirm="getRecruiters"
+    @onConfirm="getSupervisors"
   />
 </template>
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
-import FormRecruiterModal from '@/components/admin/FormRecruiterModal.vue'
-import DeleteRecruiterModal from '@/components/admin/DeleteRecruiterModal.vue'
-import { type IRecruiterItem, type IRecruiterColumnItem } from '@/interfaces/IRecruiter'
+import FormSupervisorModal from '@/components/admin/FormSupervisorModal.vue'
+import DeleteSupervisorModal from '@/components/admin/DeleteSupervisorModal.vue'
+import { type ISupervisorItem, type ISupervisorColumnItem } from '@/interfaces/ISupervisor'
 
 export default {
-  name: 'RecruiterController',
+  name: 'SupervisorController',
   components: {
     DataTable,
     Icon,
-    FormRecruiterModal,
-    DeleteRecruiterModal,
+    FormSupervisorModal,
+    DeleteSupervisorModal,
   },
   data() {
     return {
-      showDeleteRecruiterModal: false,
-      showFormRecruiterModal: false,
+      showDeleteSupervisorModal: false,
+      showFormSupervisorModal: false,
       loading: false,
       columns: [
         { key: 'name', title: 'Nome' },
         { key: 'email', title: 'Email' },
         { key: 'created', title: 'Criado em' },
-      ] as IRecruiterColumnItem[],
-      items: [] as IRecruiterItem[],
-      editItem: {} as IRecruiterItem,
+      ] as ISupervisorColumnItem[],
+      items: [] as ISupervisorItem[],
+      editItem: {} as ISupervisorItem,
     }
   },
   mounted() {
-    this.getRecruiters()
+    this.getSupervisors()
   },
   methods: {
-    async getRecruiters() {
+    async getSupervisors() {
       this.closeAllModals()
       this.loading = true
       try {
@@ -93,22 +93,22 @@ export default {
     handleSearch(el: string) {
       console.log(el)
     },
-    handleNewRecruiter() {
-      this.editItem = {} as IRecruiterItem
-      this.showFormRecruiterModal = true
+    handleNewSupervisor() {
+      this.editItem = {} as ISupervisorItem
+      this.showFormSupervisorModal = true
     },
-    handleEditRecruiter(item: IRecruiterItem) {
+    handleEditSupervisor(item: ISupervisorItem) {
       this.editItem = item
-      this.showFormRecruiterModal = true
+      this.showFormSupervisorModal = true
     },
-    handleConfirmDelete(item: IRecruiterItem) {
+    handleConfirmDelete(item: ISupervisorItem) {
       this.editItem = item
-      this.showDeleteRecruiterModal = true
+      this.showDeleteSupervisorModal = true
     },
     closeAllModals() {
-      this.editItem = {} as IRecruiterItem
-      this.showFormRecruiterModal = false
-      this.showDeleteRecruiterModal = false
+      this.editItem = {} as ISupervisorItem
+      this.showFormSupervisorModal = false
+      this.showDeleteSupervisorModal = false
     },
   },
 }

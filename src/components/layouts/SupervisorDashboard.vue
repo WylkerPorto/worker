@@ -7,7 +7,7 @@
     </nav>
   </header>
   <main>
-    <aside>user menu</aside>
+    <aside>supervisor menu</aside>
     <RouterView />
   </main>
 </template>
@@ -16,7 +16,7 @@
 import { RouterView } from 'vue-router'
 
 export default {
-  name: 'UserLayout',
+  name: 'SupervisorLayout',
   components: {
     RouterView,
   },

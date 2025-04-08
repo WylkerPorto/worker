@@ -16,7 +16,7 @@
       placeholder="Digite sua senha"
     />
     <a href="#" @click="localForm.type = 'forgot-password'">Esqueci minha senha</a>
-    <MyButton :loading="loading" @click="validate">Entrar</MyButton>
+    <MyButton class="primary" :loading="loading">Entrar</MyButton>
     <hr />
     <span>
       Ainda não tem conta?
@@ -55,7 +55,7 @@ export default {
         email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
         password: yup
           .string()
-          .min(6, 'Senha deve ter pelo menos 6 caracteres')
+          .min(1, 'Senha deve ter pelo menos 6 caracteres')
           .required('Senha é obrigatória'),
       })
 
@@ -63,7 +63,8 @@ export default {
         .validate(this.localForm, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          this.loginAccount()
+          // this.loginAccount()
+          this.tempLogin(this.localForm.password)
         })
         .catch((err) => {
           const errors = {}
@@ -94,8 +95,31 @@ export default {
         this.$router.push({ name: 'adminDashboard' })
       } else if (localStorage.getItem('role') === 'user') {
         this.$router.push({ name: 'userDashboard' })
+      } else if (localStorage.getItem('role') === 'supervisor') {
+        this.$router.push({ name: 'supervisorDashboard' })
       } else if (localStorage.getItem('role') === 'recruiter') {
-        this.$router.push({ name: 'recruterDashboard' })
+        this.$router.push({ name: 'recruiterDashboard' })
+      } else {
+        this.$snotify.error('Erro ao logar: Regra invalida')
+      }
+    },
+    tempLogin(role) {
+      switch (role) {
+        case 'admin':
+          this.$router.push({ name: 'adminDashboard' })
+          break
+        case 'supervisor':
+          this.$router.push({ name: 'supervisorDashboard' })
+          break
+        case 'recruiter':
+          this.$router.push({ name: 'recruiterDashboard' })
+          break
+        case 'user':
+          this.$router.push({ name: 'userDashboard' })
+          break
+        default:
+          this.$snotify.error('Erro ao logar: Regra invalida')
+          break
       }
     },
   },

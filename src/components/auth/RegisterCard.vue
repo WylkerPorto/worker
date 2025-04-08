@@ -22,7 +22,7 @@
       type="password"
       placeholder="Digite sua senha"
     />
-    <MyButton :loading="loading" @click="validate">Cadastrar</MyButton>
+    <MyButton class="primary" :loading="loading">Cadastrar</MyButton>
     <hr />
     <span>
       Já é cadastrado?

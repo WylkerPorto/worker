@@ -30,7 +30,7 @@ import { Icon } from '@iconify/vue'
 import { RouterView } from 'vue-router'
 
 export default {
-  name: 'AdminDashboard',
+  name: 'AdminLayout',
   components: {
     RouterView,
     AdminAsideMenu,
@@ -67,8 +67,8 @@ export default {
           icon: 'mdi:administrator-outline',
         },
         {
-          label: 'Recrutadores',
-          name: 'recruitersController',
+          label: 'Supervisores',
+          name: 'supervisorController',
           active: true,
           icon: 'mdi:leads',
         },

@@ -1,5 +1,5 @@
 <template>
-  <ModalBase :open="show" :loading="loading" title="Visualizar Log" @onClose="$emit('onClose')">
+  <ModalBase :open="show" title="Visualizar Log" @onClose="$emit('onClose')">
     <template #content>
       <section>
         <p>{{ dataForm?.message }}</p>

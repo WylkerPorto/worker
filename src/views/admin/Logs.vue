@@ -77,6 +77,9 @@ export default {
       this.editItem = item
       this.showFormViewLogModal = true
     },
+    handleSearch(value: string) {
+      console.log('handleSearch', value)
+    },
   },
 }
 </script>

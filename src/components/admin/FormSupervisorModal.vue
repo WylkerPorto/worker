@@ -1,5 +1,5 @@
 <template>
-  <ModalBase :open="show" :loading="loading" title="Novo Recrutador" @onClose="closeModal">
+  <ModalBase :open="show" :loading="loading" title="Novo Supervisor" @onClose="closeModal">
     <template #content>
       <form @submit.prevent="validate">
         <FormInput
@@ -39,10 +39,10 @@ import * as yup from 'yup'
 import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
-import { type IRecruiterForm } from '@/interfaces/IRecruiter'
+import { type ISupervisorForm } from '@/interfaces/ISupervisor'
 
 export default {
-  name: 'FormRecruiterModal',
+  name: 'FormSupervisorModal',
   components: {
     ModalBase,
     FormInput,
@@ -60,8 +60,8 @@ export default {
   emits: ['onClose', 'onSave'],
   data() {
     return {
-      form: {} as IRecruiterForm,
-      errors: {} as IRecruiterForm,
+      form: {} as ISupervisorForm,
+      errors: {} as ISupervisorForm,
       loading: false,
     }
   },
@@ -87,7 +87,7 @@ export default {
         .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          this.saveRecruiter()
+          this.saveSupervisor()
         })
         .catch((err) => {
           const errors = {}
@@ -97,23 +97,23 @@ export default {
           this.errors = errors
         })
     },
-    async saveRecruiter() {
+    async saveSupervisor() {
       this.loading = true
       try {
         //contador de 5 segundos que dispara um erro
         await new Promise((resolve) => setTimeout(resolve, 5000))
-        console.log('saveRecruiter', this.form)
+        console.log('saveSupervisor', this.form)
         this.$emit('onSave', this.form)
-        this.$snotify.success('Recrutador salvo com sucesso!')
+        this.$snotify.success('Supervisor salvo com sucesso!')
       } catch (error) {
-        this.$snotify.error('Erro ao salvar o recrutador: ' + error)
+        this.$snotify.error('Erro ao salvar o supervisor: ' + error)
       } finally {
         this.loading = false
       }
     },
     closeModal() {
-      this.form = {} as IRecruiterForm
-      this.errors = {} as IRecruiterForm
+      this.form = {} as ISupervisorForm
+      this.errors = {} as ISupervisorForm
       this.$emit('onClose')
     },
   },

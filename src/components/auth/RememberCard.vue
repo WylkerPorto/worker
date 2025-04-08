@@ -8,7 +8,7 @@
       type="email"
       placeholder="Digite seu e-mail"
     />
-    <MyButton :loading="loading" @click="validate">Recuperar</MyButton>
+    <MyButton class="primary" :loading="loading">Recuperar</MyButton>
     <hr />
     <span>
       Lembrou sua senha?

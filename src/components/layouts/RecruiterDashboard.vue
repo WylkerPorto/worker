@@ -7,7 +7,7 @@
     </nav>
   </header>
   <main>
-    <aside>recruter menu</aside>
+    <aside>recruiter menu</aside>
     <RouterView />
   </main>
 </template>
@@ -16,7 +16,7 @@
 import { RouterView } from 'vue-router'
 
 export default {
-  name: 'DashboardLayout',
+  name: 'RecruiterLayout',
   components: {
     RouterView,
   },

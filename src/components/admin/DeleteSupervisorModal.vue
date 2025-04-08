@@ -6,7 +6,7 @@
 
         <div>
           <p>
-            Tem certeza que deseja excluir o recrutador
+            Tem certeza que deseja excluir o surpevisor
             <span>{{ dataForm?.name }}</span>
             ?
           </p>
@@ -15,7 +15,7 @@
       </section>
     </template>
     <template #actions>
-      <MyButton class="btn danger" :loading="loading" @click="deleteRecruiter">Confirmar</MyButton>
+      <MyButton class="btn danger" :loading="loading" @click="deleteSupervisor">Confirmar</MyButton>
     </template>
   </ModalBase>
 </template>
@@ -26,7 +26,7 @@ import { Icon } from '@iconify/vue'
 import MyButton from '../core/MyButton.vue'
 
 export default {
-  name: 'DeleteRecruiterModal',
+  name: 'DeleteSupervisorModal',
   components: {
     ModalBase,
     Icon,
@@ -48,15 +48,15 @@ export default {
     }
   },
   methods: {
-    async deleteRecruiter() {
+    async deleteSupervisor() {
       this.loading = true
       try {
         //contador de 5 segundos que dispara um erro
         await new Promise((resolve) => setTimeout(resolve, 1000))
         this.$emit('onConfirm')
-        this.$snotify.success('Recrutador excluído com sucesso!')
+        this.$snotify.success('Supervisor excluído com sucesso!')
       } catch (error) {
-        this.$snotify.error('Erro ao excluir o recrutador: ' + error)
+        this.$snotify.error('Erro ao excluir o supervisor: ' + error)
       } finally {
         this.loading = false
       }
