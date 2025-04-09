@@ -42,6 +42,7 @@ import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
 import { type IAdminForm } from '@/interfaces/IAdmin'
+import { create } from '@/api/admin'
 
 export default {
   name: 'FormAdminModal',
@@ -62,7 +63,9 @@ export default {
   emits: ['onClose', 'onSave'],
   data() {
     return {
-      form: {} as IAdminForm,
+      form: {
+        permission_id: 0,
+      } as IAdminForm,
       errors: {} as IAdminForm,
       loading: false,
     }
@@ -102,10 +105,9 @@ export default {
     async saveAdmin() {
       this.loading = true
       try {
-        //contador de 5 segundos que dispara um erro
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        console.log('saveAdmin', this.form)
-        this.$emit('onSave', this.form)
+        console.log('this.form', this.form)
+        const { data } = await create(this.form)
+        console.log('saveAdmin', data)
         this.$snotify.success('Administrador salvo com sucesso!')
       } catch (error) {
         this.$snotify.error('Erro ao salvar o administrador: ' + error)

@@ -9,6 +9,7 @@ export interface IAdminForm {
   name: string
   email: string
   password: string
+  permission_id: number
 }
 
 export interface IAdminColumnItem {

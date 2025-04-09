@@ -52,7 +52,7 @@ main {
   -webkit-backdrop-filter: blur(5px);
 
   section {
-    max-width: 60vw;
+    max-width: 650px;
     width: 100%;
 
     header {
