@@ -2,7 +2,7 @@
   <main>
     <!-- header section start -->
     <header id="navbar">
-      <h2>Worker</h2>
+      <h2>KlikTalent</h2>
       <nav>
         <ul>
           <li>
@@ -36,7 +36,7 @@
     <section id="sobre">
       <h2>Sobre nós</h2>
       <p>
-        Nós somos a <b><i>Worker</i></b
+        Nós somos a <b><i>KlikTalent</i></b
         >, uma plataforma digital criada para conectar talentos e empresas de forma rápida e
         eficiente. Nosso objetivo é transformar o processo de recrutamento e seleção, proporcionando
         uma experiência simples e intuitiva tanto para candidatos quanto para empresas que buscam os
@@ -153,10 +153,10 @@
         <h1>Política de Privacidade e Cookies</h1>
         <div>
           <p>
-            Nós da <b><i>Worker</i></b> levamos a sua privacidade a sério e estamos comprometidos em
-            proteger os seus dados pessoais. De acordo com a Lei Geral de Proteção de Dados (LGPD),
-            queremos garantir que você tenha total transparência sobre como tratamos suas
-            informações.
+            Nós da <b><i>KlikTalent</i></b> levamos a sua privacidade a sério e estamos
+            comprometidos em proteger os seus dados pessoais. De acordo com a Lei Geral de Proteção
+            de Dados (LGPD), queremos garantir que você tenha total transparência sobre como
+            tratamos suas informações.
           </p>
           <h3>Uso de Cookies</h3>
           <p>

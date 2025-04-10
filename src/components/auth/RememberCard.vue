@@ -3,7 +3,7 @@
     <h2>Recuperar Senha</h2>
     <FormInput
       label="E-mail"
-      v-model="localForm.email"
+      v-model="form.email"
       :error="errors.email"
       type="email"
       placeholder="Digite seu e-mail"
@@ -36,7 +36,8 @@ export default {
   },
   data() {
     return {
-      localForm: this.dataForm as IRememberForm,
+      form: {} as ILoginForm,
+      localForm: this.dataForm,
       errors: {} as IRememberForm,
       loading: false,
     }
@@ -48,7 +49,7 @@ export default {
       })
 
       schema
-        .validate(this.localForm, { abortEarly: false })
+        .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
           this.rememberAccount()
@@ -64,7 +65,7 @@ export default {
     async rememberAccount() {
       this.loading = true
       try {
-        await remember(this.localForm)
+        await remember(this.form)
       } catch (error) {
         this.$snotify.error('Erro ao recuperar senha: ' + error.message)
       } finally {

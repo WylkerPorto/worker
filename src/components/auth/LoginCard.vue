@@ -3,14 +3,14 @@
     <h2>Login</h2>
     <FormInput
       label="E-mail"
-      v-model="localForm.email"
+      v-model="form.email"
       :error="errors.email"
       type="email"
       placeholder="Digite seu e-mail"
     />
     <FormInput
       label="Senha"
-      v-model="localForm.password"
+      v-model="form.password"
       :error="errors.password"
       type="password"
       placeholder="Digite sua senha"
@@ -44,7 +44,8 @@ export default {
   },
   data() {
     return {
-      localForm: this.dataForm as ILoginForm,
+      form: {} as ILoginForm,
+      localForm: this.dataForm,
       errors: {} as ILoginForm,
       loading: false,
     }
@@ -55,16 +56,16 @@ export default {
         email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
         password: yup
           .string()
-          .min(1, 'Senha deve ter pelo menos 6 caracteres')
+          .min(6, 'Senha deve ter pelo menos 6 caracteres')
           .required('Senha é obrigatória'),
       })
 
       schema
-        .validate(this.localForm, { abortEarly: false })
+        .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          // this.loginAccount()
-          this.tempLogin(this.localForm.password)
+          this.loginAccount()
+          // this.tempLogin(this.form.password)
         })
         .catch((err) => {
           const errors = {}
@@ -77,10 +78,16 @@ export default {
     async loginAccount() {
       this.loading = true
       try {
-        const response = await authenticated(this.localForm)
-        this.setAuth(response.data.token, response.data.role)
+        const response = await authenticated(this.form)
+        this.setAuth(response.data.access_token, response.data.permission)
       } catch (error) {
-        this.$snotify.error('Erro ao logar: ' + error.message)
+        if (error.response.status === 401) {
+          this.$snotify.error('E-mail ou senha inválidos')
+        } else if (error.response.status === 403) {
+          this.$snotify.error('Acesso negado')
+        } else {
+          this.$snotify.error('Erro ao logar: ' + error.message)
+        }
       } finally {
         this.loading = false
       }
@@ -88,7 +95,7 @@ export default {
     setAuth(token: string, role: string) {
       localStorage.setItem('login', 'true')
       localStorage.setItem('token', token)
-      localStorage.setItem('role', role)
+      localStorage.setItem('role', this.getRole(role))
 
       // Redirecionar para o painel apropriado
       if (localStorage.getItem('role') === 'admin') {
@@ -103,23 +110,18 @@ export default {
         this.$snotify.error('Erro ao logar: Regra invalida')
       }
     },
-    tempLogin(role) {
+    getRole(role: number) {
       switch (role) {
-        case 'admin':
-          this.$router.push({ name: 'adminDashboard' })
-          break
-        case 'supervisor':
-          this.$router.push({ name: 'supervisorDashboard' })
-          break
-        case 'recruiter':
-          this.$router.push({ name: 'recruiterDashboard' })
-          break
-        case 'user':
-          this.$router.push({ name: 'userDashboard' })
-          break
+        case 1:
+          return 'admin'
+        case 2:
+          return 'supervisor'
+        case 3:
+          return 'recruiter'
+        case 4:
+          return 'user'
         default:
-          this.$snotify.error('Erro ao logar: Regra invalida')
-          break
+          return ''
       }
     },
   },

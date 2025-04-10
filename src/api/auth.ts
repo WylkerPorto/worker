@@ -1,6 +1,6 @@
 import http from './http'
 
-export const authenticated = (params) => http.api().post('/login', params)
+export const authenticated = (params) => http.api().post('/auth/login', params)
 
 export const remember = (params) => http.api().post('/login/remember', params)
 

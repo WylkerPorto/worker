@@ -44,6 +44,7 @@ import { Icon } from '@iconify/vue'
 import FormAdminModal from '@/components/admin/FormAdminModal.vue'
 import DeleteAdminModal from '@/components/admin/DeleteAdminModal.vue'
 import { type IAdminItem, type IAdminColumnItem } from '@/interfaces/IAdmin'
+import { list } from '@/api/user'
 
 export default {
   name: 'AdminController',
@@ -75,15 +76,8 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        this.items = [
-          {
-            id: 1,
-            name: 'João',
-            email: 'BZb3P@example.com',
-            created: '2022-01-01',
-          },
-        ]
+        const response = await list()
+        console.log('response', response)
       } catch (error) {
         this.$snotify.error('Erro ao buscar os administradores: ' + error)
       } finally {
