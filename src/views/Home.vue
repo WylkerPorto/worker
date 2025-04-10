@@ -270,7 +270,7 @@ main {
 
 #inicio {
   height: 100vh;
-  background: url('/public/assets/imgs/hero-bg.jpg') no-repeat center center/cover;
+  background: url('/assets/imgs/hero-bg.jpg') no-repeat center center/cover;
 }
 
 #tecnologias {
