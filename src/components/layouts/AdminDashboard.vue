@@ -46,9 +46,9 @@ export default {
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen
     },
-    handleClickOutside(event) {
+    handleClickOutside(event: MouseEvent) {
       const dropdown = this.$refs.dropdown
-      if (dropdown && !dropdown.contains(event.target)) {
+      if (dropdown && !dropdown?.contains(event.target)) {
         this.dropdownOpen = false
       }
     },

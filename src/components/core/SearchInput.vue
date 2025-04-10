@@ -5,7 +5,7 @@
       :placeholder="placeholder"
       :value="modelValue"
       :class="{ show: modelValue }"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="$emit('update:modelValue', $event?.target?.value)"
       ref="input"
     />
     <Icon icon="bi:search" />
@@ -32,13 +32,13 @@ export default {
   },
   methods: {
     focus() {
-      this.$refs.input.focus()
+      this.$refs?.input?.focus()
     },
     blur() {
-      this.$refs.input.blur()
+      this.$refs?.input?.blur()
     },
     select() {
-      this.$refs.input.select()
+      this.$refs?.input?.select()
     },
   },
 }

@@ -14,7 +14,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'default',
+      default: 'submit',
     },
     loading: {
       type: Boolean,

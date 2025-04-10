@@ -13,7 +13,7 @@
           </th>
         </tr>
         <tr class="header">
-          <th v-for="(column, index) in columns" :key="index">{{ column.title }}</th>
+          <th v-for="(column, index) in columns" :key="index">{{ column?.title }}</th>
           <th v-if="$slots['actions']">Ações</th>
         </tr>
       </thead>
@@ -26,7 +26,7 @@
       </tbody>
       <tbody v-else>
         <tr v-for="(item, index) in items" :key="index">
-          <td v-for="(column, colIndex) in columns" :key="colIndex">{{ item[column.key] }}</td>
+          <td v-for="(column, colIndex) in columns" :key="colIndex">{{ item[column?.key] }}</td>
           <td class="actions" v-if="$slots['actions']">
             <slot name="actions" :item="item"></slot>
           </td>
@@ -34,7 +34,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td :colspan="columns.length + ($slots['actions'] ? 1 : 0)">
+          <td :colspan="columns?.length + ($slots['actions'] ? 1 : 0)">
             <slot name="pagination"></slot>
           </td>
         </tr>

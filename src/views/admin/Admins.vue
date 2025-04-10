@@ -76,7 +76,7 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        const response = await list()
+        const response = await list('')
         console.log('response', response)
       } catch (error) {
         this.$snotify.error('Erro ao buscar os administradores: ' + error)

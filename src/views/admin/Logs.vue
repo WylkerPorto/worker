@@ -29,7 +29,7 @@
 import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
 import FormViewLogModal from '@/components/admin/FormViewLogModal.vue'
-import { type ILogItem, type IlogColumnItem } from '@/interfaces/ILog'
+import { type ILogItem, type ILogColumnItem } from '@/interfaces/ILog'
 
 export default {
   name: 'LogsController',
@@ -46,7 +46,7 @@ export default {
         { title: '#', key: 'id' },
         { title: 'Tipo', key: 'type' },
         { title: 'Criado', key: 'created' },
-      ] as IlogColumnItem[],
+      ] as ILogColumnItem[],
       items: [] as ILogItem[],
       editItem: {} as ILogItem,
     }
