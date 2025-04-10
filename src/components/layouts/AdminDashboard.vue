@@ -10,7 +10,6 @@
         </div>
 
         <div v-if="dropdownOpen" class="dropdown-menu">
-          <router-link to="/profile">Editar Perfil</router-link>
           <router-link to="/logout">Logout</router-link>
         </div>
       </div>
