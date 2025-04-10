@@ -1,5 +1,5 @@
 export interface ILogItem {
-  id: string
+  id: number
   type: string
   created: string
 }
