@@ -1,1 +1,0 @@
-import{I as e,_ as t,c as a,e as c,b as s,r,o as p}from"./index-D07aeNVm.js";const d={name:"NotFoundView",components:{Icon:e}};function i(_,o,l,f,m,u){const n=r("Icon");return p(),a("main",null,[c(n,{icon:"iconoir:file-not-found"}),o[0]||(o[0]=s("p",null,"Página não encontrada",-1))])}const I=t(d,[["render",i],["__scopeId","data-v-0bf94628"]]);export{I as default};
