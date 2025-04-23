@@ -21,7 +21,7 @@
             <a href="#contato">Contato</a>
           </li>
           <li>
-            <a href="login">Login</a>
+            <a href="/#/login">Login</a>
           </li>
         </ul>
       </nav>
