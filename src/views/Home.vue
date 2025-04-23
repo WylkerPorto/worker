@@ -21,7 +21,7 @@
             <a href="#contato">Contato</a>
           </li>
           <li>
-            <a href="/#/login">Login</a>
+            <RouterLink :to="{ name: 'login' }">Login</RouterLink>
           </li>
         </ul>
       </nav>
