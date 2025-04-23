@@ -8,6 +8,8 @@
     "build-full": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build": "vite build",
+    "build:preview": "vite build --mode preview",
+    "build:prod": "vite build --mode production",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"

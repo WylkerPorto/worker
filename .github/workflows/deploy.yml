@@ -16,10 +16,13 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
+      - name: Criar arquivo .env.preview
+        run: echo 'VITE_ROUTER_MODE=hash' > .env.preview
+
       - name: Build com Vite
         env:
           VITE_BASE_BACKEND_URL: ${{ secrets.VITE_BASE_BACKEND_URL }}
-        run: npm run build
+        run: npm run build:preview
 
       - name: Deploy para GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
