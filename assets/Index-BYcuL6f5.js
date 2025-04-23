@@ -1,1 +1,0 @@
-import{_ as e,c as o,o as r}from"./index-DuBcrI2a.js";const s={name:"SupervisorIndex"};function n(t,a,c,p,d,_){return r(),o("div",null,"supervisor dashboard")}const u=e(s,[["render",n]]);export{u as default};
