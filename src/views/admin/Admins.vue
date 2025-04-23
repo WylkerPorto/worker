@@ -11,7 +11,7 @@
         :items="items"
         :columns="columns"
         :loading="loading"
-        :total="1"
+        :total="total"
         @onSearch="handleSearch"
       >
         <template #actions="{ item }">
@@ -62,10 +62,14 @@ export default {
       columns: [
         { title: 'Nome', key: 'name' },
         { title: 'Email', key: 'email' },
-        { title: 'Criado', key: 'created' },
+        { title: 'Criado', key: 'createdAt', type: 'date' },
       ] as IAdminColumnItem[],
       items: [] as IAdminItem[],
       editItem: {} as IAdminItem,
+      total: 0,
+      page: 1,
+      limit: 10,
+      search: '',
     }
   },
   mounted() {
@@ -76,8 +80,9 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        const response = await list('')
-        console.log('response', response)
+        const response = await list(this.filters)
+        this.items = response.data.data
+        this.total = response.data.total
       } catch (error) {
         this.$snotify.error('Erro ao buscar os administradores: ' + error)
       } finally {
@@ -85,7 +90,9 @@ export default {
       }
     },
     handleSearch(el: string) {
-      console.log(el)
+      this.search = el
+      this.page = 1
+      this.getAdmins()
     },
     handleNewAdmin() {
       this.editItem = {} as IAdminItem
@@ -103,6 +110,14 @@ export default {
       this.editItem = {} as IAdminItem
       this.showFormAdminModal = false
       this.showDeleteAdminModal = false
+    },
+  },
+  computed: {
+    filters() {
+      return {
+        page: this.page,
+        filter: this.search,
+      }
     },
   },
 }

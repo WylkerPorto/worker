@@ -1,7 +1,7 @@
 <template>
   <ModalBase :open="show" :loading="loading" title="Novo Administrador" @onClose="closeModal">
     <template #content>
-      <form @submit.prevent="validate(saveAdmin)">
+      <form @submit.prevent="validate">
         <FormInput
           label="Nome"
           type="text"
@@ -29,9 +29,7 @@
       </form>
     </template>
     <template #actions>
-      <MyButton class="btn success" :loading="loading" @click="validate(saveAdmin)">
-        Salvar
-      </MyButton>
+      <MyButton class="btn success" :loading="loading" @click="validate"> Salvar </MyButton>
     </template>
   </ModalBase>
 </template>
@@ -42,7 +40,7 @@ import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
 import { type IAdminForm } from '@/interfaces/IAdmin'
-import { create } from '@/api/admin'
+import { create, update } from '@/api/user'
 
 export default {
   name: 'FormAdminModal',
@@ -72,7 +70,9 @@ export default {
   },
   watch: {
     dataForm() {
-      this.form = { ...this.dataForm }
+      if (this.dataForm) {
+        this.form = { ...this.form, ...this.dataForm }
+      }
     },
   },
   methods: {
@@ -81,7 +81,7 @@ export default {
         name: yup.string().required('Nome é obrigatório'),
         email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
         password: this.form.id
-          ? yup.string().min(6, 'Senha deve ter pelo menos 6 caracteres')
+          ? yup.string().min(6, 'Senha deve ter pelo menos 6 caracteres').notRequired()
           : yup
               .string()
               .min(6, 'Senha deve ter pelo menos 6 caracteres')
@@ -105,10 +105,28 @@ export default {
     async saveAdmin() {
       this.loading = true
       try {
+        const isEdit = !!this.form.id
+
+        if (isEdit) {
+          delete this.form.id
+          delete this.form.createdAt
+          delete this.form.updatedAt
+        }
+
+        if (isEdit && !this.form.password) {
+          delete this.form.password
+        }
+
         console.log('this.form', this.form)
-        const { data } = await create(this.form)
-        console.log('saveAdmin', data)
-        this.$snotify.success('Administrador salvo com sucesso!')
+        if (isEdit) {
+          await update(this.dataForm.id, this.form)
+        } else {
+          await create(this.form)
+        }
+
+        this.$snotify.success(`Administrador ${isEdit ? 'atualizado' : 'salvo'} com sucesso!`)
+        this.$emit('onSave')
+        this.closeModal()
       } catch (error) {
         this.$snotify.error('Erro ao salvar o administrador: ' + error)
       } finally {
@@ -116,7 +134,9 @@ export default {
       }
     },
     closeModal() {
-      this.form = {} as IAdminForm
+      this.form = {
+        permission_id: 0,
+      } as IAdminForm
       this.errors = {} as IAdminForm
       this.$emit('onClose')
     },

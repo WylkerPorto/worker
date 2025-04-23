@@ -26,7 +26,9 @@
       </tbody>
       <tbody v-else>
         <tr v-for="(item, index) in items" :key="index">
-          <td v-for="(column, colIndex) in columns" :key="colIndex">{{ item[column?.key] }}</td>
+          <td v-for="(column, colIndex) in columns" :key="colIndex">
+            {{ column?.type === 'date' ? toFormatDate(item[column?.key]) : item[column?.key] }}
+          </td>
           <td class="actions" v-if="$slots['actions']">
             <slot name="actions" :item="item"></slot>
           </td>
@@ -46,11 +48,13 @@
 <script lang="ts">
 import SearchInput from './SearchInput.vue'
 import { Icon } from '@iconify/vue'
+import { toFormatDate } from '@/utils/conversors'
 
 export default {
   name: 'DataTableComponent',
   data() {
     return {
+      toFormatDate,
       search: '',
     }
   },
@@ -81,7 +85,7 @@ export default {
   },
   computed: {
     justifyWasAction() {
-      return this.total ? 'space-between' : 'center'
+      return this.total ? 'space-between' : 'end'
     },
   },
 }
@@ -144,6 +148,9 @@ main.data-table {
 
         td {
           padding: 0.5rem;
+          text-wrap: nowrap;
+          overflow-x: auto;
+          text-overflow: ellipsis;
 
           .loader {
             font-size: 30px;
