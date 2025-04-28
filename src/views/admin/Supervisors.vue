@@ -11,7 +11,7 @@
         :items="items"
         :columns="columns"
         :loading="loading"
-        :total="1"
+        :total="total"
         @onSearch="handleSearch"
       >
         <template #actions="{ item }">
@@ -44,6 +44,7 @@ import { Icon } from '@iconify/vue'
 import FormSupervisorModal from '@/components/admin/FormSupervisorModal.vue'
 import DeleteSupervisorModal from '@/components/admin/DeleteSupervisorModal.vue'
 import { type ISupervisorItem, type ISupervisorColumnItem } from '@/interfaces/ISupervisor'
+import { list } from '@/api/user'
 
 export default {
   name: 'SupervisorController',
@@ -65,6 +66,9 @@ export default {
       ] as ISupervisorColumnItem[],
       items: [] as ISupervisorItem[],
       editItem: {} as ISupervisorItem,
+      total: 0,
+      page: 1,
+      search: '',
     }
   },
   mounted() {
@@ -75,15 +79,9 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        this.items = [
-          {
-            id: 1,
-            name: 'João',
-            email: 'BZb3P@example.com',
-            created: '2022-01-01',
-          },
-        ]
+        const response = await list(this.filters)
+        this.items = response.data.data
+        this.total = response.data.total
       } catch (error) {
         this.$snotify.error('Erro ao buscar os recrutadores: ' + error)
       } finally {
@@ -91,7 +89,9 @@ export default {
       }
     },
     handleSearch(el: string) {
-      console.log(el)
+      this.search = el
+      this.page = 1
+      this.getSupervisors()
     },
     handleNewSupervisor() {
       this.editItem = {} as ISupervisorItem
@@ -109,6 +109,14 @@ export default {
       this.editItem = {} as ISupervisorItem
       this.showFormSupervisorModal = false
       this.showDeleteSupervisorModal = false
+    },
+  },
+  computed: {
+    filters() {
+      return {
+        page: this.page,
+        filter: this.search,
+      }
     },
   },
 }

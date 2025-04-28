@@ -40,6 +40,7 @@ import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
 import { type ISupervisorForm } from '@/interfaces/ISupervisor'
+import { create, update } from '@/api/user'
 
 export default {
   name: 'FormSupervisorModal',
@@ -60,14 +61,18 @@ export default {
   emits: ['onClose', 'onSave'],
   data() {
     return {
-      form: {} as ISupervisorForm,
+      form: {
+        permission_id: 1,
+      } as ISupervisorForm,
       errors: {} as ISupervisorForm,
       loading: false,
     }
   },
   watch: {
     dataForm() {
-      this.form = { ...this.dataForm }
+      if (this.dataForm) {
+        this.form = { ...this.dataForm }
+      }
     },
   },
   methods: {
@@ -100,11 +105,26 @@ export default {
     async saveSupervisor() {
       this.loading = true
       try {
-        //contador de 5 segundos que dispara um erro
-        await new Promise((resolve) => setTimeout(resolve, 5000))
-        console.log('saveSupervisor', this.form)
-        this.$emit('onSave', this.form)
-        this.$snotify.success('Supervisor salvo com sucesso!')
+        const isEdit = !!this.form.id
+
+        if (isEdit) {
+          delete this.form.id
+          delete this.form.createdAt
+          delete this.form.updatedAt
+        }
+
+        if (isEdit && !this.form.password) {
+          delete this.form.password
+        }
+
+        if (isEdit) {
+          await update(this.form.id, this.form)
+        } else {
+          await create(this.form)
+        }
+        this.$snotify.success(`Supervisor ${isEdit ? 'atualizado' : 'criado'} com sucesso`)
+        this.$emit('onSave')
+        this.closeModal()
       } catch (error) {
         this.$snotify.error('Erro ao salvar o supervisor: ' + error)
       } finally {
@@ -112,7 +132,9 @@ export default {
       }
     },
     closeModal() {
-      this.form = {} as ISupervisorForm
+      this.form = {
+        permission_id: 1,
+      } as ISupervisorForm
       this.errors = {} as ISupervisorForm
       this.$emit('onClose')
     },

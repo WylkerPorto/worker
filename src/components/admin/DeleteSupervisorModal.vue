@@ -24,6 +24,7 @@
 import ModalBase from '@/components/core/ModalBase.vue'
 import { Icon } from '@iconify/vue'
 import MyButton from '../core/MyButton.vue'
+import { remove } from '@/api/user'
 
 export default {
   name: 'DeleteSupervisorModal',
@@ -51,10 +52,10 @@ export default {
     async deleteSupervisor() {
       this.loading = true
       try {
-        //contador de 5 segundos que dispara um erro
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        this.$emit('onConfirm')
+        await remove(this.dataForm.id)
         this.$snotify.success('Supervisor excluído com sucesso!')
+        this.$emit('onConfirm')
+        this.$emit('onClose')
       } catch (error) {
         this.$snotify.error('Erro ao excluir o supervisor: ' + error)
       } finally {

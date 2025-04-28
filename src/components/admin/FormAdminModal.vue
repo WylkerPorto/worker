@@ -117,7 +117,6 @@ export default {
           delete this.form.password
         }
 
-        console.log('this.form', this.form)
         if (isEdit) {
           await update(this.dataForm.id, this.form)
         } else {

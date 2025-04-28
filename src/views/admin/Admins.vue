@@ -68,7 +68,6 @@ export default {
       editItem: {} as IAdminItem,
       total: 0,
       page: 1,
-      limit: 10,
       search: '',
     }
   },
