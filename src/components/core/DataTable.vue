@@ -17,14 +17,7 @@
           <th v-if="$slots['actions']">Ações</th>
         </tr>
       </thead>
-      <tbody v-if="loading">
-        <tr>
-          <td :colspan="columns.length + ($slots['actions'] ? 1 : 0)">
-            <Icon class="loader" icon="svg-spinners:3-dots-scale" />
-          </td>
-        </tr>
-      </tbody>
-      <tbody v-else>
+      <tbody>
         <tr v-for="(item, index) in items" :key="index">
           <td v-for="(column, colIndex) in columns" :key="colIndex">
             {{ column?.type === 'date' ? toFormatDate(item[column?.key]) : item[column?.key] }}
@@ -34,10 +27,19 @@
           </td>
         </tr>
       </tbody>
-      <tfoot>
+      <tbody v-if="loading">
+        <tr>
+          <td :colspan="columns.length + ($slots['actions'] ? 1 : 0)">
+            <Icon class="loader" icon="svg-spinners:3-dots-scale" />
+          </td>
+        </tr>
+      </tbody>
+      <tfoot v-if="loadMore">
         <tr>
           <td :colspan="columns?.length + ($slots['actions'] ? 1 : 0)">
-            <slot name="pagination"></slot>
+            <MyButton v-if="!loading" class="primary" @click="$emit('onLoadMore')">
+              Carregar mais
+            </MyButton>
           </td>
         </tr>
       </tfoot>
@@ -49,6 +51,7 @@
 import SearchInput from './SearchInput.vue'
 import { Icon } from '@iconify/vue'
 import { toFormatDate } from '@/utils/conversors'
+import MyButton from './MyButton.vue'
 
 export default {
   name: 'DataTableComponent',
@@ -72,12 +75,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    loadMore: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     SearchInput,
     Icon,
+    MyButton,
   },
-  emits: ['onSearch'],
+  emits: ['onSearch', 'onLoadMore'],
   methods: {
     handleSearch() {
       this.$emit('onSearch', this.search)
@@ -102,6 +110,7 @@ main.data-table {
     width: 100%;
     table-layout: fixed;
     text-align: center;
+    border-spacing: 0;
 
     .header {
       background: var(--text);

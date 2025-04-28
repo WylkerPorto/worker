@@ -12,6 +12,7 @@
         :columns="columns"
         :loading="loading"
         :total="total"
+        :loadMore="loadMore"
         @onSearch="handleSearch"
       >
         <template #actions="{ item }">
@@ -80,7 +81,7 @@ export default {
       this.loading = true
       try {
         const response = await list(this.filters)
-        this.items = response.data.data
+        this.items.push(...response.data.data)
         this.total = response.data.total
       } catch (error) {
         this.$snotify.error('Erro ao buscar os recrutadores: ' + error)
@@ -110,6 +111,10 @@ export default {
       this.showFormSupervisorModal = false
       this.showDeleteSupervisorModal = false
     },
+    handleLoadMore() {
+      this.page += 1
+      this.getSupervisors()
+    },
   },
   computed: {
     filters() {
@@ -117,6 +122,9 @@ export default {
         page: this.page,
         filter: this.search,
       }
+    },
+    loadMore() {
+      return this.items.length < this.total
     },
   },
 }

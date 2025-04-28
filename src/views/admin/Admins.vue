@@ -12,6 +12,8 @@
         :columns="columns"
         :loading="loading"
         :total="total"
+        :loadMore="loadMore"
+        @onLoadMore="handleLoadMore"
         @onSearch="handleSearch"
       >
         <template #actions="{ item }">
@@ -80,7 +82,7 @@ export default {
       this.loading = true
       try {
         const response = await list(this.filters)
-        this.items = response.data.data
+        this.items.push(...response.data.data)
         this.total = response.data.total
       } catch (error) {
         this.$snotify.error('Erro ao buscar os administradores: ' + error)
@@ -110,6 +112,10 @@ export default {
       this.showFormAdminModal = false
       this.showDeleteAdminModal = false
     },
+    handleLoadMore() {
+      this.page += 1
+      this.getAdmins()
+    },
   },
   computed: {
     filters() {
@@ -117,6 +123,9 @@ export default {
         page: this.page,
         filter: this.search,
       }
+    },
+    loadMore() {
+      return this.items.length < this.total
     },
   },
 }
