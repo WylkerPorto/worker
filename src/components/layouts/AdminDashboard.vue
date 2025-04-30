@@ -79,7 +79,7 @@ export default {
         },
         {
           label: 'Sair',
-          name: 'adminDashboard',
+          name: 'logout',
           active: true,
           icon: 'mdi:login',
         },

@@ -13,6 +13,7 @@
         :loading="loading"
         :total="total"
         :loadMore="loadMore"
+        @onLoadMore="handleLoadMore"
         @onSearch="handleSearch"
       >
         <template #actions="{ item }">
@@ -92,6 +93,7 @@ export default {
     handleSearch(el: string) {
       this.search = el
       this.page = 1
+      this.items = []
       this.getSupervisors()
     },
     handleNewSupervisor() {
@@ -119,6 +121,7 @@ export default {
   computed: {
     filters() {
       return {
+        // rule: 1,
         page: this.page,
         filter: this.search,
       }

@@ -93,35 +93,29 @@ export default {
       }
     },
     setAuth(token: string, role: string) {
+      // Armazenar o token e a role no localStorage
       localStorage.setItem('login', 'true')
       localStorage.setItem('token', token)
-      localStorage.setItem('role', this.getRole(role))
-
-      // Redirecionar para o painel apropriado
-      if (localStorage.getItem('role') === 'admin') {
-        this.$router.push({ name: 'adminDashboard' })
-      } else if (localStorage.getItem('role') === 'user') {
-        this.$router.push({ name: 'userDashboard' })
-      } else if (localStorage.getItem('role') === 'supervisor') {
-        this.$router.push({ name: 'supervisorDashboard' })
-      } else if (localStorage.getItem('role') === 'recruiter') {
-        this.$router.push({ name: 'recruiterDashboard' })
-      } else {
-        this.$snotify.error('Erro ao logar: Regra invalida')
-      }
+      localStorage.setItem('role', role)
+      this.sendToDashboard(role)
     },
-    getRole(role: number) {
+    sendToDashboard(role: number) {
       switch (role) {
         case 1:
-          return 'admin'
+          this.$router.push({ name: 'adminDashboard' })
+          return
         case 2:
-          return 'supervisor'
+          this.$router.push({ name: 'supervisorDashboard' })
+          return
         case 3:
-          return 'recruiter'
+          this.$router.push({ name: 'recruiterDashboard' })
+          return
         case 4:
-          return 'user'
+          this.$router.push({ name: 'userDashboard' })
+          return
         default:
-          return ''
+          this.$snotify.error('Erro ao logar: Regra invalida')
+          return
       }
     },
   },

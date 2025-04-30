@@ -93,6 +93,7 @@ export default {
     handleSearch(el: string) {
       this.search = el
       this.page = 1
+      this.items = []
       this.getAdmins()
     },
     handleNewAdmin() {
@@ -120,6 +121,7 @@ export default {
   computed: {
     filters() {
       return {
+        // rule: 0,
         page: this.page,
         filter: this.search,
       }

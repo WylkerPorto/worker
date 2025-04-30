@@ -24,12 +24,12 @@ router.beforeEach((to, from, next) => {
   }
 
   // Se o usuário estiver logado e a rota exigir um tipo específico de usuário
-  if (login && to.matched.some((record) => record.meta.requiresRole)) {
-    const requiredRole = to.meta.requiresRole
+  if (login && to.matched.some((record) => record.meta.role)) {
+    const requiredRole = to.meta.role
 
     // Verifica se o papel do usuário corresponde ao papel necessário para acessar a rota
     if (userRole !== requiredRole) {
-      return next({ name: 'notFound' }) // ou redirecione para uma página de erro
+      return next('/invalid') // ou redirecione para uma página de erro
     }
   }
 

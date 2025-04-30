@@ -12,8 +12,9 @@ import 'vue3-snotify/theme/material'
 import DefaultLayout from '@/components/layouts/Default.vue'
 import EmptyLayout from '@/components/layouts/Empty.vue'
 import adminDashboardLayout from '@/components/layouts/AdminDashboard.vue'
-import userDashboardLayout from '@/components/layouts/UserDashboard.vue'
+import supervisorDashboard from '@/components/layouts/SupervisorDashboard.vue'
 import recruterDashboardLayout from '@/components/layouts/SupervisorDashboard.vue'
+import userDashboardLayout from '@/components/layouts/UserDashboard.vue'
 
 const app = createApp(App)
 
@@ -29,8 +30,9 @@ app.provide('snotify', app.config.globalProperties.$snotify)
 app.component('DefaultLayout', DefaultLayout)
 app.component('EmptyLayout', EmptyLayout)
 app.component('adminDashboardLayout', adminDashboardLayout)
-app.component('userDashboardLayout', userDashboardLayout)
+app.component('supervisorDashboardLayout', supervisorDashboard)
 app.component('recruterDashboardLayout', recruterDashboardLayout)
+app.component('userDashboardLayout', userDashboardLayout)
 
 app.use(createPinia())
 app.use(router)
