@@ -75,6 +75,7 @@ export default [
       {
         path: 'recruiters',
         name: 'recruiterController',
+        component: () => import('@/views/supervisor/Recruiters.vue'),
       },
       {
         path: 'vacancys',
@@ -101,12 +102,18 @@ export default [
 
   {
     path: '/user',
-    meta: { layout: 'recruiterDashboard', requiresAuth: true, role: '3' },
+    meta: { layout: 'userDashboard', requiresAuth: true, role: '3' },
     children: [
       {
         path: '/user/dashboard',
         name: 'userDashboard',
         component: () => import('@/views/user/Index.vue'),
+        meta: { layout: 'userDashboard', requiresAuth: true, role: '4' },
+      },
+      {
+        path: '/user/profile',
+        name: 'userProfile',
+        component: () => import('@/views/user/Profile.vue'),
         meta: { layout: 'userDashboard', requiresAuth: true, role: '4' },
       },
     ],

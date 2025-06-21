@@ -6,7 +6,7 @@
 
         <div>
           <p>
-            Tem certeza que deseja excluir o administrador
+            Tem certeza que deseja excluir o recrutador
             <span>{{ dataForm?.name }}</span>
             ?
           </p>
@@ -15,7 +15,7 @@
       </section>
     </template>
     <template #actions>
-      <MyButton class="btn danger" :loading="loading" @click="deleteAdmin">Confirmar</MyButton>
+      <MyButton class="btn danger" :loading="loading" @click="deleteRecrutador">Confirmar</MyButton>
     </template>
   </ModalBase>
 </template>
@@ -24,10 +24,10 @@
 import ModalBase from '@/components/core/ModalBase.vue'
 import { Icon } from '@iconify/vue'
 import MyButton from '../core/MyButton.vue'
-import { remove } from '@/api/admin'
+import { remove } from '@/api/user'
 
 export default {
-  name: 'DeleteAdminModal',
+  name: 'DeleteRecruiterModal',
   components: {
     ModalBase,
     Icon,
@@ -49,15 +49,15 @@ export default {
     }
   },
   methods: {
-    async deleteAdmin() {
+    async deleteRecrutador() {
       this.loading = true
       try {
         await remove(this.dataForm.id)
-        this.$snotify.success('Administrador excluído com sucesso!')
+        this.$snotify.success('Recrutador excluído com sucesso!')
         this.$emit('onConfirm')
         this.$emit('onClose')
       } catch (error) {
-        this.$snotify.error('Erro ao excluir o administrador: ' + error)
+        this.$snotify.error('Erro ao excluir o recrutador: ' + error)
       } finally {
         this.loading = false
       }

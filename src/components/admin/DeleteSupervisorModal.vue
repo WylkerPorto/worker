@@ -24,7 +24,7 @@
 import ModalBase from '@/components/core/ModalBase.vue'
 import { Icon } from '@iconify/vue'
 import MyButton from '../core/MyButton.vue'
-import { remove } from '@/api/user'
+import { remove } from '@/api/supervisor'
 
 export default {
   name: 'DeleteSupervisorModal',

@@ -5,7 +5,7 @@
       :type="type"
       :placeholder="placeholder"
       :value="modelValue"
-      @input="$emit('update:modelValue', $event?.target?.value)"
+      @input="handleInput"
       :id="label"
       ref="input"
       :class="{ error: error }"
@@ -29,6 +29,10 @@ export default {
       type: String,
       default: '',
     },
+    mask: {
+      type: String,
+      default: '',
+    },
     modelValue: {
       type: String,
       default: '',
@@ -49,9 +53,31 @@ export default {
     select() {
       this.$refs.input.select()
     },
+    handleInput(event: Event) {
+      const input = event.target as HTMLInputElement
+      let value = input.value
+
+      // Aplica máscara se houver
+      if (this.mask) {
+        // Telefones: mask (99) 99999-9999
+        if (this.mask === 'tel') {
+          value = value.replace(/\D/g, '').slice(0, 11) // Apenas números
+          const match = value.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/)
+          if (match) {
+            value = !match[2]
+              ? match[1]
+              : `(${match[1]}) ${match[2]}` + (match[3] ? `-${match[3]}` : '')
+          }
+        }
+      }
+
+      input.value = value
+      this.$emit('update:modelValue', value)
+    },
   },
 }
 </script>
+
 <style lang="scss" scoped>
 main {
   display: flex;

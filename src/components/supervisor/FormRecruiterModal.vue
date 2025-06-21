@@ -1,5 +1,5 @@
 <template>
-  <ModalBase :open="show" :loading="loading" title="Novo Supervisor" @onClose="closeModal">
+  <ModalBase :open="show" :loading="loading" title="Novo Recrutador" @onClose="closeModal">
     <template #content>
       <form @submit.prevent="validate">
         <FormInput
@@ -39,11 +39,11 @@ import * as yup from 'yup'
 import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
-import { type ISupervisorForm } from '@/interfaces/ISupervisor'
-import { create, update } from '@/api/supervisor'
+import { type IRecruiterForm } from '@/interfaces/IRecruiter'
+import { create, update } from '@/api/recruiter'
 
 export default {
-  name: 'FormSupervisorModal',
+  name: 'FormRecruiterModal',
   components: {
     ModalBase,
     FormInput,
@@ -62,15 +62,14 @@ export default {
   data() {
     return {
       form: {
-        permission_id: 2,
-      } as ISupervisorForm,
-      errors: {} as ISupervisorForm,
+        permission_id: 3,
+      } as IRecruiterForm,
+      errors: {} as IRecruiterForm,
       loading: false,
     }
   },
   watch: {
     dataForm() {
-      console.log('form', this.form)
       if (this.dataForm) {
         this.form = { ...this.form, ...this.dataForm }
       }
@@ -93,7 +92,7 @@ export default {
         .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          this.saveSupervisor()
+          this.saveRecruiter()
         })
         .catch((err) => {
           const errors = {}
@@ -103,7 +102,7 @@ export default {
           this.errors = errors
         })
     },
-    async saveSupervisor() {
+    async saveRecruiter() {
       this.loading = true
       try {
         const isEdit = !!this.form.id
@@ -123,20 +122,20 @@ export default {
         } else {
           await create(this.form)
         }
-        this.$snotify.success(`Supervisor ${isEdit ? 'atualizado' : 'criado'} com sucesso`)
+        this.$snotify.success(`Recrutador ${isEdit ? 'atualizado' : 'criado'} com sucesso`)
         this.$emit('onSave')
         this.closeModal()
       } catch (error) {
-        this.$snotify.error('Erro ao salvar o supervisor: ' + error)
+        this.$snotify.error('Erro ao salvar o recrutador: ' + error)
       } finally {
         this.loading = false
       }
     },
     closeModal() {
       this.form = {
-        permission_id: 2,
-      } as ISupervisorForm
-      this.errors = {} as ISupervisorForm
+        permission_id: 3,
+      } as IRecruiterForm
+      this.errors = {} as IRecruiterForm
       this.$emit('onClose')
     },
   },

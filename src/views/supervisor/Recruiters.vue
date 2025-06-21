@@ -2,9 +2,9 @@
   <main>
     <section class="card">
       <header>
-        <h1>Administradores</h1>
-        <button class="rounded" @click="showFormAdminModal = true">
-          <Icon icon="tdesign:user-add" />
+        <h1>Recrutadores</h1>
+        <button class="rounded" @click="showRecruiterModal = true">
+          <Icon icon="tdesign:user-add"></Icon>
         </button>
       </header>
       <DataTable
@@ -17,71 +17,71 @@
         @onSearch="handleSearch"
       >
         <template #actions="{ item }">
-          <button class="rounded success" @click="handleEditAdmin(item)">
-            <Icon icon="carbon:edit" />
+          <button class="rounded success" @click="handleEditRecruiter(item)">
+            <Icon icon="carbon:edit"></Icon>
           </button>
           <button class="rounded danger" @click="handleConfirmDelete(item)">
-            <Icon icon="carbon:trash-can" />
+            <Icon icon="carbon:trash-can"></Icon>
           </button>
         </template>
       </DataTable>
     </section>
   </main>
-  <FormAdminModal
-    :show="showFormAdminModal"
+  <FormRecruiterModal
+    :show="showRecruiterModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
     @onSave="refresh"
   />
-  <DeleteAdminModal
-    :show="showDeleteAdminModal"
+  <DeleteRecruiterModal
+    :show="showDeleteRecruiterModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
-    @onConfirm="getAdmins"
+    @onConfirm="getRecruiters"
   />
 </template>
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
-import FormAdminModal from '@/components/admin/FormAdminModal.vue'
-import DeleteAdminModal from '@/components/admin/DeleteAdminModal.vue'
-import { type IAdminItem, type IAdminColumnItem } from '@/interfaces/IAdmin'
-import { list } from '@/api/admin'
+import FormRecruiterModal from '@/components/supervisor/FormRecruiterModal.vue'
+import DeleteRecruiterModal from '@/components/supervisor/DeleteRecruiterModal.vue'
+import { type IRecruiterItem, type IRecruiterColumnItem } from '@/interfaces/IRecruiter'
+import { list } from '@/api/recruiter'
 
 export default {
-  name: 'AdminController',
+  name: 'SupervisorController',
   components: {
     DataTable,
     Icon,
-    FormAdminModal,
-    DeleteAdminModal,
+    FormRecruiterModal,
+    DeleteRecruiterModal,
   },
   data() {
     return {
-      showFormAdminModal: false,
-      showDeleteAdminModal: false,
+      showDeleteRecruiterModal: false,
+      showRecruiterModal: false,
       loading: false,
       columns: [
-        { title: 'Nome', key: 'name' },
-        { title: 'Email', key: 'email' },
-        { title: 'Criado', key: 'createdAt', type: 'date' },
-      ] as IAdminColumnItem[],
-      items: [] as IAdminItem[],
-      editItem: {} as IAdminItem,
+        { key: 'name', title: 'Nome' },
+        { key: 'email', title: 'Email' },
+        { key: 'created', title: 'Criado em' },
+      ] as IRecruiterColumnItem[],
+      items: [] as IRecruiterItem[],
+      editItem: {} as IRecruiterItem,
       total: 0,
       page: 1,
       search: '',
     }
   },
   mounted() {
-    this.getAdmins()
+    this.getRecruiters()
   },
   methods: {
     refresh() {
       this.items = []
-      this.getAdmins()
+      this.getRecruiters()
     },
-    async getAdmins() {
+    async getRecruiters() {
       this.closeAllModals()
       this.loading = true
       try {
@@ -89,7 +89,7 @@ export default {
         this.items.push(...response.data.data)
         this.total = response.data.total
       } catch (error) {
-        this.$snotify.error('Erro ao buscar os administradores: ' + error)
+        this.$snotify.error('Erro ao buscar os recrutadores: ' + error)
       } finally {
         this.loading = false
       }
@@ -98,34 +98,34 @@ export default {
       this.search = el
       this.page = 1
       this.items = []
-      this.getAdmins()
+      this.getRecruiters()
     },
-    handleNewAdmin() {
-      this.editItem = {} as IAdminItem
-      this.showFormAdminModal = true
+    handleNewSupervisor() {
+      this.editItem = {} as IRecruiterItem
+      this.showRecruiterModal = true
     },
-    handleEditAdmin(item: IAdminItem) {
+    handleEditRecruiter(item: IRecruiterItem) {
       this.editItem = item
-      this.showFormAdminModal = true
+      this.showRecruiterModal = true
     },
-    handleConfirmDelete(item: IAdminItem) {
+    handleConfirmDelete(item: IRecruiterItem) {
       this.editItem = item
-      this.showDeleteAdminModal = true
+      this.showDeleteRecruiterModal = true
     },
     closeAllModals() {
-      this.editItem = {} as IAdminItem
-      this.showFormAdminModal = false
-      this.showDeleteAdminModal = false
+      this.editItem = {} as IRecruiterItem
+      this.showRecruiterModal = false
+      this.showDeleteRecruiterModal = false
     },
     handleLoadMore() {
       this.page += 1
-      this.getAdmins()
+      this.getRecruiters()
     },
   },
   computed: {
     filters() {
       return {
-        // rule: 0,
+        // rule: 1,
         page: this.page,
         filter: this.search,
       }

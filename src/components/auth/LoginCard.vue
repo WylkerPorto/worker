@@ -15,6 +15,10 @@
       type="password"
       placeholder="Digite sua senha"
     />
+    <div class="flex">
+      <MySwitch v-model="admin" />
+      <span @click="admin = !admin">{{ admin ? 'Recrutador' : 'Candidato' }}</span>
+    </div>
     <a href="#" @click="localForm.type = 'forgot-password'">Esqueci minha senha</a>
     <MyButton class="primary" :loading="loading">Entrar</MyButton>
     <hr />
@@ -28,7 +32,8 @@
 import * as yup from 'yup'
 import FormInput from '../core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
-import { authenticated } from '@/api/auth'
+import MySwitch from '../core/SwitchButton.vue'
+import { adminAuth, userAuth } from '@/api/auth'
 import { ILoginForm } from '@/interfaces/IEnter'
 
 export default {
@@ -36,6 +41,7 @@ export default {
   components: {
     FormInput,
     MyButton,
+    MySwitch,
   },
   props: {
     dataForm: {
@@ -48,6 +54,7 @@ export default {
       localForm: this.dataForm,
       errors: {} as ILoginForm,
       loading: false,
+      admin: false,
     }
   },
   methods: {
@@ -78,8 +85,8 @@ export default {
     async loginAccount() {
       this.loading = true
       try {
-        const response = await authenticated(this.form)
-        this.setAuth(response.data.access_token, response.data.permission)
+        const response = await (this.admin ? adminAuth(this.form) : userAuth(this.form))
+        this.setAuth(response.data.access_token, response.data.permission, response.data.uid)
       } catch (error) {
         if (error.response.status === 401) {
           this.$snotify.error('E-mail ou senha inválidos')
@@ -92,11 +99,12 @@ export default {
         this.loading = false
       }
     },
-    setAuth(token: string, role: string) {
+    setAuth(token: string, role: string, uid: number) {
       // Armazenar o token e a role no localStorage
       localStorage.setItem('login', 'true')
       localStorage.setItem('token', token)
       localStorage.setItem('role', role)
+      localStorage.setItem('uid', uid.toString())
       this.sendToDashboard(role)
     },
     sendToDashboard(role: number) {
@@ -125,6 +133,16 @@ export default {
 form {
   h2 {
     text-align: center;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    span {
+      cursor: pointer;
+    }
   }
 
   > a {

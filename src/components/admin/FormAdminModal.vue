@@ -40,7 +40,7 @@ import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
 import { type IAdminForm } from '@/interfaces/IAdmin'
-import { create, update } from '@/api/user'
+import { create, update } from '@/api/admin'
 
 export default {
   name: 'FormAdminModal',

@@ -9,6 +9,7 @@ export interface ISupervisorForm {
   name: string
   email: string
   password: string
+  permission_id: number
 }
 
 export interface ISupervisorColumnItem {

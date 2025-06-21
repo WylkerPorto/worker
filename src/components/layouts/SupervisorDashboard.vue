@@ -53,7 +53,32 @@ export default {
       }
     },
     getMenuItems() {
-      return []
+      return [
+        {
+          label: 'Dashboard',
+          name: 'supervisorDashboard',
+          active: true,
+          icon: 'stash:dashboard',
+        },
+        {
+          label: 'Recrutadors',
+          name: 'recruiterController',
+          active: true,
+          icon: 'fluent-mdl2:recruitment-management',
+        },
+        {
+          label: 'Vagas',
+          name: 'vacancyController',
+          active: true,
+          icon: 'material-symbols:work-outline',
+        },
+        {
+          label: 'Sair',
+          name: 'logout',
+          active: true,
+          icon: 'mdi:login',
+        },
+      ]
     },
   },
   computed: {

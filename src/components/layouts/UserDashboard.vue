@@ -1,13 +1,12 @@
 <template>
   <header>
     <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
-      <router-link to="/dashboard">Dashboard</router-link>
+      <router-link :to="{ name: 'userDashboard' }">Dashboard</router-link>
+      <router-link :to="{ name: 'userProfile' }">Currículo</router-link>
+      <router-link to="/logout">Sair</router-link>
     </nav>
   </header>
   <main>
-    <aside>user menu</aside>
     <RouterView />
   </main>
 </template>
@@ -23,4 +22,24 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+nav {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding: 5px 10px;
+  background: var(--text);
+
+  a {
+    text-decoration: none;
+    padding: 10px 25px;
+    border-radius: 16px;
+    color: var(--background);
+
+    &:hover {
+      background: var(--background);
+      color: var(--text);
+    }
+  }
+}
+</style>

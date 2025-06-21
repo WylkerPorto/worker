@@ -31,7 +31,7 @@
     :show="showFormSupervisorModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
-    @onSave="getSupervisors"
+    @onSave="refresh"
   />
   <DeleteSupervisorModal
     :show="showDeleteSupervisorModal"
@@ -46,7 +46,7 @@ import { Icon } from '@iconify/vue'
 import FormSupervisorModal from '@/components/admin/FormSupervisorModal.vue'
 import DeleteSupervisorModal from '@/components/admin/DeleteSupervisorModal.vue'
 import { type ISupervisorItem, type ISupervisorColumnItem } from '@/interfaces/ISupervisor'
-import { list } from '@/api/user'
+import { list } from '@/api/supervisor'
 
 export default {
   name: 'SupervisorController',
@@ -77,6 +77,10 @@ export default {
     this.getSupervisors()
   },
   methods: {
+    refresh() {
+      this.items = []
+      this.getSupervisors()
+    },
     async getSupervisors() {
       this.closeAllModals()
       this.loading = true
