@@ -1,1 +1,0 @@
-import{h as s}from"./http-YxQYdVdF.js";import{t as r}from"./ModalBase-CZ4IIHOc.js";const u=t=>s.authApi().post("/user",t),p=t=>s.authApi().get(`/user?${r(t)}`),i=(t,e)=>s.authApi().put(`/user/${t}`,e),c=t=>s.authApi().delete(`/user/${t}`);export{u as c,p as l,c as r,i as u};

@@ -1,1 +1,0 @@
-import{_ as n,c as a,a as o,o as t}from"./index-2jy5Q05I.js";const s={name:"AdminIndex",components:{},data(){return{}}},r={class:"container"};function d(c,e,_,i,p,m){return t(),a("main",r,e[0]||(e[0]=[o("div",null,"admin dashboard",-1)]))}const f=n(s,[["render",d],["__scopeId","data-v-e861be67"]]);export{f as default};
