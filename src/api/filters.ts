@@ -7,3 +7,9 @@ export const getGenders = () => http.authApi().get('/filter/gender')
 export const getMaritalstatus = () => http.authApi().get('/filter/maritalstatus')
 
 export const getNationalities = () => http.authApi().get('/filter/nationality')
+
+export const getEducationLevels = () => http.authApi().get('/filter/education-level')
+
+export const getEducationStatus = () => http.authApi().get('/filter/education-status')
+
+export const getLanguageLevels = () => http.authApi().get('/filter/language-level')

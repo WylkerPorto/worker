@@ -84,11 +84,11 @@ main {
   flex-direction: column;
 
   .error {
-    border: 1px solid red;
+    border: 1px solid var(--red);
   }
 
   span {
-    color: red;
+    color: var(--red);
     font-size: 0.8rem;
     margin-left: 15px;
   }

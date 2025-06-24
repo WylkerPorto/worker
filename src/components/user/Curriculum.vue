@@ -11,6 +11,7 @@
         label="Name"
       />
     </div>
+
     <div class="group">
       <FormInput
         v-model="form.email"
@@ -20,6 +21,7 @@
         label="Email"
       />
     </div>
+
     <div class="group flex">
       <FormInput
         v-model="form.cpf"
@@ -36,6 +38,7 @@
         label="RG"
       />
     </div>
+
     <div class="group flex">
       <FormInput
         v-model="form.cnh"
@@ -52,52 +55,46 @@
         label="Tipo de CNH"
       />
     </div>
+
     <div class="group flex">
-      <FormInput
-        v-model="form.hasDisability"
-        :error="errors.hasDisability"
-        type="checkbox"
-        placeholder="Digite o tipo de CNH"
-        label="Possui deficiência?"
-      />
-      <FormInput
+      <div class="switch">
+        <span>Possui deficiência?</span>
+        <MySwitch v-model="form.hasDisability" />
+      </div>
+      <MySelect
+        v-if="form.hasDisability"
+        :options="disabilities"
         v-model="form.typeDisability"
+        label="Deficiência"
         :error="errors.typeDisability"
-        type="text"
-        placeholder="Digite o tipo de deficiência"
-        label="Tipo de deficiência"
       />
     </div>
+
     <div class="group flex">
-      <FormInput
-        v-model="form.gender"
-        :error="errors.gender"
-        type="text"
-        placeholder="Digite o gênero"
-        label="Gênero"
-      />
-      <FormInput
+      <MySelect :options="genders" v-model="form.gender" label="Sexo" :error="errors.gender" />
+      <MySelect
+        :options="maritalStatus"
         v-model="form.marital_status_id"
-        :error="errors.marital_status_id"
-        type="text"
-        placeholder="Digite o estado civil"
         label="Estado Civil"
+        :error="errors.marital_status_id"
       />
     </div>
+
     <div class="group">
-      <FormInput
+      <MySelect
+        :options="nationalities"
         v-model="form.nationality"
-        :error="errors.nationality"
-        type="text"
-        placeholder="Digite a nacionalidade"
         label="Nacionalidade"
+        :error="errors.nationality"
       />
     </div>
+
     <div class="group flex">
       <FormInput
         v-model="form.phoneNumber"
         :error="errors.phoneNumber"
         type="tel"
+        mask="tel"
         placeholder="(99) 99999-9999"
         label="Telefone"
       />
@@ -105,53 +102,40 @@
         v-model="form.phoneNumber2"
         :error="errors.phoneNumber2"
         type="tel"
+        mask="tel"
         placeholder="(99) 99999-9999"
         label="Telefone 2"
       />
     </div>
+
     <div class="group flex">
-      <FormInput
-        v-model="form.available_to_travel"
-        :error="errors.available_to_travel"
-        type="checkbox"
-        placeholder="Digite o estado civil"
-        label="Disponível para viajar?"
-      />
+      <div class="switch">
+        <span>Disponibilidade para viagem?</span>
+        <MySwitch v-model="form.available_to_travel" />
+      </div>
+
+      <div class="switch">
+        <span>Primeiro Emprego?</span>
+        <MySwitch v-model="form.first_job" />
+      </div>
+
       <FormInput
         v-model="form.salary_claim"
         :error="errors.salary_claim"
-        type="checkbox"
-        placeholder="Digite o estado civil"
+        type="number"
+        placeholder="R$ 5.000,00"
         label="Pretensão Salarial"
       />
     </div>
+
     <div class="group">
-      <FormInput
-        v-model="form.first_job"
-        :error="errors.first_job"
-        type="checkbox"
-        placeholder="Digite o estado civil"
-        label="Primeiro Emprego?"
-      />
-    </div>
-    <div class="group">
-      <FormInput
-        v-model="form.status"
-        :error="errors.status"
-        type="text"
-        placeholder="Digite o estado civil"
-        label="Status"
-      />
-    </div>
-    <div class="group">
-      <FormInput
+      <textarea
         v-model="form.presentation"
         :error="errors.presentation"
-        type="checkbox"
-        placeholder="Digite o estado civil"
-        label="Apresentação"
+        placeholder="Apresentação"
       />
     </div>
+
     <div class="group">
       <FormInput
         v-model="form.postal_code"
@@ -161,6 +145,7 @@
         label="CEP"
       />
     </div>
+
     <div class="group flex">
       <FormInput
         v-model="form.street"
@@ -172,88 +157,104 @@
       <FormInput
         v-model="form.number"
         :error="errors.number"
-        type="text"
-        placeholder="Digite o número"
+        type="number"
+        placeholder="555"
         label="Número"
       />
     </div>
+
     <div class="group">
       <FormInput
         v-model="form.complement"
         :error="errors.complement"
         type="text"
-        placeholder="Digite o complemento"
+        placeholder="Fundo A"
         label="Complemento"
       />
     </div>
+
     <div class="group flex">
       <FormInput
         v-model="form.neighborhood"
         :error="errors.neighborhood"
         type="text"
-        placeholder="Digite o bairro"
+        placeholder="Limeira"
         label="Bairro"
       />
       <FormInput
         v-model="form.city"
         :error="errors.city"
         type="text"
-        placeholder="Digite a cidade"
+        placeholder="São Paulo"
         label="Cidade"
       />
     </div>
+
     <div class="group flex">
       <FormInput
         v-model="form.state"
         :error="errors.state"
         type="text"
-        placeholder="Digite o estado"
+        placeholder="SP"
         label="Estado"
       />
       <FormInput
         v-model="form.country"
         :error="errors.country"
         type="text"
-        placeholder="Digite o país"
+        placeholder="Brasil"
         label="País"
       />
     </div>
+
     <div class="group flex">
       <FormInput
         v-model="form.facebook_url"
         :error="errors.facebook_url"
-        type="text"
+        type="url"
         placeholder="Digite o link do facebook"
         label="Facebook"
       />
       <FormInput
         v-model="form.instagram_url"
         :error="errors.instagram_url"
-        type="text"
+        type="url"
         placeholder="Digite o link do instagram"
         label="Instagram"
       />
       <FormInput
         v-model="form.linkedin_url"
         :error="errors.linkedin_url"
-        type="text"
+        type="url"
         placeholder="Digite o link do linkedin"
         label="LinkedIn"
       />
       <FormInput
         v-model="form.personal_url"
         :error="errors.personal_url"
-        type="text"
+        type="url"
         placeholder="Digite o link pessoal"
         label="Site Pessoal"
       />
     </div>
+
+    <button type="submit">enviar</button>
   </form>
 </template>
 <script lang="ts">
 import * as yup from 'yup'
 import FormInput from '../core/FormInput.vue'
-import { getDisabilities, getGenders, getMaritalstatus, getNationalities } from '@/api/filters'
+import MySwitch from '../core/SwitchButton.vue'
+import MySelect from '../core/MySelect.vue'
+import {
+  getDisabilities,
+  getGenders,
+  getMaritalstatus,
+  getNationalities,
+  getEducationLevels,
+  getEducationStatus,
+  getLanguageLevels,
+} from '@/api/filters'
 import { get as getUser, update as updateUser } from '@/api/user'
 
 export default {
@@ -263,29 +264,29 @@ export default {
       form: {
         name: '' as string,
         email: '' as string,
+        password: '' as string,
         cpf: '' as string,
         rg: '' as string,
         cnh: '' as string,
         typeCnh: '' as string,
-        hasDisability: '' as number,
+        hasDisability: false as boolean,
         typeDisability: '' as string,
         gender: '' as string,
-        marital_status_id: '' as number,
+        marital_status_id: null as number,
         nationality: '' as string,
         phoneNumber: '' as string,
         phoneNumber2: '' as string,
-        available_to_travel: '' as number,
-        salary_claim: '' as number,
-        first_job: '' as number,
-        status: '' as number,
+        available_to_travel: false as boolean,
+        salary_claim: null as number,
+        first_job: false as boolean,
         presentation: '' as string,
+        postal_code: '' as string,
         street: '' as string,
-        number: '' as number,
+        number: null as number,
         complement: '' as string,
         neighborhood: '' as string,
         city: '' as string,
         state: '' as string,
-        postal_code: '' as string,
         country: '' as string,
         facebook_url: '' as string,
         instagram_url: '' as string,
@@ -296,12 +297,24 @@ export default {
       genders: [],
       maritalStatus: [],
       nationalities: [],
+      educationLevels: [],
+      educationStatus: [],
+      languageLevels: [],
       errors: {},
       loading: false,
     }
   },
   components: {
     FormInput,
+    MySwitch,
+    MySelect,
+  },
+  watch: {
+    'form.hasDisability'(newVal) {
+      if (!newVal) {
+        this.form.typeDisability = ''
+      }
+    },
   },
   created() {
     // Fetch initial data for dropdowns or other components if needed
@@ -315,6 +328,7 @@ export default {
           .string()
           .min(3, 'Nome deve ter pelo menos 3 caracteres')
           .required('Nome é obrigatório'),
+        gender: yup.number().min(1, 'Selecione um sexo').required('Sexo é obrigatório'),
       })
 
       schema
@@ -344,11 +358,17 @@ export default {
         const genders = await getGenders()
         const maritalStatus = await getMaritalstatus()
         const nationality = await getNationalities()
+        const educationLevels = await getEducationLevels()
+        const educationStatus = await getEducationStatus()
+        const languageLevels = await getLanguageLevels()
 
         this.disabilities = disabilities.data
         this.genders = genders.data
         this.maritalStatus = maritalStatus.data
         this.nationalities = nationality.data
+        this.educationLevels = educationLevels.data
+        this.educationStatus = educationStatus.data
+        this.languageLevels = languageLevels.data
       } catch (error) {
         console.error('Error loading filters:', error)
       }
@@ -357,7 +377,13 @@ export default {
       try {
         const uid = localStorage.getItem('uid')
         const response = await getUser(uid)
-        this.form = { ...response.data }
+        this.form = {
+          ...this.form, // valores default
+          ...response.data,
+          hasDisability: !!response.data.hasDisability, // garante boolean
+          available_to_travel: !!response.data.available_to_travel,
+          first_job: !!response.data.first_job,
+        }
       } catch (error) {
         console.error('Error loading data:', error)
       }
@@ -376,6 +402,26 @@ export default {
     main {
       flex: 1;
     }
+
+    .switch {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+  }
+
+  textarea {
+    flex: 1;
+    resize: none;
+    height: 200px;
+    background: var(--white);
+    padding: 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    font-size: 18px;
+    width: 100%;
+    outline: none;
+    color: var(--text);
   }
 }
 </style>
