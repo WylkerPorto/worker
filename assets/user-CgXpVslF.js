@@ -1,0 +1,1 @@
+import{h as e}from"./http-TEASaXB4.js";import"./moment-C5S46NFB.js";const s=t=>e.authApi().post("/person",t),r=t=>e.authApi().get(`/person/${t}`),a=t=>e.authApi().delete(`/person/${t}`);export{s as c,r as g,a as r};

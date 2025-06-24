@@ -1,0 +1,1 @@
+import{_ as a,c as n,a as o,o as s}from"./index-gjZa1fJp.js";const t={name:"AdminIndex"},c={class:"container"};function d(r,e,_,i,p,m){return s(),n("main",c,e[0]||(e[0]=[o("div",null,"admin dashboard",-1)]))}const l=a(t,[["render",d],["__scopeId","data-v-ef897c81"]]);export{l as default};
