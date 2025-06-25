@@ -16,7 +16,7 @@
           :key="option.id"
           @click.stop="selectOption(option)"
           class="option"
-          :class="{ selected: option.id === modelValue }"
+          :class="{ selected: option.title === modelValue }"
         >
           {{ option.title }}
         </li>
@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     selectedOptionTitle(): string | null {
-      const selected = this.options.find((opt) => opt.id === this.modelValue)
+      const selected = this.options.find((opt) => opt.title === this.modelValue)
       return selected ? selected.title : null
     },
   },
@@ -73,7 +73,7 @@ export default {
       this.isOpen = !this.isOpen
     },
     selectOption(option: { id: string | number; title: string }) {
-      this.$emit('update:modelValue', option.id)
+      this.$emit('update:modelValue', option.title)
       this.isOpen = false
     },
     handleClickOutside(event: MouseEvent) {
