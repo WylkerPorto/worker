@@ -203,7 +203,15 @@
       </div>
     </MyAccordeon>
 
-    <!-- <MyAccordeon title="Escolaridade"> </MyAccordeon> -->
+    <MyAccordeon title="Escolaridade" class="school">
+      <MyButton class="primary" @click="() => (showGraduationModal = true)">Nova</MyButton>
+      <ul v-if="graduations.length > 0">
+        <li v-for="graduation in graduations" :key="graduation.id">
+          <p>{{ graduation.courseName }}</p>
+          <span> {{ graduation.status }} - {{ moment(graduation.endDate).format('L') }}</span>
+        </li>
+      </ul>
+    </MyAccordeon>
 
     <MyAccordeon title="Social">
       <div class="group">
@@ -251,14 +259,23 @@
 
     <MyButton class="primary" :loading="loading">Atualizar</MyButton>
   </form>
+
+  <GraduationModal
+    :show="showGraduationModal"
+    @onClose="showGraduationModal = false"
+    @onSave="showGraduationModal = false"
+  />
 </template>
 <script lang="ts">
 import * as yup from 'yup'
+import moment from 'moment'
 import FormInput from '../core/FormInput.vue'
 import MySwitch from '../core/SwitchButton.vue'
 import MySelect from '../core/MySelect.vue'
 import MyButton from '../core/MyButton.vue'
 import MyAccordeon from '../core/MyAccordeon.vue'
+import GraduationModal from './GraduationModal.vue'
+
 import {
   getDisabilities,
   getGenders,
@@ -269,11 +286,15 @@ import {
   getLanguageLevels,
 } from '@/api/filters'
 import { get as getUser, update as updateUser } from '@/api/user'
+import { list as listGraduation } from '@/api/graduation'
+
+import { type IGraduationItem } from '@/interfaces/IGraduation'
 
 export default {
   name: 'UserCurriculum',
   data() {
     return {
+      moment,
       id: null,
       form: {
         name: '' as string,
@@ -314,8 +335,10 @@ export default {
       educationLevels: [],
       educationStatus: [],
       languageLevels: [],
+      graduations: [] as IGraduationItem[],
       errors: {},
       loading: false,
+      showGraduationModal: false,
     }
   },
   components: {
@@ -324,6 +347,7 @@ export default {
     MySelect,
     MyButton,
     MyAccordeon,
+    GraduationModal,
   },
   watch: {
     'form.hasDisability'(newVal) {
@@ -334,9 +358,12 @@ export default {
   },
   created() {
     // Fetch initial data for dropdowns or other components if needed
+    this.id = localStorage.getItem('uid')
+  },
+  mounted() {
     this.loadFilters()
     this.loadData()
-    this.id = localStorage.getItem('uid')
+    this.loadGraduations()
   },
   methods: {
     validate() {
@@ -403,8 +430,7 @@ export default {
     },
     async loadData() {
       try {
-        const uid = localStorage.getItem('uid')
-        const response = await getUser(uid)
+        const response = await getUser(this.id)
         this.form = {
           ...this.form, // valores default
           ...response.data,
@@ -414,6 +440,14 @@ export default {
         }
       } catch (error) {
         console.error('Error loading data:', error)
+      }
+    },
+    async loadGraduations() {
+      try {
+        const response = await listGraduation(this.id)
+        this.graduations = response.data
+      } catch (error) {
+        console.error('Error loading graduation:', error)
       }
     },
   },
@@ -456,7 +490,7 @@ form {
     }
   }
 
-  .primary {
+  > .primary {
     float: right;
   }
 }
