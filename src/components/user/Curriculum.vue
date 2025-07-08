@@ -383,7 +383,7 @@ import { list as listCourses, remove as removeCourse } from '@/api/course'
 import { list as listLanguages, remove as removeLanguage } from '@/api/language'
 
 import { type IGraduationItem } from '@/interfaces/IGraduation'
-import { type ICourseItem } from '@/interfaces/ICourse'
+import { type ICourseItem } from '@/interfaces/ICourses'
 import { type ILanguageItem } from '@/interfaces/ILanguage'
 import { toFormatDate } from '@/utils/conversors'
 
