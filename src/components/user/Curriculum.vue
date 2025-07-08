@@ -384,7 +384,7 @@ import { list as listLanguages, remove as removeLanguage } from '@/api/language'
 
 import { type IGraduationItem } from '@/interfaces/IGraduation'
 import { type ICourseItem } from '@/interfaces/ICourses'
-import { type ILanguageItem } from '@/interfaces/ILanguage'
+import { type ILanguageItem } from '@/interfaces/ILanguages'
 import { toFormatDate } from '@/utils/conversors'
 
 export default {
