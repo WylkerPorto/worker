@@ -1,5 +1,5 @@
 <template>
-  <ModalBase :open="show" :loading="loading" title="Nova Graduação" @onClose="$emit('onClose')">
+  <ModalBase :open="show" :loading="loading" title="Novo Curso" @onClose="$emit('onClose')">
     <template #content>
       <form @submit.prevent="validate">
         <FormInput
@@ -11,7 +11,7 @@
           required
         />
         <FormInput
-          label="Curso"
+          label="Nome do Curso"
           type="text"
           placeholder="Ciência da Computação"
           v-model="form.courseName"
@@ -19,37 +19,35 @@
           required
         />
 
-        <MySelect
-          label="Nível"
-          :options="levelList"
-          v-model="form.educationLevel"
-          :error="errors.educationLevel"
-          required
-        />
-        <MySelect
-          label="Status"
-          :options="statusList"
-          v-model="form.status"
-          :error="errors.status"
-          required
-        />
-
         <div class="flex">
           <FormInput
-            label="Data de inicio"
-            type="date"
-            v-model="form.startDate"
-            :error="errors.startDate"
-            required
+            label="Horas de Duração"
+            type="number"
+            v-model="form.durationHours"
+            :error="errors.durationHours"
           />
           <FormInput
             label="Data de conclusão"
             type="date"
-            v-model="form.endDate"
-            :error="errors.endDate"
-            required
+            v-model="form.completionDate"
+            :error="errors.completionDate"
           />
         </div>
+
+        <FormInput
+          label="Url do Certificado"
+          type="text"
+          placeholder="https://example.com/certificado"
+          v-model="form.certificateUrl"
+          :error="errors.certificateUrl"
+        />
+
+        <textarea
+          class="textarea"
+          v-model="form.description"
+          placeholder="Descrição do curso"
+          rows="7"
+        ></textarea>
       </form>
     </template>
     <template #actions>
@@ -63,14 +61,12 @@ import * as yup from 'yup'
 import ModalBase from '../core/ModalBase.vue'
 import MyButton from '../core/MyButton.vue'
 import FormInput from '../core/FormInput.vue'
-import MySelect from '../core/MySelect.vue'
-import { type IGraduationForm } from '@/interfaces/IGraduation'
-import { create, update } from '@/api/graduation'
-import { getEducationLevels, getEducationStatus } from '@/api/filters'
+import { type ICoursesForm } from '@/interfaces/ICourses'
+import { create, update } from '@/api/course'
 
 export default {
-  name: 'GraduationModal',
-  components: { ModalBase, FormInput, MyButton, MySelect },
+  name: 'CoursesModal',
+  components: { ModalBase, FormInput, MyButton },
   props: {
     show: {
       type: Boolean,
@@ -83,11 +79,9 @@ export default {
   emits: ['onClose', 'onSave'],
   data() {
     return {
-      form: {} as IGraduationForm,
-      errors: {} as IGraduationForm,
+      form: {} as ICoursesForm,
+      errors: {} as ICoursesForm,
       loading: false,
-      educationLevels: [],
-      educationStatus: [],
     }
   },
   watch: {
@@ -95,48 +89,33 @@ export default {
       if (this.dataForm) {
         this.form = { ...this.form, ...this.dataForm }
       } else {
-        this.form = {} as IGraduationForm
+        this.form = {} as ICoursesForm
       }
     },
-  },
-  async mounted() {
-    try {
-      const levels = await getEducationLevels()
-      const stats = await getEducationStatus()
-      this.educationLevels = levels.data
-      this.educationStatus = stats.data
-    } catch (error) {
-      this.$snotify.error('Erro ao carregar os níveis e status de educação: ' + error)
-    }
   },
   methods: {
     validate() {
       const schema = yup.object({
         institutionName: yup.string().required('Nome da instituição é obrigatório'),
         courseName: yup.string().required('Nome do curso é obrigatório'),
-        educationLevel: yup
-          .string()
-          .oneOf(
-            this.educationLevels.map((level) => level.title),
-            'Nível inválido',
-          )
-          .required('Nível é obrigatório'),
-        status: yup
-          .string()
-          .oneOf(
-            this.educationStatus.map((status) => status.title),
-            'Status inválido',
-          )
-          .required('Status é obrigatório'),
-        startDate: yup.string().required('Data de início é obrigatória'),
-        endDate: yup.string().required('Data de conclusão é obrigatória'),
+        durationHours: yup
+          .number()
+          .typeError('Duração deve ser um número')
+          .positive('Duração deve ser um número positivo')
+          .nullable(),
+        completionDate: yup
+          .date()
+          .typeError('Data de conclusão deve ser uma data válida')
+          .nullable(),
+        certificateUrl: yup.string().url('URL do certificado deve ser uma URL válida').nullable(),
+        description: yup.string().nullable(),
       })
 
       schema
         .validate(this.form, { abortEarly: false })
         .then(() => {
-          this.errors = {}
-          this.saveGraduation()
+          this.errors = {} as ICoursesForm
+          this.saveCourse()
         })
         .catch((err) => {
           const errors = {}
@@ -146,7 +125,7 @@ export default {
           this.errors = errors
         })
     },
-    async saveGraduation() {
+    async saveCourse() {
       this.loading = true
       try {
         const idEdit = !!this.form.id
@@ -165,33 +144,19 @@ export default {
           await create(uid, this.form)
         }
 
-        this.$snotify.success(`Graduação ${idEdit ? 'atualizada' : 'criada'} com sucesso`)
+        this.$snotify.success(`Curso ${idEdit ? 'atualizada' : 'criada'} com sucesso`)
         this.$emit('onSave')
         this.closeModal()
       } catch (error) {
-        this.$snotify.error('Erro ao salvar a graduação: ' + error)
+        this.$snotify.error('Erro ao salvar curso: ' + error)
       } finally {
         this.loading = false
       }
     },
     closeModal() {
-      this.form = {} as IGraduationForm
-      this.errors = {} as IGraduationForm
+      this.form = {} as ICoursesForm
+      this.errors = {} as ICoursesForm
       this.$emit('onClose')
-    },
-  },
-  computed: {
-    levelList() {
-      return this.educationLevels.map((level) => ({
-        id: level.id,
-        title: level.title,
-      }))
-    },
-    statusList() {
-      return this.educationStatus.map((status) => ({
-        id: status.id,
-        title: status.title,
-      }))
     },
   },
 }

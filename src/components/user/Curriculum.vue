@@ -203,12 +203,86 @@
       </div>
     </MyAccordeon>
 
-    <MyAccordeon title="Escolaridade" class="school">
-      <MyButton class="primary" @click="() => (showGraduationModal = true)">Nova</MyButton>
+    <MyAccordeon title="Conhecimento" class="school">
+      <div class="flex">
+        <h2>Graduações</h2>
+        <MyButton class="primary" type="button" @click="() => (showGraduationModal = true)">
+          Nova Graduação
+        </MyButton>
+      </div>
       <ul v-if="graduations.length > 0">
         <li v-for="graduation in graduations" :key="graduation.id">
-          <p>{{ graduation.courseName }}</p>
-          <span> {{ graduation.status }} - {{ moment(graduation.endDate).format('L') }}</span>
+          <div>
+            <p>{{ graduation.courseName }}</p>
+            <p>{{ graduation.status }} - {{ toFormatDate(graduation.endDate) }}</p>
+          </div>
+          <div class="btns">
+            <MyButton class="info" type="button" @click="editGraduation(graduation)">
+              <Icon icon="iconamoon:pen" />
+            </MyButton>
+            <MyButton
+              class="danger"
+              type="button"
+              @click="() => confirmDeleteGraduation(graduation)"
+            >
+              <Icon icon="iconamoon:trash" />
+            </MyButton>
+          </div>
+        </li>
+      </ul>
+
+      <div class="flex mt">
+        <h2>Cursos</h2>
+        <MyButton class="primary" type="button" @click="() => (showCoursesModal = true)">
+          Novo Curso
+        </MyButton>
+      </div>
+      <ul v-if="courses.length > 0">
+        <li v-for="course in courses" :key="course.id">
+          <div>
+            <p>{{ course.courseName }}</p>
+            <p>
+              Duração: {{ course.durationHours }}
+              {{ course.durationHours > 1 ? 'horas' : 'hora' }} -
+              {{ toFormatDate(course.completionDate) }}
+            </p>
+            <a :href="course.certificateUrl" target="_blank" v-if="course.certificateUrl"
+              >Certificado</a
+            >
+          </div>
+          <div class="btns">
+            <MyButton class="info" type="button" @click="editCourse(course)">
+              <Icon icon="iconamoon:pen" />
+            </MyButton>
+            <MyButton class="danger" type="button" @click="() => confirmDeleteCourse(course)">
+              <Icon icon="iconamoon:trash" />
+            </MyButton>
+          </div>
+        </li>
+      </ul>
+
+      <div class="flex mt">
+        <h2>Idiomas</h2>
+        <MyButton class="primary" type="button" @click="() => (showLanguageModal = true)">
+          Novo Idioma
+        </MyButton>
+      </div>
+      <ul v-if="languages.length > 0">
+        <li v-for="language in languages" :key="language.id">
+          <div>
+            <p>{{ language.language }} - {{ language.level }}</p>
+            <a :href="language.certificateUrl" target="_blank" v-if="language.certificateUrl"
+              >Certificado</a
+            >
+          </div>
+          <div class="btns">
+            <MyButton class="info" type="button" @click="editLanguage(language)">
+              <Icon icon="iconamoon:pen" />
+            </MyButton>
+            <MyButton class="danger" type="button" @click="() => confirmDeleteLanguage(language)">
+              <Icon icon="iconamoon:trash" />
+            </MyButton>
+          </div>
         </li>
       </ul>
     </MyAccordeon>
@@ -216,6 +290,7 @@
     <MyAccordeon title="Social">
       <div class="group">
         <textarea
+          class="textarea"
           v-model="form.presentation"
           :error="errors.presentation"
           placeholder="Apresentação"
@@ -262,39 +337,61 @@
 
   <GraduationModal
     :show="showGraduationModal"
-    @onClose="showGraduationModal = false"
-    @onSave="showGraduationModal = false"
+    @onClose="closeModals"
+    @onSave="loadGraduations"
+    :dataForm="selectedGraduation"
+  />
+
+  <CoursesModal
+    :show="showCoursesModal"
+    @onClose="closeModals"
+    @onSave="loadCourses"
+    :dataForm="selectedCourse"
+  />
+
+  <LanguageModal
+    :show="showLanguageModal"
+    @onClose="closeModals"
+    @onSave="loadLanguages"
+    :dataForm="selectedLanguage"
+  />
+
+  <DeleteConfirmationModal
+    :show="showDeleteModal"
+    @onClose="closeModals"
+    @onConfirm="handleDelete"
   />
 </template>
 <script lang="ts">
 import * as yup from 'yup'
-import moment from 'moment'
 import FormInput from '../core/FormInput.vue'
 import MySwitch from '../core/SwitchButton.vue'
 import MySelect from '../core/MySelect.vue'
 import MyButton from '../core/MyButton.vue'
 import MyAccordeon from '../core/MyAccordeon.vue'
 import GraduationModal from './GraduationModal.vue'
+import CoursesModal from './CoursesModal.vue'
+import LanguageModal from './LanguageModal.vue'
+import DeleteConfirmationModal from './DeleteConfirmationModal.vue'
 
-import {
-  getDisabilities,
-  getGenders,
-  getMaritalstatus,
-  getNationalities,
-  getEducationLevels,
-  getEducationStatus,
-  getLanguageLevels,
-} from '@/api/filters'
+import { Icon } from '@iconify/vue'
+
+import { getDisabilities, getGenders, getMaritalstatus, getNationalities } from '@/api/filters'
 import { get as getUser, update as updateUser } from '@/api/user'
-import { list as listGraduation } from '@/api/graduation'
+import { list as listGraduation, remove as removeGraduation } from '@/api/graduation'
+import { list as listCourses, remove as removeCourse } from '@/api/course'
+import { list as listLanguages, remove as removeLanguage } from '@/api/language'
 
 import { type IGraduationItem } from '@/interfaces/IGraduation'
+import { type ICourseItem } from '@/interfaces/ICourse'
+import { type ILanguageItem } from '@/interfaces/ILanguage'
+import { toFormatDate } from '@/utils/conversors'
 
 export default {
   name: 'UserCurriculum',
   data() {
     return {
-      moment,
+      toFormatDate,
       id: null,
       form: {
         name: '' as string,
@@ -332,13 +429,18 @@ export default {
       genders: [],
       maritalStatus: [],
       nationalities: [],
-      educationLevels: [],
-      educationStatus: [],
-      languageLevels: [],
       graduations: [] as IGraduationItem[],
+      courses: [] as ICourseItem[],
+      languages: [] as ILanguageItem[],
       errors: {},
       loading: false,
       showGraduationModal: false,
+      selectedGraduation: null as number | null,
+      showCoursesModal: false,
+      selectedCourse: null as number | null,
+      showDeleteModal: false,
+      selectedLanguage: null as number | null,
+      showLanguageModal: false,
     }
   },
   components: {
@@ -348,6 +450,10 @@ export default {
     MyButton,
     MyAccordeon,
     GraduationModal,
+    CoursesModal,
+    LanguageModal,
+    DeleteConfirmationModal,
+    Icon,
   },
   watch: {
     'form.hasDisability'(newVal) {
@@ -364,6 +470,8 @@ export default {
     this.loadFilters()
     this.loadData()
     this.loadGraduations()
+    this.loadCourses()
+    this.loadLanguages()
   },
   methods: {
     validate() {
@@ -413,17 +521,11 @@ export default {
         const genders = await getGenders()
         const maritalStatus = await getMaritalstatus()
         const nationality = await getNationalities()
-        const educationLevels = await getEducationLevels()
-        const educationStatus = await getEducationStatus()
-        const languageLevels = await getLanguageLevels()
 
         this.disabilities = disabilities.data
         this.genders = genders.data
         this.maritalStatus = maritalStatus.data
         this.nationalities = nationality.data
-        this.educationLevels = educationLevels.data
-        this.educationStatus = educationStatus.data
-        this.languageLevels = languageLevels.data
       } catch (error) {
         console.error('Error loading filters:', error)
       }
@@ -444,10 +546,101 @@ export default {
     },
     async loadGraduations() {
       try {
+        this.closeModals()
         const response = await listGraduation(this.id)
         this.graduations = response.data
       } catch (error) {
-        console.error('Error loading graduation:', error)
+        this.$snotify.error('Erro ao carregar graduação:', error)
+      }
+    },
+    editGraduation(graduation: IGraduationItem) {
+      this.selectedGraduation = graduation
+      this.showGraduationModal = true
+    },
+    confirmDeleteGraduation(graduation: IGraduationItem) {
+      this.closeModals()
+      this.selectedGraduation = graduation
+      this.showDeleteModal = true
+    },
+    async deleteGraduation() {
+      try {
+        await removeGraduation(this.id, this.selectedGraduation.id)
+      } catch (error) {
+        this.$snotify.error('Erro ao excluir graduação:', error)
+      } finally {
+        this.loadGraduations()
+      }
+    },
+    closeModals() {
+      this.selectedGraduation = null
+      this.selectedCourse = null
+      this.selectedLanguage = null
+      this.showCoursesModal = false
+      this.showGraduationModal = false
+      this.showLanguageModal = false
+      this.showDeleteModal = false
+    },
+    handleDelete() {
+      if (this.selectedGraduation) {
+        this.deleteGraduation()
+      } else if (this.selectedCourse) {
+        this.deleteCourse()
+      } else if (this.selectedLanguage) {
+        this.deleteLanguage()
+      }
+    },
+    async loadCourses() {
+      try {
+        this.closeModals()
+        const response = await listCourses(this.id)
+        this.courses = response.data
+      } catch (error) {
+        this.$snotify.error('Erro ao carregar cursos:', error)
+      }
+    },
+    editCourse(course: ICourseItem) {
+      this.selectedCourse = course
+      this.showCoursesModal = true
+    },
+    confirmDeleteCourse(course: ICourseItem) {
+      this.closeModals()
+      this.selectedCourse = course
+      this.showDeleteModal = true
+    },
+    async deleteCourse() {
+      try {
+        await removeCourse(this.id, this.selectedCourse.id)
+      } catch (error) {
+        this.$snotify.error('Erro ao excluir curso:', error)
+      } finally {
+        this.loadCourses()
+      }
+    },
+    async loadLanguages() {
+      try {
+        this.closeModals()
+        const response = await listLanguages(this.id)
+        this.languages = response.data
+      } catch (error) {
+        this.$snotify.error('Erro ao carregar idiomas:', error)
+      }
+    },
+    editLanguage(language: ILanguageItem) {
+      this.selectedLanguage = language
+      this.showLanguageModal = true
+    },
+    confirmDeleteLanguage(language: ILanguageItem) {
+      this.closeModals()
+      this.selectedLanguage = language
+      this.showDeleteModal = true
+    },
+    async deleteLanguage() {
+      try {
+        await removeLanguage(this.id, this.selectedLanguage.id)
+      } catch (error) {
+        this.$snotify.error('Erro ao excluir idioma:', error)
+      } finally {
+        this.loadLanguages()
       }
     },
   },
@@ -474,24 +667,53 @@ form {
         align-items: center;
       }
     }
-
-    textarea {
-      flex: 1;
-      resize: none;
-      height: 200px;
-      background: var(--white);
-      padding: 0.7rem;
-      border: 1px solid var(--border);
-      border-radius: 1.5rem;
-      font-size: 18px;
-      width: 100%;
-      outline: none;
-      color: var(--text);
-    }
   }
 
-  > .primary {
-    float: right;
+  .school {
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      &.mt {
+        margin-top: 5rem;
+        border-top: 3px double var(--border);
+        padding-top: 1rem;
+      }
+
+      button {
+        margin-left: auto;
+      }
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        padding-bottom: 10px;
+        gap: 1rem;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid var(--grey);
+        }
+
+        div {
+          &:first-child {
+            flex-grow: 1;
+          }
+
+          p {
+            margin: 0;
+          }
+        }
+      }
+    }
   }
 }
 </style>

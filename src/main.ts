@@ -15,6 +15,10 @@ import adminDashboardLayout from '@/components/layouts/AdminDashboard.vue'
 import supervisorDashboard from '@/components/layouts/SupervisorDashboard.vue'
 import recruterDashboardLayout from '@/components/layouts/SupervisorDashboard.vue'
 import userDashboardLayout from '@/components/layouts/UserDashboard.vue'
+import moment from 'moment'
+
+// Define o locale global
+moment.locale('pt-br')
 
 const app = createApp(App)
 
