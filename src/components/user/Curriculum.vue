@@ -181,7 +181,7 @@
       </div>
     </MyAccordeon>
 
-    <MyAccordeon title="Profissional">
+    <MyAccordeon title="Profissional" class="school">
       <div class="group flex">
         <div class="switch">
           <span>Disponibilidade para viagem?</span>
@@ -201,6 +201,32 @@
           label="Pretensão Salarial"
         />
       </div>
+
+      <div class="flex mt">
+        <h2>Experiência Profissional</h2>
+        <MyButton class="primary" type="button" @click="() => (showWorkExperienceModal = true)">
+          Nova Experiência
+        </MyButton>
+      </div>
+      <ul v-if="workExperiences.length > 0">
+        <li v-for="work in workExperiences" :key="work.id">
+          <div>
+            <p>{{ work.position }}</p>
+            <p>
+              {{ work.company_name }} - {{ toFormatDate(work.start_date) }} até
+              {{ toFormatDate(work.end_date) || (work.is_current_job && 'Atualmente') }}
+            </p>
+          </div>
+          <div class="btns">
+            <MyButton class="info" type="button" @click="editWorkExperience(work)">
+              <Icon icon="iconamoon:pen" />
+            </MyButton>
+            <MyButton class="danger" type="button" @click="() => confirmDeleteWorkExperience(work)">
+              <Icon icon="iconamoon:trash" />
+            </MyButton>
+          </div>
+        </li>
+      </ul>
     </MyAccordeon>
 
     <MyAccordeon title="Conhecimento" class="school">
@@ -356,6 +382,13 @@
     :dataForm="selectedLanguage"
   />
 
+  <WorkExperienceModal
+    :show="showWorkExperienceModal"
+    @onClose="closeModals"
+    @onSave="loadWorkExperiences"
+    :dataForm="selectedWorkExperience"
+  />
+
   <DeleteConfirmationModal
     :show="showDeleteModal"
     @onClose="closeModals"
@@ -372,6 +405,7 @@ import MyAccordeon from '../core/MyAccordeon.vue'
 import GraduationModal from './GraduationModal.vue'
 import CoursesModal from './CoursesModal.vue'
 import LanguageModal from './LanguageModal.vue'
+import WorkExperienceModal from './WorkExperienceModal.vue'
 import DeleteConfirmationModal from './DeleteConfirmationModal.vue'
 
 import { Icon } from '@iconify/vue'
@@ -381,10 +415,12 @@ import { get as getUser, update as updateUser } from '@/api/user'
 import { list as listGraduation, remove as removeGraduation } from '@/api/graduation'
 import { list as listCourses, remove as removeCourse } from '@/api/course'
 import { list as listLanguages, remove as removeLanguage } from '@/api/language'
+import { list as listWork, remove as removeWork } from '@/api/experience'
 
 import { type IGraduationItem } from '@/interfaces/IGraduation'
 import { type ICourseItem } from '@/interfaces/ICourses'
 import { type ILanguageItem } from '@/interfaces/ILanguages'
+import { type IWorkItem } from '@/interfaces/IWork'
 import { toFormatDate } from '@/utils/conversors'
 
 export default {
@@ -432,6 +468,7 @@ export default {
       graduations: [] as IGraduationItem[],
       courses: [] as ICourseItem[],
       languages: [] as ILanguageItem[],
+      workExperiences: [] as IWorkItem[],
       errors: {},
       loading: false,
       showGraduationModal: false,
@@ -441,6 +478,8 @@ export default {
       showDeleteModal: false,
       selectedLanguage: null as number | null,
       showLanguageModal: false,
+      showWorkExperienceModal: false,
+      selectedWorkExperience: null as number | null,
     }
   },
   components: {
@@ -452,6 +491,7 @@ export default {
     GraduationModal,
     CoursesModal,
     LanguageModal,
+    WorkExperienceModal,
     DeleteConfirmationModal,
     Icon,
   },
@@ -472,6 +512,7 @@ export default {
     this.loadGraduations()
     this.loadCourses()
     this.loadLanguages()
+    this.loadWorkExperiences()
   },
   methods: {
     validate() {
@@ -506,9 +547,9 @@ export default {
         delete this.form.createdAt
         delete this.form.updatedAt
 
-        console.log('Form submitted with data:', this.form)
-        const resp = await updateUser(this.id, this.form)
-        console.log(resp)
+        await updateUser(this.id, this.form)
+
+        this.$snotify.success('Perfil atualizado com sucesso!')
       } catch (error) {
         console.log(error)
       } finally {
@@ -575,9 +616,11 @@ export default {
       this.selectedGraduation = null
       this.selectedCourse = null
       this.selectedLanguage = null
-      this.showCoursesModal = false
+      this.selectedWorkExperience = null
       this.showGraduationModal = false
+      this.showCoursesModal = false
       this.showLanguageModal = false
+      this.showWorkExperienceModal = false
       this.showDeleteModal = false
     },
     handleDelete() {
@@ -587,6 +630,8 @@ export default {
         this.deleteCourse()
       } else if (this.selectedLanguage) {
         this.deleteLanguage()
+      } else if (this.selectedWorkExperience) {
+        this.deleteWorkExperience()
       }
     },
     async loadCourses() {
@@ -643,9 +688,37 @@ export default {
         this.loadLanguages()
       }
     },
+    async loadWorkExperiences() {
+      try {
+        this.closeModals()
+        const response = await listWork(this.id)
+        this.workExperiences = response.data
+      } catch (error) {
+        this.$snotify.error('Erro ao carregar experiências de trabalho:', error)
+      }
+    },
+    editWorkExperience(work: IWorkItem) {
+      this.selectedWorkExperience = work
+      this.showWorkExperienceModal = true
+    },
+    confirmDeleteWorkExperience(work: IWorkItem) {
+      this.closeModals()
+      this.selectedWorkExperience = work
+      this.showDeleteModal = true
+    },
+    async deleteWorkExperience() {
+      try {
+        await removeWork(this.id, this.selectedWorkExperience.id)
+      } catch (error) {
+        this.$snotify.error('Erro ao excluir experiência de trabalho:', error)
+      } finally {
+        this.loadWorkExperiences()
+      }
+    },
   },
 }
 </script>
+
 <style lang="scss" scoped>
 form {
   padding: 10px 0;

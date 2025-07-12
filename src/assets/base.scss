@@ -128,4 +128,8 @@ label {
   width: 100%;
   outline: none;
   color: var(--text);
+
+  &.error {
+    border-color: var(--red);
+  }
 }

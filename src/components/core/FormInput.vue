@@ -4,7 +4,7 @@
     <input
       :type="type"
       :placeholder="placeholder"
-      :value="modelValue"
+      :value="type === 'date' ? moment(modelValue).format('YYYY-MM-DD') : modelValue"
       @input="handleInput"
       :id="label"
       ref="input"
@@ -14,6 +14,8 @@
   </main>
 </template>
 <script lang="ts">
+import moment from 'moment'
+
 export default {
   name: 'FormInput',
   props: {
@@ -41,6 +43,11 @@ export default {
       type: String,
       default: '',
     },
+  },
+  data() {
+    return {
+      moment,
+    }
   },
   emits: ['update:modelValue'],
   methods: {
