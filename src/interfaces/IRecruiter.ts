@@ -9,7 +9,7 @@ export interface IRecruiterForm {
   name: string
   email: string
   password: string
-  permission_id: number
+  permissionId: number
 }
 
 export interface IRecruiterColumnItem {

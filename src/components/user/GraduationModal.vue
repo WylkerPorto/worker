@@ -103,8 +103,8 @@ export default {
     try {
       const levels = await getEducationLevels()
       const stats = await getEducationStatus()
-      this.educationLevels = levels.data
-      this.educationStatus = stats.data
+      this.educationLevels = levels.data.map((level) => ({ id: level.title, title: level.title }))
+      this.educationStatus = stats.data.map((status) => ({ id: status.title, title: status.title }))
     } catch (error) {
       this.$snotify.error('Erro ao carregar os níveis e status de educação: ' + error)
     }

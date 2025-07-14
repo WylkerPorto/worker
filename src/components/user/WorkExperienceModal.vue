@@ -27,27 +27,27 @@
           label="Empresa"
           type="text"
           placeholder="Nome da Empresa"
-          v-model="form.company_name"
-          :error="errors.company_name"
+          v-model="form.companyName"
+          :error="errors.companyName"
           required
         />
         <div class="flex">
           <FormInput
             label="Data de Início"
             type="date"
-            v-model="form.start_date"
-            :error="errors.start_date"
+            v-model="form.startDate"
+            :error="errors.startDate"
             required
           />
           <FormInput
             label="Data de Término"
             type="date"
-            v-model="form.end_date"
-            :error="errors.end_date"
+            v-model="form.endDate"
+            :error="errors.endDate"
           />
           <div class="switch">
             <label>Atualmente Trabalhando</label>
-            <SwitchButton v-model="form.is_current_job" required />
+            <SwitchButton v-model="form.isCurrentJob" required />
           </div>
         </div>
 
@@ -56,8 +56,8 @@
             label="Tipo de Contratação"
             type="text"
             placeholder="full-time, part-time, freelance"
-            v-model="form.employment_type"
-            :error="errors.employment_type"
+            v-model="form.employmentType"
+            :error="errors.employmentType"
             required
           />
           <FormInput
@@ -123,7 +123,7 @@ export default {
         this.form = { ...this.form, ...this.dataForm }
       } else {
         this.form = {
-          is_current_job: false,
+          isCurrentJob: false,
         } as IWorkForm
       }
     },
@@ -131,7 +131,7 @@ export default {
   created() {
     // Initialize form with default values
     this.form = {
-      is_current_job: false,
+      isCurrentJob: false,
     } as IWorkForm
   },
   methods: {
@@ -139,9 +139,9 @@ export default {
       const schema = yup.object({
         position: yup.string().required('Cargo é obrigatório'),
         department: yup.string().required('Departamento é obrigatório'),
-        company_name: yup.string().required('Empresa é obrigatória'),
-        start_date: yup.date().required('Data de início é obrigatória'),
-        end_date: yup
+        companyName: yup.string().required('Empresa é obrigatória'),
+        startDate: yup.date().required('Data de início é obrigatória'),
+        endDate: yup
           .date()
           .nullable()
           .transform((value, originalValue) => {
@@ -149,8 +149,8 @@ export default {
           }),
         description: yup.string().required('Descrição é obrigatória'),
         salary: yup.number().min(0, 'Salário deve ser um número positivo').nullable(),
-        employment_type: yup.string().required('Tipo de contratação é obrigatório'),
-        is_current_job: yup.boolean().required('Status de trabalho atual é obrigatório'),
+        employmentType: yup.string().required('Tipo de contratação é obrigatório'),
+        isCurrentJob: yup.boolean().required('Status de trabalho atual é obrigatório'),
       })
 
       schema
@@ -197,7 +197,7 @@ export default {
     },
     closeModal() {
       this.form = {
-        is_current_job: false,
+        isCurrentJob: false,
       } as IWorkForm
       this.errors = {} as IWorkForm
       this.$emit('onClose')

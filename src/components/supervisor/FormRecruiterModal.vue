@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       form: {
-        permission_id: 3,
+        permissionId: 3,
       } as IRecruiterForm,
       errors: {} as IRecruiterForm,
       loading: false,
@@ -133,7 +133,7 @@ export default {
     },
     closeModal() {
       this.form = {
-        permission_id: 3,
+        permissionId: 3,
       } as IRecruiterForm
       this.errors = {} as IRecruiterForm
       this.$emit('onClose')

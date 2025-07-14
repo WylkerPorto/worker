@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       form: {
-        permission_id: 1,
+        permissionId: 1,
       } as IAdminForm,
       errors: {} as IAdminForm,
       loading: false,
@@ -134,7 +134,7 @@ export default {
     },
     closeModal() {
       this.form = {
-        permission_id: 1,
+        permissionId: 1,
       } as IAdminForm
       this.errors = {} as IAdminForm
       this.$emit('onClose')

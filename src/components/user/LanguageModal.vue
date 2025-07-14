@@ -153,7 +153,7 @@ export default {
   computed: {
     statusList() {
       return this.languageStatus.map((status) => ({
-        id: status.id,
+        id: status.title,
         title: status.title,
       }))
     },

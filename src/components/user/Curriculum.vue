@@ -73,9 +73,9 @@
         <MySelect :options="genders" v-model="form.gender" label="Sexo" :error="errors.gender" />
         <MySelect
           :options="maritalStatus"
-          v-model="form.marital_status_id"
+          v-model.number="form.maritalStatusId"
           label="Estado Civil"
-          :error="errors.marital_status_id"
+          :error="errors.maritalStatusId"
         />
       </div>
 
@@ -111,8 +111,8 @@
 
       <div class="group">
         <FormInput
-          v-model="form.postal_code"
-          :error="errors.postal_code"
+          v-model="form.postalCode"
+          :error="errors.postalCode"
           type="text"
           placeholder="Digite o CEP"
           label="CEP"
@@ -128,7 +128,7 @@
           label="Rua"
         />
         <FormInput
-          v-model="form.number"
+          v-model.number="form.number"
           :error="errors.number"
           type="number"
           placeholder="555"
@@ -185,17 +185,17 @@
       <div class="group flex">
         <div class="switch">
           <span>Disponibilidade para viagem?</span>
-          <MySwitch v-model="form.available_to_travel" />
+          <MySwitch v-model="form.availableToTravel" />
         </div>
 
         <div class="switch">
           <span>Primeiro Emprego?</span>
-          <MySwitch v-model="form.first_job" />
+          <MySwitch v-model="form.firstJob" />
         </div>
 
         <FormInput
-          v-model="form.salary_claim"
-          :error="errors.salary_claim"
+          v-model.number="form.salaryClaim"
+          :error="errors.salaryClaim"
           type="number"
           placeholder="5000"
           label="Pretensão Salarial"
@@ -213,8 +213,8 @@
           <div>
             <p>{{ work.position }}</p>
             <p>
-              {{ work.company_name }} - {{ toFormatDate(work.start_date) }} até
-              {{ toFormatDate(work.end_date) || (work.is_current_job && 'Atualmente') }}
+              {{ work.companyName }} - {{ toFormatDate(work.startDate) }} até
+              {{ toFormatDate(work.endDate) || (work.isCurrentJob && 'Atualmente') }}
             </p>
           </div>
           <div class="btns">
@@ -325,15 +325,15 @@
 
       <div class="group flex">
         <FormInput
-          v-model="form.facebook_url"
-          :error="errors.facebook_url"
+          v-model="form.facebookUrl"
+          :error="errors.facebookUrl"
           type="url"
           placeholder="Digite o link do facebook"
           label="Facebook"
         />
         <FormInput
-          v-model="form.instagram_url"
-          :error="errors.instagram_url"
+          v-model="form.instagramUrl"
+          :error="errors.instagramUrl"
           type="url"
           placeholder="Digite o link do instagram"
           label="Instagram"
@@ -342,15 +342,15 @@
 
       <div class="group flex">
         <FormInput
-          v-model="form.linkedin_url"
-          :error="errors.linkedin_url"
+          v-model="form.linkedinUrl"
+          :error="errors.linkedinUrl"
           type="url"
           placeholder="Digite o link do linkedin"
           label="LinkedIn"
         />
         <FormInput
-          v-model="form.personal_url"
-          :error="errors.personal_url"
+          v-model="form.personalUrl"
+          :error="errors.personalUrl"
           type="url"
           placeholder="Digite o link pessoal"
           label="Site Pessoal"
@@ -440,15 +440,15 @@ export default {
         hasDisability: false as boolean,
         typeDisability: '' as string,
         gender: '' as string,
-        marital_status_id: null as number,
+        maritalStatusId: null as number,
         nationality: '' as string,
         phoneNumber: '' as string,
         phoneNumber2: '' as string,
-        available_to_travel: false as boolean,
-        salary_claim: null as number,
-        first_job: false as boolean,
+        availableToTravel: false as boolean,
+        salaryClaim: null as number,
+        firstJob: false as boolean,
         presentation: '' as string,
-        postal_code: '' as string,
+        postalCode: '' as string,
         street: '' as string,
         number: null as number,
         complement: '' as string,
@@ -456,10 +456,10 @@ export default {
         city: '' as string,
         state: '' as string,
         country: '' as string,
-        facebook_url: '' as string,
-        instagram_url: '' as string,
-        linkedin_url: '' as string,
-        personal_url: '' as string,
+        facebookUrl: '' as string,
+        instagramUrl: '' as string,
+        linkedinUrl: '' as string,
+        personalUrl: '' as string,
       },
       disabilities: [],
       genders: [],
@@ -521,7 +521,42 @@ export default {
           .string()
           .min(3, 'Nome deve ter pelo menos 3 caracteres')
           .required('Nome é obrigatório'),
+        email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
         gender: yup.string().min(1, 'Selecione um sexo').required('Sexo é obrigatório'),
+        maritalStatus: yup
+          .string()
+          .min(1, 'Selecione um estado civil')
+          .required('Estado civil é obrigatório'),
+        nationality: yup
+          .string()
+          .min(1, 'Selecione uma nacionalidade')
+          .required('Nacionalidade é obrigatória'),
+        phoneNumber: yup.string().min(10, 'Telefone inválido').required('Telefone é obrigatório'),
+        postalCode: yup.string().min(8, 'CEP inválido').required('CEP é obrigatório'),
+        street: yup
+          .string()
+          .min(3, 'Rua deve ter pelo menos 3 caracteres')
+          .required('Rua é obrigatória'),
+        number: yup
+          .number()
+          .typeError('Número deve ser um número')
+          .required('Número é obrigatório'),
+        neighborhood: yup
+          .string()
+          .min(3, 'Bairro deve ter pelo menos 3 caracteres')
+          .required('Bairro é obrigatório'),
+        city: yup
+          .string()
+          .min(3, 'Cidade deve ter pelo menos 3 caracteres')
+          .required('Cidade é obrigatória'),
+        state: yup
+          .string()
+          .min(2, 'Estado deve ter pelo menos 2 caracteres')
+          .required('Estado é obrigatório'),
+        country: yup
+          .string()
+          .min(3, 'País deve ter pelo menos 3 caracteres')
+          .required('País é obrigatório'),
       })
 
       schema
@@ -546,6 +581,7 @@ export default {
         delete this.form.password
         delete this.form.createdAt
         delete this.form.updatedAt
+        delete this.form.deletedAt
 
         await updateUser(this.id, this.form)
 
@@ -563,10 +599,10 @@ export default {
         const maritalStatus = await getMaritalstatus()
         const nationality = await getNationalities()
 
-        this.disabilities = disabilities.data
-        this.genders = genders.data
-        this.maritalStatus = maritalStatus.data
-        this.nationalities = nationality.data
+        this.disabilities = disabilities.data.map((data) => ({ id: data.title, title: data.title }))
+        this.genders = genders.data.map((data) => ({ id: data.title, title: data.title }))
+        this.maritalStatus = maritalStatus.data.map((data) => ({ id: data.id, title: data.title }))
+        this.nationalities = nationality.data.map((data) => ({ id: data.title, title: data.title }))
       } catch (error) {
         console.error('Error loading filters:', error)
       }
@@ -578,8 +614,8 @@ export default {
           ...this.form, // valores default
           ...response.data,
           hasDisability: !!response.data.hasDisability, // garante boolean
-          available_to_travel: !!response.data.available_to_travel,
-          first_job: !!response.data.first_job,
+          availableToTravel: !!response.data.availableToTravel,
+          firstJob: !!response.data.firstJob,
         }
       } catch (error) {
         console.error('Error loading data:', error)
