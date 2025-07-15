@@ -13,7 +13,7 @@ import DefaultLayout from '@/components/layouts/Default.vue'
 import EmptyLayout from '@/components/layouts/Empty.vue'
 import adminDashboardLayout from '@/components/layouts/AdminDashboard.vue'
 import supervisorDashboard from '@/components/layouts/SupervisorDashboard.vue'
-import recruterDashboardLayout from '@/components/layouts/SupervisorDashboard.vue'
+import recruiterDashboardLayout from '@/components/layouts/RecruiterDashboard.vue'
 import userDashboardLayout from '@/components/layouts/UserDashboard.vue'
 import moment from 'moment'
 
@@ -35,7 +35,7 @@ app.component('DefaultLayout', DefaultLayout)
 app.component('EmptyLayout', EmptyLayout)
 app.component('adminDashboardLayout', adminDashboardLayout)
 app.component('supervisorDashboardLayout', supervisorDashboard)
-app.component('recruterDashboardLayout', recruterDashboardLayout)
+app.component('recruiterDashboardLayout', recruiterDashboardLayout)
 app.component('userDashboardLayout', userDashboardLayout)
 
 app.use(createPinia())

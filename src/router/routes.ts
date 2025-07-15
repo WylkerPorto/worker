@@ -25,7 +25,7 @@ export default [
   },
   {
     path: '/logoff',
-    redirect: '/logout',
+    redirect: { name: '/logout' },
   },
 
   {
@@ -34,7 +34,7 @@ export default [
     children: [
       {
         path: '',
-        redirect: 'dashboard', // redireciona de /admin para /admin/dashboard
+        redirect: { name: 'adminDashboard' }, // redireciona de /admin para /admin/dashboard
       },
       {
         path: 'dashboard',
@@ -65,7 +65,7 @@ export default [
     children: [
       {
         path: '',
-        redirect: 'dashboard', // redireciona de /supervisor para /supervisor/dashboard
+        redirect: { name: 'supervisorDashboard' }, // redireciona de /supervisor para /supervisor/dashboard
       },
       {
         path: 'dashboard',
@@ -90,11 +90,16 @@ export default [
     children: [
       {
         path: '',
-        redirect: 'dashboard', // redireciona de /recruiter para /recruiter/dashboard
+        redirect: { name: 'recruiterDashboard' }, // redireciona de /recruiter para /recruiter/dashboard
       },
       {
         path: 'dashboard',
         name: 'recruiterDashboard',
+        component: () => import('@/views/recruiter/Index.vue'),
+      },
+      {
+        path: 'vacancys',
+        name: 'recruiterVacancy',
         component: () => import('@/views/recruiter/Index.vue'),
       },
     ],
@@ -104,6 +109,10 @@ export default [
     path: '/user',
     meta: { layout: 'userDashboard', requiresAuth: true, role: '3' },
     children: [
+      {
+        path: '',
+        redirect: { name: 'userDashboard' }, // redireciona de /user para /user/dashboard
+      },
       {
         path: '/user/dashboard',
         name: 'userDashboard',
