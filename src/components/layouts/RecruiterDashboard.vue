@@ -57,19 +57,26 @@ export default {
         {
           label: 'Dashboard',
           name: 'recruiterDashboard',
-          active: true,
           icon: 'stash:dashboard',
+        },
+        {
+          label: 'Cargos',
+          name: 'recruiterPosition',
+          icon: 'ic:outline-workspace-premium',
+        },
+        {
+          label: 'Setor',
+          name: 'recruiterDepartment',
+          icon: 'streamline-sharp:workspace-desk',
         },
         {
           label: 'Vagas',
           name: 'recruiterVacancy',
-          active: false,
           icon: 'material-symbols:work-outline',
         },
         {
           label: 'Sair',
           name: 'logout',
-          active: true,
           icon: 'mdi:login',
         },
       ]

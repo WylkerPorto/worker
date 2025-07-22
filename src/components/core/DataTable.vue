@@ -20,7 +20,15 @@
       <tbody>
         <tr v-for="(item, index) in items" :key="index">
           <td v-for="(column, colIndex) in columns" :key="colIndex">
-            {{ column?.type === 'date' ? toFormatDate(item[column?.key]) : item[column?.key] }}
+            {{
+              column?.type === 'date'
+                ? toFormatDate(item[column?.key])
+                : column?.type === 'boolean'
+                  ? item[column?.key]
+                    ? 'Ativo'
+                    : 'Inativo'
+                  : item[column?.key]
+            }}
           </td>
           <td class="actions" v-if="$slots['actions']">
             <slot name="actions" :item="item"></slot>

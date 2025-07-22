@@ -100,7 +100,17 @@ export default [
       {
         path: 'vacancys',
         name: 'recruiterVacancy',
-        component: () => import('@/views/recruiter/Index.vue'),
+        component: () => import('@/views/recruiter/Vacancy.vue'),
+      },
+      {
+        path: 'positions',
+        name: 'recruiterPosition',
+        component: () => import('@/views/recruiter/Position.vue'),
+      },
+      {
+        path: 'departments',
+        name: 'recruiterDepartment',
+        component: () => import('@/views/recruiter/Department.vue'),
       },
     ],
   },

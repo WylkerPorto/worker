@@ -56,31 +56,26 @@ export default {
         {
           label: 'Dashboard',
           name: 'adminDashboard',
-          active: true,
           icon: 'stash:dashboard',
         },
         {
           label: 'Administradores',
           name: 'adminController',
-          active: true,
           icon: 'mdi:administrator-outline',
         },
         {
           label: 'Supervisores',
           name: 'supervisorController',
-          active: true,
           icon: 'mdi:leads',
         },
         {
           label: 'Log',
           name: 'logsController',
-          active: true,
           icon: 'icon-park-outline:log',
         },
         {
           label: 'Sair',
           name: 'logout',
-          active: true,
           icon: 'mdi:login',
         },
       ]

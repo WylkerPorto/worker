@@ -45,7 +45,7 @@ export default {
       columns: [
         { title: '#', key: 'id' },
         { title: 'Tipo', key: 'type' },
-        { title: 'Criado', key: 'created' },
+        { title: 'Criado', key: 'createdAt', type: 'date' },
       ] as ILogColumnItem[],
       items: [] as ILogItem[],
       editItem: {} as ILogItem,

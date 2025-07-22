@@ -16,6 +16,9 @@
         @onLoadMore="handleLoadMore"
         @onSearch="handleSearch"
       >
+        <template #createdAt="{ item }">
+          <p>{{ item }}</p>
+        </template>
         <template #actions="{ item }">
           <button class="rounded success" @click="handleEditRecruiter(item)">
             <Icon icon="carbon:edit"></Icon>
@@ -37,7 +40,7 @@
     :show="showDeleteRecruiterModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
-    @onConfirm="getRecruiters"
+    @onConfirm="refresh"
   />
 </template>
 <script lang="ts">
@@ -64,7 +67,7 @@ export default {
       columns: [
         { key: 'name', title: 'Nome' },
         { key: 'email', title: 'Email' },
-        { key: 'created', title: 'Criado em' },
+        { key: 'createdAt', title: 'Criado em', type: 'date' },
       ] as IRecruiterColumnItem[],
       items: [] as IRecruiterItem[],
       editItem: {} as IRecruiterItem,

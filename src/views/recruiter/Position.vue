@@ -2,9 +2,9 @@
   <main>
     <section class="card">
       <header>
-        <h1>Administradores</h1>
-        <button class="rounded" @click="showFormAdminModal = true">
-          <Icon icon="tdesign:user-add" />
+        <h1>Cargos</h1>
+        <button class="rounded" @click="showFormPositionModal = true" title="Novo Cargo">
+          <Icon icon="qlementine-icons:new-16" />
         </button>
       </header>
       <DataTable
@@ -17,7 +17,18 @@
         @onSearch="handleSearch"
       >
         <template #actions="{ item }">
-          <button class="rounded success" @click="handleEditAdmin(item)">
+          <button
+            v-if="item.status"
+            class="rounded warning"
+            @click="handleTogglePosition(item)"
+            title="Pausar"
+          >
+            <Icon icon="ic:round-pause" />
+          </button>
+          <button v-else class="rounded primary" @click="handleTogglePosition(item)" title="Ativar">
+            <Icon icon="ic:round-play-arrow" />
+          </button>
+          <button class="rounded success" @click="handleEditPosition(item)">
             <Icon icon="carbon:edit" />
           </button>
           <button class="rounded danger" @click="handleConfirmDelete(item)">
@@ -27,14 +38,14 @@
       </DataTable>
     </section>
   </main>
-  <FormAdminModal
-    :show="showFormAdminModal"
+  <FormPositionModal
+    :show="showFormPositionModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
     @onSave="refresh"
   />
-  <DeleteAdminModal
-    :show="showDeleteAdminModal"
+  <DeletePositionModal
+    :show="showDeletePositionModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
     @onConfirm="refresh"
@@ -43,53 +54,66 @@
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
-import FormAdminModal from '@/components/admin/FormAdminModal.vue'
-import DeleteAdminModal from '@/components/admin/DeleteAdminModal.vue'
-import { type IAdminItem, type IAdminColumnItem } from '@/interfaces/IAdmin'
-import { list } from '@/api/admin'
+import FormPositionModal from '@/components/recruiter/FormPositionModal.vue'
+import DeletePositionModal from '@/components/recruiter/DeletePositionModal.vue'
+import { type IPositionItem, type IPositionColumnItem } from '@/interfaces/IPosition'
+import { list, update } from '@/api/position'
 
 export default {
-  name: 'AdminController',
+  name: 'RecruiterPosition',
   components: {
     DataTable,
     Icon,
-    FormAdminModal,
-    DeleteAdminModal,
+    FormPositionModal,
+    DeletePositionModal,
   },
   data() {
     return {
-      showFormAdminModal: false,
-      showDeleteAdminModal: false,
+      showFormPositionModal: false,
+      showDeletePositionModal: false,
       loading: false,
       columns: [
-        { title: 'Nome', key: 'name' },
-        { title: 'Email', key: 'email' },
-        { title: 'Criado', key: 'createdAt', type: 'date' },
-      ] as IAdminColumnItem[],
-      items: [] as IAdminItem[],
-      editItem: {} as IAdminItem,
+        { key: 'name', title: 'Nome' },
+        { key: 'status', title: 'Status', type: 'boolean' },
+        { key: 'createdAt', title: 'Criado em', type: 'date' },
+      ] as IPositionColumnItem[],
+      items: [] as IPositionItem[],
+      editItem: {} as IPositionItem,
       total: 0,
       page: 1,
       search: '',
     }
   },
   mounted() {
-    this.getAdmins()
+    this.getPositions()
   },
   methods: {
     refresh() {
       this.items = []
-      this.getAdmins()
+      this.getPositions()
     },
-    async getAdmins() {
+    async getPositions() {
       this.closeAllModals()
       this.loading = true
       try {
         const response = await list(this.filters)
-        this.items.push(...response.data.data)
+        this.items.push(...response.data)
         this.total = response.data.total
       } catch (error) {
-        this.$snotify.error('Erro ao buscar os administradores: ' + error)
+        this.$snotify.error('Erro ao buscar os cargos: ' + error)
+      } finally {
+        this.loading = false
+      }
+    },
+    async handleTogglePosition(item: IPositionItem) {
+      this.loading = true
+      try {
+        item.status = !item.status
+        await update(item.id, { status: item.status })
+        this.$snotify.success('Cargo atualizado com sucesso!')
+      } catch (error) {
+        this.$snotify.error('Erro ao atualizar o cargo: ' + error)
+        item.status = !item.status
       } finally {
         this.loading = false
       }
@@ -98,34 +122,33 @@ export default {
       this.search = el
       this.page = 1
       this.items = []
-      this.getAdmins()
+      this.getPositions()
     },
-    handleNewAdmin() {
-      this.editItem = {} as IAdminItem
-      this.showFormAdminModal = true
+    handleNewPosition() {
+      this.editItem = {} as IPositionItem
+      this.showFormPositionModal = true
     },
-    handleEditAdmin(item: IAdminItem) {
+    handleEditPosition(item: IPositionItem) {
       this.editItem = item
-      this.showFormAdminModal = true
+      this.showFormPositionModal = true
     },
-    handleConfirmDelete(item: IAdminItem) {
+    handleConfirmDelete(item: IPositionItem) {
       this.editItem = item
-      this.showDeleteAdminModal = true
+      this.showDeletePositionModal = true
     },
     closeAllModals() {
-      this.editItem = {} as IAdminItem
-      this.showFormAdminModal = false
-      this.showDeleteAdminModal = false
+      this.editItem = {} as IPositionItem
+      this.showFormPositionModal = false
+      this.showDeletePositionModal = false
     },
     handleLoadMore() {
       this.page += 1
-      this.getAdmins()
+      this.getPositions()
     },
   },
   computed: {
     filters() {
       return {
-        // rule: 0,
         page: this.page,
         filter: this.search,
       }
@@ -136,6 +159,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 main {
   display: flex;

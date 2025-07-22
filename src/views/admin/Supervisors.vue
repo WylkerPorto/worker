@@ -37,7 +37,7 @@
     :show="showDeleteSupervisorModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
-    @onConfirm="getSupervisors"
+    @onConfirm="refresh"
   />
 </template>
 <script lang="ts">
@@ -64,7 +64,7 @@ export default {
       columns: [
         { key: 'name', title: 'Nome' },
         { key: 'email', title: 'Email' },
-        { key: 'created', title: 'Criado em' },
+        { key: 'createdAt', title: 'Criado em', type: 'date' },
       ] as ISupervisorColumnItem[],
       items: [] as ISupervisorItem[],
       editItem: {} as ISupervisorItem,
