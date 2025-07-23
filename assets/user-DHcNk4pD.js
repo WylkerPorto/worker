@@ -1,1 +1,0 @@
-import{h as e}from"./http-1tLpSZt0.js";import"./index-BEa9HEip.js";const a=t=>e.authApi().post("/person",t),r=t=>e.authApi().get(`/person/${t}`),n=(t,p)=>e.authApi().put(`/person/${t}`,p),u=t=>e.authApi().delete(`/person/${t}`);export{a as c,r as g,u as r,n as u};
