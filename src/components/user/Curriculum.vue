@@ -358,7 +358,9 @@
       </div>
     </MyAccordeon>
 
-    <MyButton class="primary" :loading="loading">Atualizar</MyButton>
+    <MyButton class="primary" :loading="loading" type="submit" @click="validate"
+      >Atualizar</MyButton
+    >
   </form>
 
   <GraduationModal
@@ -417,6 +419,7 @@ import { list as listCourses, remove as removeCourse } from '@/api/course'
 import { list as listLanguages, remove as removeLanguage } from '@/api/language'
 import { list as listWork, remove as removeWork } from '@/api/experience'
 
+import { type IPerson } from '@/interfaces/IPerson'
 import { type IGraduationItem } from '@/interfaces/IGraduation'
 import { type ICourseItem } from '@/interfaces/ICourses'
 import { type ILanguageItem } from '@/interfaces/ILanguages'
@@ -429,38 +432,7 @@ export default {
     return {
       toFormatDate,
       id: null,
-      form: {
-        name: '' as string,
-        email: '' as string,
-        password: '' as string,
-        cpf: '' as string,
-        rg: '' as string,
-        cnh: '' as string,
-        typeCnh: '' as string,
-        hasDisability: false as boolean,
-        typeDisability: '' as string,
-        gender: '' as string,
-        maritalStatusId: null as number,
-        nationality: '' as string,
-        phoneNumber: '' as string,
-        phoneNumber2: '' as string,
-        availableToTravel: false as boolean,
-        salaryClaim: null as number,
-        firstJob: false as boolean,
-        presentation: '' as string,
-        postalCode: '' as string,
-        street: '' as string,
-        number: null as number,
-        complement: '' as string,
-        neighborhood: '' as string,
-        city: '' as string,
-        state: '' as string,
-        country: '' as string,
-        facebookUrl: '' as string,
-        instagramUrl: '' as string,
-        linkedinUrl: '' as string,
-        personalUrl: '' as string,
-      },
+      form: {} as IPerson,
       disabilities: [],
       genders: [],
       maritalStatus: [],
@@ -523,8 +495,8 @@ export default {
           .required('Nome é obrigatório'),
         email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
         gender: yup.string().min(1, 'Selecione um sexo').required('Sexo é obrigatório'),
-        maritalStatus: yup
-          .string()
+        maritalStatusId: yup
+          .number()
           .min(1, 'Selecione um estado civil')
           .required('Estado civil é obrigatório'),
         nationality: yup

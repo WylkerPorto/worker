@@ -1,0 +1,33 @@
+export interface IPersonForm {
+  id: number
+  name: string
+  email: string
+  password: string
+  cpf: string
+  rg: string
+  cnh: string
+  typeCnh: string
+  hasDisability: boolean
+  typeDisability: string
+  gender: string
+  maritalStatusId: number
+  nationality: string
+  phoneNumber: string
+  phoneNumber2: string
+  availableToTravel: boolean
+  salaryClaim: number
+  firstJob: boolean
+  presentation: string
+  postalCode: string
+  street: string
+  number: number
+  complement: string
+  neighborhood: string
+  city: string
+  state: string
+  country: string
+  facebookUrl: string
+  instagramUrl: string
+  linkedinUrl: string
+  personalUrl: string
+}

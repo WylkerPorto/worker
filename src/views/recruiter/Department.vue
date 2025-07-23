@@ -2,7 +2,7 @@
   <main>
     <section class="card">
       <header>
-        <h1>Setor</h1>
+        <h1>Setores</h1>
         <button class="rounded" @click="showFormDepartmentModal = true" title="Novo Setor">
           <Icon icon="qlementine-icons:new-16" />
         </button>
