@@ -1,0 +1,1 @@
+import{h as o}from"./http-BD6d8YlU.js";import{t as s}from"./conversors-iuaU3Whz.js";const e=t=>o.authApi().post("/position",t),r=t=>o.authApi().get(`/position?${s(t)}`),n=(t,i)=>o.authApi().put(`/position/${t}`,i),u=t=>o.authApi().delete(`/position/${t}`);export{e as c,r as l,u as r,n as u};
