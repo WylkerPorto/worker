@@ -5,7 +5,7 @@
         <h1>Vagas</h1>
         <button
           class="rounded"
-          @click="() => $router.push({ name: 'recruiterVacancyCreate' })"
+          @click="() => $router.push({ name: 'recruiterVacancyForm' })"
           title="Nova Vaga"
         >
           <Icon icon="qlementine-icons:new-16" />
@@ -32,15 +32,21 @@
           <button v-else class="rounded primary" @click="handleToggleVacancy(item)" title="Ativar">
             <Icon icon="ic:round-play-arrow" />
           </button>
-          <button class="rounded success" @click="handleEditVacancy(item)">
+          <button class="rounded success" @click="handleEditVacancy(item)" title="Editar">
             <Icon icon="carbon:edit" />
           </button>
-          <button class="rounded danger" @click="handleConfirmDelete(item)">
+          <button class="rounded danger" @click="handleConfirmDelete(item)" title="Excluir">
             <Icon icon="carbon:trash-can" />
           </button>
         </template>
       </DataTable>
     </section>
+    <DeleteVacancyModal
+      :show="showDeleteVacancyModal"
+      :dataForm="editItem"
+      @onClose="closeAllModals"
+      @onConfirm="refresh"
+    />
   </main>
 </template>
 <script lang="ts">
@@ -48,11 +54,13 @@ import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
 import { type IVacancyItem, type IVacancyColumnItem } from '@/interfaces/IVacancy'
 import { list } from '@/api/vacancy'
+import DeleteVacancyModal from '@/components/recruiter/DeleteVacancyModal.vue'
 
 export default {
   name: 'RecruiterVacancy',
   components: {
     DataTable,
+    DeleteVacancyModal,
     Icon,
   },
   data() {
@@ -109,6 +117,9 @@ export default {
     handleLoadMore() {
       this.page++
       this.getVacancies()
+    },
+    handleEditVacancy(item: IVacancyItem) {
+      this.$router.push({ name: 'recruiterVacancyForm', params: { id: item.id } })
     },
   },
   computed: {

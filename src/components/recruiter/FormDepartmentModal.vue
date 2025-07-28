@@ -89,9 +89,7 @@ export default {
           delete this.form.createdAt
           delete this.form.updatedAt
           delete this.form.deletedAt
-        }
 
-        if (isEdit) {
           await update(this.dataForm.id, this.form)
         } else {
           await create(this.form)

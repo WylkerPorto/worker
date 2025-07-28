@@ -13,3 +13,7 @@ export const getEducationLevels = () => http.authApi().get('/filter/education-le
 export const getEducationStatus = () => http.authApi().get('/filter/education-status')
 
 export const getLanguageLevels = () => http.authApi().get('/filter/language-level')
+
+export const getWorkModels = () => http.authApi().get('/filter/work-model')
+
+export const getEmploymentTypes = () => http.authApi().get('/filter/employment-type')

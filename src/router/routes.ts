@@ -103,8 +103,8 @@ export default [
         component: () => import('@/views/recruiter/Vacancy.vue'),
       },
       {
-        path: 'vacancy/new',
-        name: 'recruiterVacancyCreate',
+        path: 'vacancy/:id?',
+        name: 'recruiterVacancyForm',
         component: () => import('@/views/recruiter/VacancyCreate.vue'),
       },
       {
