@@ -119,7 +119,7 @@ export default {
           this.$router.push({ name: 'recruiterDashboard' })
           return
         case 4:
-          this.$router.push({ name: 'userDashboard' })
+          this.$router.push({ name: 'userAplication' })
           return
         default:
           this.$snotify.error('Erro ao logar: Regra invalida')

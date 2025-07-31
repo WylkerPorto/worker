@@ -126,12 +126,18 @@ export default [
     children: [
       {
         path: '',
-        redirect: { name: 'userDashboard' }, // redireciona de /user para /user/dashboard
+        redirect: { name: 'userAplication' }, // redireciona de /user para /user/dashboard
       },
       {
-        path: '/user/dashboard',
-        name: 'userDashboard',
-        component: () => import('@/views/user/Index.vue'),
+        path: '/user/aplication',
+        name: 'userAplication',
+        component: () => import('@/views/user/Aplication.vue'),
+        meta: { layout: 'userDashboard', requiresAuth: true, role: '4' },
+      },
+      {
+        path: '/user/vacancy',
+        name: 'userVacancy',
+        component: () => import('@/views/user/Vacancy.vue'),
         meta: { layout: 'userDashboard', requiresAuth: true, role: '4' },
       },
       {
