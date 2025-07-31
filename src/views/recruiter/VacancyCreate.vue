@@ -82,12 +82,12 @@
           />
         </div>
         <div class="flex">
-          <!-- <FormInput
+          <FormInput
             label="Validade"
             type="date"
             v-model="form.expirationDate"
             :error="errors.expirationDate"
-          /> -->
+          />
           <FormInput
             label="Salário (R$)"
             type="number"
