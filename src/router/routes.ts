@@ -122,29 +122,32 @@ export default [
 
   {
     path: '/user',
-    meta: { layout: 'userDashboard', requiresAuth: true, role: '3' },
+    meta: { layout: 'userDashboard', requiresAuth: true, role: '4' },
     children: [
       {
         path: '',
-        redirect: { name: 'userAplication' }, // redireciona de /user para /user/dashboard
+        redirect: { name: 'userDashboard' }, // redireciona de /user para /user/dashboard
+      },
+      {
+        path: '/user/aplication',
+        name: 'userDashboard',
+        redirect: { name: 'userAplication' },
+        component: () => import('@/views/user/Aplication.vue'),
       },
       {
         path: '/user/aplication',
         name: 'userAplication',
         component: () => import('@/views/user/Aplication.vue'),
-        meta: { layout: 'userDashboard', requiresAuth: true, role: '4' },
       },
       {
         path: '/user/vacancy',
         name: 'userVacancy',
         component: () => import('@/views/user/Vacancy.vue'),
-        meta: { layout: 'userDashboard', requiresAuth: true, role: '4' },
       },
       {
         path: '/user/profile',
         name: 'userProfile',
         component: () => import('@/views/user/Profile.vue'),
-        meta: { layout: 'userDashboard', requiresAuth: true, role: '4' },
       },
     ],
   },
