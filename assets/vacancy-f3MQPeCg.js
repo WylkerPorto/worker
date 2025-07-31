@@ -1,0 +1,1 @@
+import{h as a}from"./http-BD6d8YlU.js";import{t as s}from"./conversors-D81u7lIS.js";const p=t=>a.authApi().post("/vacancy",t),n=t=>a.authApi().get(`/vacancy/${t}`),r=t=>a.authApi().get(`/vacancy?${s(t)}`),i=(t,c)=>a.authApi().put(`/vacancy/${t}`,c),u=t=>a.authApi().delete(`/vacancy/${t}`);export{p as c,n as g,r as l,u as r,i as u};
