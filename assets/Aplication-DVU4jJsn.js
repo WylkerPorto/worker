@@ -1,1 +1,0 @@
-import{D as o}from"./DataTable-BKxOEGgj.js";import{_ as t,c as e,o as a}from"./index-BJUk5Bnl.js";import"./SearchInput-CAdKpNBp.js";import"./conversors-D9s9cIlT.js";import"./MyButton-cavzMLXt.js";const r={name:"UserAplication",components:{DataTable:o}};function c(n,p,s,i,m,l){return a(),e("div",null,"Aplicações")}const $=t(r,[["render",c]]);export{$ as default};

@@ -1,1 +1,0 @@
-import{_ as s,c as o,a,o as n}from"./index-BJUk5Bnl.js";const r={name:"SupervisorIndex"},t={class:"container"};function c(d,e,p,_,i,l){return n(),o("main",t,e[0]||(e[0]=[a("div",null,"supervisor dashboard",-1)]))}const f=s(r,[["render",c],["__scopeId","data-v-e355ed8c"]]);export{f as default};

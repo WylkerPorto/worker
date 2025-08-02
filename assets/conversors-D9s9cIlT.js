@@ -1,1 +1,0 @@
-import{p as e}from"./index-BJUk5Bnl.js";const s=t=>{if(!t)return"";const r=Object.fromEntries(Object.entries(t).filter(([n,o])=>o!=null));return new URLSearchParams(r).toString()},i=t=>t?e(t).format("DD/MM/YYYY"):"";export{i as a,s as t};
