@@ -145,6 +145,11 @@ export default [
         component: () => import('@/views/user/Vacancy.vue'),
       },
       {
+        path: '/user/vacancy/:id',
+        name: 'userVacancyDetail',
+        component: () => import('@/views/user/VacancyDetail.vue'),
+      },
+      {
         path: '/user/profile',
         name: 'userProfile',
         component: () => import('@/views/user/Profile.vue'),

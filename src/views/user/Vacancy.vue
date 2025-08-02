@@ -8,12 +8,21 @@
     </header>
     <section>
       <div class="card" v-for="item in items" :key="item.id">
+        <h2>{{ item.title }}</h2>
         <article>
-          <h2>{{ item.title }}</h2>
-          <p>{{ item.employmentType }} - {{ item.workModel }} - {{ item.expirationDate }}</p>
+          <p><Icon icon="solar:point-on-map-bold" /> {{ item.city }} - {{ item.state }}</p>
+          <p><Icon icon="material-symbols:home-work" /> {{ item.employmentType }}</p>
+          <p><Icon icon="ic:baseline-work" /> {{ item.workModel }}</p>
+          <p><Icon icon="solar:calendar-bold" /> {{ toFormatDate(item.expirationDate) }}</p>
         </article>
 
-        <button class="btn primary" @click="handleApply(item.id)">Candidatar-se</button>
+        <RouterLink
+          class="btn primary"
+          :to="{ name: 'userVacancyDetail', params: { id: item.id } }"
+          target="_blank"
+        >
+          Detalhes
+        </RouterLink>
       </div>
     </section>
   </main>
@@ -23,15 +32,18 @@
 import SearchInput from '@/components/core/SearchInput.vue'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
 import { list as getVacancy } from '@/api/vacancy'
-import { create } from '@/api/aplication'
+import { Icon } from '@iconify/vue'
+import { toFormatDate } from '@/utils/conversors'
 
 export default {
   name: 'UserVacancy',
   components: {
     SearchInput,
+    Icon,
   },
   data() {
     return {
+      toFormatDate,
       loading: false,
       items: [] as IVacancyItem[],
       total: 0,
@@ -64,14 +76,6 @@ export default {
       this.page += 1
       this.getVacancies()
     },
-    async handleApply(vacancyId: number) {
-      try {
-        await create({ vacancyId, status: 'applied' })
-        this.$snotify.success('Vaga aplicada com sucesso')
-      } catch (error) {
-        this.$snotify.error(error.response.data.statusCode === 409 ? 'Vaga ja aplicada' : error)
-      }
-    },
   },
   computed: {
     filters() {
@@ -90,6 +94,8 @@ export default {
   gap: 1rem;
   max-width: 90vw;
   margin: auto;
+  background-color: var(--glass);
+  margin-top: 10px;
 
   header {
     h1 {
@@ -99,7 +105,7 @@ export default {
 
     form {
       width: fit-content;
-      margin: 0 0 0 auto;
+      margin: 0 20px 0 auto;
     }
   }
 
@@ -109,9 +115,7 @@ export default {
     align-items: stretch;
     flex: 1;
     padding: 1rem;
-    background-color: var(--glass);
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     gap: 1rem;
 
     .card {
@@ -123,10 +127,23 @@ export default {
       justify-content: space-between;
       border: 1px solid var(--border);
 
+      &:hover {
+        box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
+      }
+
       article {
-        h2 {
-          margin-bottom: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem; // opcional, para espaçamento entre os <p>
+
+        p {
+          flex: 1 1 calc(50% - 0.5rem); // 2 por linha
+          max-width: 50%;
         }
+      }
+
+      .btn {
+        text-align: center;
       }
     }
   }

@@ -1,8 +1,8 @@
 import axios from 'axios'
+import router from '@/router' // ajuste se necessário
 
 const getUrl = () => {
-  const url = import.meta.env.VITE_BASE_BACKEND_URL
-  return url
+  return import.meta.env.VITE_BASE_BACKEND_URL
 }
 
 const http = new (function () {
@@ -17,9 +17,9 @@ const http = new (function () {
   }
 
   this.authApi = function () {
-    const token = localStorage.getItem('token') ? localStorage.getItem('token') : ''
+    const token = localStorage.getItem('token') || ''
 
-    return axios.create({
+    const instance = axios.create({
       baseURL: getUrl(),
       headers: {
         'Content-Type': 'application/json',
@@ -27,6 +27,20 @@ const http = new (function () {
         Authorization: `Bearer ${token}`,
       },
     })
+
+    // Interceptor de resposta para tratar 401
+    instance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token') // ou qualquer limpeza que precisar
+          router.push({ name: 'login' }) // ajuste a rota conforme sua aplicação
+        }
+        return Promise.reject(error)
+      },
+    )
+
+    return instance
   }
 })()
 

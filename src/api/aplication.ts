@@ -11,3 +11,9 @@ export const update = (id: string, params: string) =>
   http.authApi().put(`/application/${id}`, params)
 
 export const remove = (id: string) => http.authApi().delete(`/application/${id}`)
+
+export const getAplicationsByVacancy = (id: string) =>
+  http.authApi().get(`/application/vacancy/${id}`)
+
+export const getAplicationByUser = (id: string, params: string) =>
+  http.authApi().get(`/application/person/${id}?${toQueryString(params)}`)
