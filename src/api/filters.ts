@@ -14,8 +14,10 @@ export const getEducationStatus = () => http.authApi().get('/filter/education-st
 
 export const getLanguageLevels = () => http.authApi().get('/filter/language-level')
 
+export const getEmploymentTypes = () => http.authApi().get('/filter/employment-type')
+
 export const getWorkModels = () => http.authApi().get('/filter/work-model')
 
-export const getEmploymentTypes = () => http.authApi().get('/filter/employment-type')
+export const getAplicationStatus = () => http.authApi().get('/filter/application-status')
 
 export const getVacancyStatus = () => http.authApi().get('/filter/vacancy-status')

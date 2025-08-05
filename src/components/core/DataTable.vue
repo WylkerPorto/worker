@@ -27,7 +27,7 @@
                   ? item[column?.key]
                     ? 'Ativo'
                     : 'Inativo'
-                  : item[column?.key]
+                  : getNestedValue(item, column?.key)
             }}
           </td>
           <td class="actions" v-if="$slots['actions']">
@@ -97,6 +97,9 @@ export default {
   methods: {
     handleSearch() {
       this.$emit('onSearch', this.search)
+    },
+    getNestedValue(obj: object, path: string) {
+      return path.split('.').reduce((acc, key) => acc?.[key], obj)
     },
   },
   computed: {

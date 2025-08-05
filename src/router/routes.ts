@@ -80,6 +80,7 @@ export default [
       {
         path: 'vacancys',
         name: 'vacancyController',
+        component: () => import('@/views/supervisor/Vacancy.vue'),
       },
     ],
   },
@@ -106,6 +107,16 @@ export default [
         path: 'vacancy/:id?',
         name: 'recruiterVacancyForm',
         component: () => import('@/views/recruiter/VacancyCreate.vue'),
+      },
+      {
+        path: 'vacancy/:id/detail',
+        name: 'recruiterVacancyDetail',
+        component: () => import('@/views/recruiter/AplicationsVacancy.vue'),
+      },
+      {
+        path: 'candidate/:id',
+        name: 'recruiterCandidateDetail',
+        component: () => import('@/views/recruiter/Candidate.vue'),
       },
       {
         path: 'positions',

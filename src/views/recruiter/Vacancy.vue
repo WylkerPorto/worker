@@ -24,7 +24,11 @@
           <button class="rounded" @click="toggleDropdown($event, item.id)" title="Editar Status">
             <Icon icon="fluent:status-12-filled" />
           </button>
-          <button class="rounded primary" @click="handleEditVacancy(item)" title="Ver Candidatos">
+          <button
+            class="rounded primary"
+            @click="$router.push({ name: 'recruiterVacancyDetail', params: { id: item.id } })"
+            title="Ver Candidatos"
+          >
             <Icon icon="mdi:user" />
           </button>
           <button class="rounded success" @click="handleEditVacancy(item)" title="Editar">
@@ -144,9 +148,6 @@ export default {
       this.page++
       this.getVacancies()
     },
-    handleEditVacancy(item: IVacancyItem) {
-      this.$router.push({ name: 'recruiterVacancyForm', params: { id: item.id } })
-    },
     async handleToggleVacancy(item: IVacancyItem, status: string) {
       this.loading = true
       const oldStatus = item.status
@@ -176,6 +177,9 @@ export default {
         left: `${rect.left + window.scrollX - 30}px`,
       }
       this.openDropdownId = this.openDropdownId === itemId ? null : itemId
+    },
+    handleEditVacancy(item: IVacancyItem) {
+      this.$router.push({ name: 'recruiterVacancyForm', params: { id: item.id } })
     },
   },
   computed: {
