@@ -1,1 +1,0 @@
-import{h as o}from"./http-DlcZp92k.js";import{t as a}from"./conversors-B7KkBRJf.js";const s=t=>o.authApi().post("/application",t),e=(t,p)=>o.authApi().get(`/application/person/${t}?${a(p)}`);export{s as c,e as g};
