@@ -1,23 +1,12 @@
 <template>
   <form class="card" @submit.stop.prevent="validate">
     <h2>Login</h2>
-    <FormInput
-      label="E-mail"
-      v-model="form.email"
-      :error="errors.email"
-      type="email"
-      placeholder="Digite seu e-mail"
-    />
-    <FormInput
-      label="Senha"
-      v-model="form.password"
-      :error="errors.password"
-      type="password"
-      placeholder="Digite sua senha"
-    />
+    <FormInput label="E-mail" v-model="form.email" :error="errors.email" type="email" placeholder="Digite seu e-mail" />
+    <FormInput label="Senha" v-model="form.password" :error="errors.password" type="password"
+      placeholder="Digite sua senha" />
     <div class="flex">
       <MySwitch v-model="admin" />
-      <span @click="admin = !admin">{{ admin ? 'Recrutador' : 'Candidato' }}</span>
+      <span @click="admin = !admin">{{ admin ? 'Empresa' : 'Candidato' }}</span>
     </div>
     <a href="#" @click="localForm.type = 'forgot-password'">Esqueci minha senha</a>
     <MyButton class="primary" :loading="loading">Entrar</MyButton>
@@ -145,7 +134,7 @@ form {
     }
   }
 
-  > a {
+  >a {
     text-align: right;
   }
 }

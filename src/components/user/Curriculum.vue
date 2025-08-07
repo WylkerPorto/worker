@@ -2,57 +2,23 @@
   <form @submit.prevent="validate">
     <MyAccordeon title="Dados pessoais" :isOpen="true">
       <div class="group">
-        <FormInput
-          v-model="form.name"
-          :error="errors.name"
-          type="text"
-          placeholder="Digite seu nome"
-          label="Name"
-        />
+        <FormInput v-model="form.name" :error="errors.name" type="text" placeholder="Digite seu nome" label="Name" />
       </div>
 
       <div class="group">
-        <FormInput
-          v-model="form.email"
-          :error="errors.email"
-          type="email"
-          placeholder="Digite seu e-mail"
-          label="Email"
-        />
+        <FormInput v-model="form.email" :error="errors.email" type="email" placeholder="Digite seu e-mail"
+          label="Email" />
       </div>
 
       <div class="group flex">
-        <FormInput
-          v-model="form.cpf"
-          :error="errors.cpf"
-          type="text"
-          placeholder="Digite seu CPF"
-          label="CPF"
-        />
-        <FormInput
-          v-model="form.rg"
-          :error="errors.rg"
-          type="text"
-          placeholder="Digite seu RG"
-          label="RG"
-        />
+        <FormInput v-model="form.cpf" :error="errors.cpf" type="text" placeholder="Digite seu CPF" label="CPF" />
+        <FormInput v-model="form.rg" :error="errors.rg" type="text" placeholder="Digite seu RG" label="RG" />
       </div>
 
       <div class="group flex">
-        <FormInput
-          v-model="form.cnh"
-          :error="errors.cnh"
-          type="text"
-          placeholder="Digite sua CNH"
-          label="CNH"
-        />
-        <FormInput
-          v-model="form.typeCnh"
-          :error="errors.typeCnh"
-          type="text"
-          placeholder="Digite o tipo de CNH"
-          label="Tipo de CNH"
-        />
+        <FormInput v-model="form.cnh" :error="errors.cnh" type="text" placeholder="Digite sua CNH" label="CNH" />
+        <FormInput v-model="form.typeCnh" :error="errors.typeCnh" type="text" placeholder="Digite o tipo de CNH"
+          label="Tipo de CNH" />
       </div>
 
       <div class="group flex">
@@ -60,124 +26,61 @@
           <span>Possui deficiência?</span>
           <MySwitch v-model="form.hasDisability" />
         </div>
-        <MySelect
-          v-if="form.hasDisability"
-          :options="disabilities"
-          v-model="form.typeDisability"
-          label="Deficiência"
-          :error="errors.typeDisability"
-        />
+        <MySelect v-if="form.hasDisability" :options="disabilities" v-model="form.typeDisability" label="Deficiência"
+          :error="errors.typeDisability" />
       </div>
 
       <div class="group flex">
         <MySelect :options="genders" v-model="form.gender" label="Sexo" :error="errors.gender" />
-        <MySelect
-          :options="maritalStatus"
-          v-model.number="form.maritalStatusId"
-          label="Estado Civil"
-          :error="errors.maritalStatusId"
-        />
+        <MySelect :options="maritalStatus" v-model.number="form.maritalStatusId" label="Estado Civil"
+          :error="errors.maritalStatusId" />
       </div>
 
       <div class="group flex">
-        <FormInput
-          v-model="form.phoneNumber"
-          :error="errors.phoneNumber"
-          type="tel"
-          mask="tel"
-          placeholder="(99) 99999-9999"
-          label="Telefone"
-        />
-        <FormInput
-          v-model="form.phoneNumber2"
-          :error="errors.phoneNumber2"
-          type="tel"
-          mask="tel"
-          placeholder="(99) 99999-9999"
-          label="Telefone 2"
-        />
+        <FormInput v-model="form.phoneNumber" :error="errors.phoneNumber" type="tel" mask="tel"
+          placeholder="(99) 99999-9999" label="Telefone" />
+        <FormInput v-model="form.phoneNumber2" :error="errors.phoneNumber2" type="tel" mask="tel"
+          placeholder="(99) 99999-9999" label="Telefone 2" />
+      </div>
+    </MyAccordeon>
+
+    <MyAccordeon title="Sobre">
+      <div class="group">
+        <textarea class="textarea" v-model="form.presentation" :error="errors.presentation"
+          placeholder="Apresentação" />
       </div>
     </MyAccordeon>
 
     <MyAccordeon title="Localidade">
       <div class="group">
-        <MySelect
-          :options="nationalities"
-          v-model="form.nationality"
-          label="Nacionalidade"
-          :error="errors.nationality"
-        />
+        <MySelect :options="nationalities" v-model="form.nationality" label="Nacionalidade"
+          :error="errors.nationality" />
       </div>
 
       <div class="group">
-        <FormInput
-          v-model="form.postalCode"
-          :error="errors.postalCode"
-          type="text"
-          placeholder="Digite o CEP"
-          label="CEP"
-        />
+        <FormInput v-model="form.postalCode" :error="errors.postalCode" type="text" placeholder="Digite o CEP"
+          label="CEP" />
       </div>
 
       <div class="group flex">
-        <FormInput
-          v-model="form.street"
-          :error="errors.street"
-          type="text"
-          placeholder="Digite a rua"
-          label="Rua"
-        />
-        <FormInput
-          v-model.number="form.number"
-          :error="errors.number"
-          type="number"
-          placeholder="555"
-          label="Número"
-        />
+        <FormInput v-model="form.street" :error="errors.street" type="text" placeholder="Digite a rua" label="Rua" />
+        <FormInput v-model.number="form.number" :error="errors.number" type="number" placeholder="555" label="Número" />
       </div>
 
       <div class="group">
-        <FormInput
-          v-model="form.complement"
-          :error="errors.complement"
-          type="text"
-          placeholder="Fundo A"
-          label="Complemento"
-        />
+        <FormInput v-model="form.complement" :error="errors.complement" type="text" placeholder="Fundo A"
+          label="Complemento" />
       </div>
 
       <div class="group flex">
-        <FormInput
-          v-model="form.neighborhood"
-          :error="errors.neighborhood"
-          type="text"
-          placeholder="Limeira"
-          label="Bairro"
-        />
-        <FormInput
-          v-model="form.city"
-          :error="errors.city"
-          type="text"
-          placeholder="São Paulo"
-          label="Cidade"
-        />
+        <FormInput v-model="form.neighborhood" :error="errors.neighborhood" type="text" placeholder="Limeira"
+          label="Bairro" />
+        <FormInput v-model="form.city" :error="errors.city" type="text" placeholder="São Paulo" label="Cidade" />
       </div>
 
       <div class="group flex">
-        <FormInput
-          v-model="form.state"
-          :error="errors.state"
-          type="text"
-          placeholder="SP"
-          label="Estado"
-        />
-        <FormInput
-          v-model="form.country"
-          :error="errors.country"
-          type="text"
-          placeholder="Brasil"
-          label="País"
-        />
+        <FormInput v-model="form.state" :error="errors.state" type="text" placeholder="SP" label="Estado" />
+        <FormInput v-model="form.country" :error="errors.country" type="text" placeholder="Brasil" label="País" />
       </div>
     </MyAccordeon>
 
@@ -193,13 +96,8 @@
           <MySwitch v-model="form.firstJob" />
         </div>
 
-        <FormInput
-          v-model.number="form.salaryClaim"
-          :error="errors.salaryClaim"
-          type="number"
-          placeholder="5000"
-          label="Pretensão Salarial"
-        />
+        <FormInput v-model.number="form.salaryClaim" :error="errors.salaryClaim" type="number" placeholder="5000"
+          label="Pretensão Salarial" />
       </div>
 
       <div class="flex mt">
@@ -246,11 +144,7 @@
             <MyButton class="info" type="button" @click="editGraduation(graduation)">
               <Icon icon="iconamoon:pen" />
             </MyButton>
-            <MyButton
-              class="danger"
-              type="button"
-              @click="() => confirmDeleteGraduation(graduation)"
-            >
+            <MyButton class="danger" type="button" @click="() => confirmDeleteGraduation(graduation)">
               <Icon icon="iconamoon:trash" />
             </MyButton>
           </div>
@@ -272,9 +166,7 @@
               {{ course.durationHours > 1 ? 'horas' : 'hora' }} -
               {{ toFormatDate(course.completionDate) }}
             </p>
-            <a :href="course.certificateUrl" target="_blank" v-if="course.certificateUrl"
-              >Certificado</a
-            >
+            <a :href="course.certificateUrl" target="_blank" v-if="course.certificateUrl">Certificado</a>
           </div>
           <div class="btns">
             <MyButton class="info" type="button" @click="editCourse(course)">
@@ -297,9 +189,7 @@
         <li v-for="language in languages" :key="language.id">
           <div>
             <p>{{ language.language }} - {{ language.level }}</p>
-            <a :href="language.certificateUrl" target="_blank" v-if="language.certificateUrl"
-              >Certificado</a
-            >
+            <a :href="language.certificateUrl" target="_blank" v-if="language.certificateUrl">Certificado</a>
           </div>
           <div class="btns">
             <MyButton class="info" type="button" @click="editLanguage(language)">
@@ -314,88 +204,37 @@
     </MyAccordeon>
 
     <MyAccordeon title="Social">
-      <div class="group">
-        <textarea
-          class="textarea"
-          v-model="form.presentation"
-          :error="errors.presentation"
-          placeholder="Apresentação"
-        />
+
+      <div class="group flex">
+        <FormInput v-model="form.facebookUrl" :error="errors.facebookUrl" type="url"
+          placeholder="Digite o link do facebook" label="Facebook" />
+        <FormInput v-model="form.instagramUrl" :error="errors.instagramUrl" type="url"
+          placeholder="Digite o link do instagram" label="Instagram" />
       </div>
 
       <div class="group flex">
-        <FormInput
-          v-model="form.facebookUrl"
-          :error="errors.facebookUrl"
-          type="url"
-          placeholder="Digite o link do facebook"
-          label="Facebook"
-        />
-        <FormInput
-          v-model="form.instagramUrl"
-          :error="errors.instagramUrl"
-          type="url"
-          placeholder="Digite o link do instagram"
-          label="Instagram"
-        />
-      </div>
-
-      <div class="group flex">
-        <FormInput
-          v-model="form.linkedinUrl"
-          :error="errors.linkedinUrl"
-          type="url"
-          placeholder="Digite o link do linkedin"
-          label="LinkedIn"
-        />
-        <FormInput
-          v-model="form.personalUrl"
-          :error="errors.personalUrl"
-          type="url"
-          placeholder="Digite o link pessoal"
-          label="Site Pessoal"
-        />
+        <FormInput v-model="form.linkedinUrl" :error="errors.linkedinUrl" type="url"
+          placeholder="Digite o link do linkedin" label="LinkedIn" />
+        <FormInput v-model="form.personalUrl" :error="errors.personalUrl" type="url" placeholder="Digite o link pessoal"
+          label="Site Pessoal" />
       </div>
     </MyAccordeon>
 
-    <MyButton class="primary" :loading="loading" type="submit" @click="validate"
-      >Atualizar</MyButton
-    >
+    <MyButton class="primary" :loading="loading" type="submit" @click="validate">Atualizar</MyButton>
   </form>
 
-  <GraduationModal
-    :show="showGraduationModal"
-    @onClose="closeModals"
-    @onSave="loadGraduations"
-    :dataForm="selectedGraduation"
-  />
+  <GraduationModal :show="showGraduationModal" @onClose="closeModals" @onSave="loadGraduations"
+    :dataForm="selectedGraduation" />
 
-  <CoursesModal
-    :show="showCoursesModal"
-    @onClose="closeModals"
-    @onSave="loadCourses"
-    :dataForm="selectedCourse"
-  />
+  <CoursesModal :show="showCoursesModal" @onClose="closeModals" @onSave="loadCourses" :dataForm="selectedCourse" />
 
-  <LanguageModal
-    :show="showLanguageModal"
-    @onClose="closeModals"
-    @onSave="loadLanguages"
-    :dataForm="selectedLanguage"
-  />
+  <LanguageModal :show="showLanguageModal" @onClose="closeModals" @onSave="loadLanguages"
+    :dataForm="selectedLanguage" />
 
-  <WorkExperienceModal
-    :show="showWorkExperienceModal"
-    @onClose="closeModals"
-    @onSave="loadWorkExperiences"
-    :dataForm="selectedWorkExperience"
-  />
+  <WorkExperienceModal :show="showWorkExperienceModal" @onClose="closeModals" @onSave="loadWorkExperiences"
+    :dataForm="selectedWorkExperience" />
 
-  <DeleteConfirmationModal
-    :show="showDeleteModal"
-    @onClose="closeModals"
-    @onConfirm="handleDelete"
-  />
+  <DeleteConfirmationModal :show="showDeleteModal" @onClose="closeModals" @onConfirm="handleDelete" />
 </template>
 <script lang="ts">
 import * as yup from 'yup'

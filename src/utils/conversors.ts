@@ -10,6 +10,6 @@ export const toQueryString = (paramsObj?: Record<string, any>): string => {
 
 export const toFormatDate = (date: string): string => {
   if (!date) return ''
-  const format = moment(date).format('DD/MM/YYYY')
+  const format = moment.utc(date).format('DD/MM/YYYY')
   return format
 }

@@ -25,14 +25,8 @@
       <p>{{ vacancy.responsibilities }}</p>
       <p><b>Requisitos:</b></p>
       <p>{{ vacancy.requirements }}</p>
-      <MyButton
-        v-if="vacancy.status === 'Ativa'"
-        class="btn success"
-        type="button"
-        :loading="loading"
-        @click="apply"
-      >
-        Aplicar
+      <MyButton v-if="vacancy.status === 'Ativa'" class="btn success" type="button" :loading="loading" @click="apply">
+        Candidatar-se
       </MyButton>
     </section>
   </main>

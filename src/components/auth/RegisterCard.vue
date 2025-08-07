@@ -1,35 +1,12 @@
 <template>
   <form class="card" @submit.stop.prevent="validate">
     <h2>Criar conta</h2>
-    <FormInput
-      label="Nome"
-      v-model="form.name"
-      :error="errors.name"
-      type="text"
-      placeholder="Digite seu nome"
-    />
-    <FormInput
-      label="E-mail"
-      v-model="form.email"
-      :error="errors.email"
-      type="email"
-      placeholder="Digite seu e-mail"
-    />
-    <FormInput
-      label="Senha"
-      v-model="form.password"
-      :error="errors.password"
-      type="password"
-      placeholder="Digite sua senha"
-    />
-    <FormInput
-      label="Telefone"
-      v-model="form.phoneNumber"
-      :error="errors.phoneNumber"
-      type="tel"
-      placeholder="(99) 99999-9999"
-      mask="tel"
-    />
+    <FormInput label="Nome" v-model="form.name" :error="errors.name" type="text" placeholder="Digite seu nome" />
+    <FormInput label="E-mail" v-model="form.email" :error="errors.email" type="email" placeholder="Digite seu e-mail" />
+    <FormInput label="Senha" v-model="form.password" :error="errors.password" type="password"
+      placeholder="Digite sua senha" />
+    <FormInput label="Telefone" v-model="form.phoneNumber" :error="errors.phoneNumber" type="tel"
+      placeholder="(99) 99999-9999" mask="tel" />
     <MyButton class="primary" :loading="loading">Cadastrar</MyButton>
     <hr />
     <span>
@@ -100,6 +77,7 @@ export default {
       this.loading = true
       try {
         await create(this.form)
+        this.$snotify.success('Cadastro realizado com sucesso!')
       } catch (error) {
         this.$snotify.error('Erro ao cadastrar: ' + error.message)
       } finally {
@@ -115,7 +93,7 @@ form {
     text-align: center;
   }
 
-  > a {
+  >a {
     text-align: right;
   }
 }

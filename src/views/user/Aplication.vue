@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <header>
-      <h1>Vagas aplicadas</h1>
+      <h1>Vagas candidatadas</h1>
       <form @submit.stop.prevent="handleSearch">
         <SearchInput v-model="search" />
       </form>
@@ -28,11 +28,8 @@
           </p>
         </article>
 
-        <RouterLink
-          class="btn primary"
-          :to="{ name: 'userVacancyDetail', params: { id: item.vacancy.id } }"
-          target="_blank"
-        >
+        <RouterLink class="btn primary" :to="{ name: 'userVacancyDetail', params: { id: item.vacancy.id } }"
+          target="_blank">
           Ver detalhes
         </RouterLink>
       </div>

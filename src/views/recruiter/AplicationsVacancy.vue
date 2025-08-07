@@ -4,31 +4,32 @@
       <header>
         <h1>Candidatos a vaga {{ vaga.title }}</h1>
       </header>
-      <DataTable
-        :items="items"
-        :columns="columns"
-        :loading="loading"
-        :total="total"
-        :loadMore="loadMore"
-        @onLoadMore="handleLoadMore"
-        @onSearch="handleSearch"
-      >
+      <DataTable :items="items" :columns="columns" :loading="loading" :total="total" :loadMore="loadMore"
+        @onLoadMore="handleLoadMore" @onSearch="handleSearch">
         <template #actions="{ item }">
-          <RouterLink
-            class="rounded primary"
-            :to="{ name: 'recruiterCandidateDetail', params: { id: item.person.id } }"
-            title="Ver Candidato"
-            target="_blank"
-          >
+          <button class="rounded" @click="toggleDropdown($event, item)" title="Editar Status">
+            <Icon icon="fluent:status-12-filled" />
+          </button>
+          <RouterLink class="rounded primary" :to="{ name: 'recruiterCandidateDetail', params: { id: item.person.id } }"
+            title="Ver Candidato" target="_blank">
             <Icon icon="mdi:user" />
           </RouterLink>
         </template>
       </DataTable>
     </section>
+    <article v-if="openDropdownItem" ref="dropdown" :style="dropdownStyles" class="dropdown-status">
+      <ul>
+        <li v-for="status in aplicationStatus" :key="status.id"
+          @click="handleToggleStatus(openDropdownItem, status.value)">
+          {{ status.title }}
+        </li>
+      </ul>
+    </article>
   </main>
 </template>
 <script lang="ts">
-import { getAplicationsByVacancy } from '@/api/aplication'
+import { getAplicationsByVacancy, update } from '@/api/aplication'
+import { getAplicationStatus } from '@/api/filters'
 import { get } from '@/api/vacancy'
 import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
@@ -42,6 +43,12 @@ export default {
   },
   data() {
     return {
+      openDropdownItem: null,
+      dropdownStyles: {
+        position: 'absolute',
+        top: '0px',
+        left: '0px',
+      },
       vaga: {} as IVacancyItem,
       items: [],
       columns: [
@@ -50,6 +57,7 @@ export default {
         { key: 'status', title: 'Estado' },
         { key: 'createdAt', title: 'Criado em', type: 'date' },
       ],
+      aplicationStatus: [] as string[],
       loading: false,
       total: 0,
       page: 1,
@@ -59,8 +67,21 @@ export default {
   mounted() {
     this.getAplicationsByVacancy()
     this.getVacancyDetail()
+    this.getAplicationStatus()
+    document.addEventListener('click', this.handleClickOutside)
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleClickOutside)
   },
   methods: {
+    async getAplicationStatus() {
+      try {
+        const response = await getAplicationStatus()
+        this.aplicationStatus = response.data
+      } catch (error) {
+        this.$snotify.error(error)
+      }
+    },
     async getAplicationsByVacancy() {
       this.loading = true
       try {
@@ -94,18 +115,68 @@ export default {
       this.items = []
       this.getAplicationsByVacancy()
     },
-  },
-  computed: {
-    filters() {
-      return {
-        page: this.page,
-        search: this.search,
+    async handleToggleStatus(item, status: string) {
+      this.loading = true
+      const newItem = { ...item }
+      try {
+        newItem.status = status
+        delete newItem.id
+        delete newItem.updatedAt
+        delete newItem.createdAt
+        delete newItem.vacancy
+        delete newItem.person
+        await update(item.id, newItem)
+        this.$snotify.success('Candidatura atualizada com sucesso!')
+        item.status = status
+      } catch (error) {
+        this.$snotify.error('Erro ao atualizar candidatura: ' + error)
+      } finally {
+        this.openDropdownItem = null
+        this.loading = false
       }
     },
-    loadMore() {
-      return this.page < this.total
+    toggleDropdown(event: Event, Item) {
+      const rect = (event.target as HTMLElement).getBoundingClientRect()
+
+      // Toggle
+      if (this.openDropdownItem === Item) {
+        this.openDropdownItem = null
+        return
+      }
+      this.openDropdownItem = Item
+      this.dropdownStyles = {
+        position: 'absolute',
+        top: `${rect.bottom + 8}px`,
+        left: `${rect.left - 60}px`,
+      }
     },
-  },
+    handleClickOutside(event: MouseEvent) {
+      setTimeout(() => {
+        const dropdown = this.$refs.dropdown as HTMLElement | undefined
+        const target = event.target as Node
+        const buttonClicked = (event.target as HTMLElement).closest('.actions')
+
+        if (
+          dropdown &&
+          !dropdown.contains(target) &&
+          !buttonClicked
+        ) {
+          this.openDropdownItem = null
+        }
+      }, 0)
+    },
+    computed: {
+      filters() {
+        return {
+          page: this.page,
+          search: this.search,
+        }
+      },
+      loadMore() {
+        return this.page < this.total
+      },
+    },
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -131,6 +202,8 @@ main {
     }
 
     .actions {
+
+      button,
       a {
         padding: 5px;
         border: none;
@@ -139,6 +212,30 @@ main {
         .iconify {
           font-size: 15px;
         }
+      }
+    }
+  }
+}
+
+article {
+  background: var(--background);
+  border: 1px solid var(--text);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 10px 20px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--blue);
+        color: white;
       }
     }
   }

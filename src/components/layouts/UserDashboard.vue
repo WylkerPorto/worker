@@ -1,7 +1,7 @@
 <template>
   <header>
     <nav>
-      <router-link :to="{ name: 'userAplication' }">Aplicação</router-link>
+      <router-link :to="{ name: 'userAplication' }">Candidaturas</router-link>
       <router-link :to="{ name: 'userVacancy' }">Vagas</router-link>
       <router-link :to="{ name: 'userProfile' }">Currículo</router-link>
       <router-link to="/logout">Sair</router-link>

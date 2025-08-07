@@ -3,62 +3,40 @@
     <section class="card">
       <header>
         <h1>Vagas</h1>
-        <button
-          class="rounded"
-          @click="() => $router.push({ name: 'recruiterVacancyForm' })"
-          title="Nova Vaga"
-        >
+        <button class="rounded" @click="() => $router.push({ name: 'recruiterVacancyForm' })" title="Nova Vaga">
           <Icon icon="qlementine-icons:new-16" />
         </button>
       </header>
-      <DataTable
-        :items="items"
-        :columns="columns"
-        :loading="loading"
-        :total="total"
-        :loadMore="loadMore"
-        @onLoadMore="handleLoadMore"
-        @onSearch="handleSearch"
-      >
+      <DataTable :items="items" :columns="columns" :loading="loading" :total="total" :loadMore="loadMore"
+        @onLoadMore="handleLoadMore" @onSearch="handleSearch">
         <template #actions="{ item }">
-          <button class="rounded" @click="toggleDropdown($event, item.id)" title="Editar Status">
+          <button class="rounded" @click="toggleDropdown($event, item)" title="Editar Status">
             <Icon icon="fluent:status-12-filled" />
           </button>
-          <button
-            class="rounded primary"
-            @click="$router.push({ name: 'recruiterVacancyDetail', params: { id: item.id } })"
-            title="Ver Candidatos"
-          >
+          <RouterLink class="rounded primary" :to="{ name: 'recruiterVacancyDetail', params: { id: item.id } }"
+            title="Ver Candidatos">
             <Icon icon="mdi:user" />
-          </button>
-          <button class="rounded success" @click="handleEditVacancy(item)" title="Editar">
+          </RouterLink>
+          <RouterLink class="rounded success" :to="{ name: 'recruiterVacancyForm', params: { id: item.id } }"
+            title="Editar">
             <Icon icon="carbon:edit" />
-          </button>
+          </RouterLink>
           <button class="rounded danger" @click="handleConfirmDelete(item)" title="Excluir">
             <Icon icon="carbon:trash-can" />
           </button>
-          <teleport to="body">
-            <article v-if="openDropdownId === item.id" :style="dropdownStyles">
-              <ul>
-                <li
-                  v-for="status in vacancyStatus"
-                  @click="handleToggleVacancy(item, status.title)"
-                  :key="status.id"
-                >
-                  {{ status.title }}
-                </li>
-              </ul>
-            </article>
-          </teleport>
         </template>
       </DataTable>
     </section>
-    <DeleteVacancyModal
-      :show="showDeleteVacancyModal"
-      :dataForm="editItem"
-      @onClose="closeAllModals"
-      @onConfirm="refresh"
-    />
+    <article v-if="openDropdownItem" ref="dropdown" :style="dropdownStyles" class="dropdown-status">
+      <ul>
+        <li v-for="status in vacancyStatus" :key="status.id"
+          @click="handleToggleVacancy(openDropdownItem, status.title)">
+          {{ status.title }}
+        </li>
+      </ul>
+    </article>
+    <DeleteVacancyModal :show="showDeleteVacancyModal" :dataForm="editItem" @onClose="closeAllModals"
+      @onConfirm="refresh" />
   </main>
 </template>
 <script lang="ts">
@@ -78,7 +56,7 @@ export default {
   },
   data() {
     return {
-      openDropdownId: null as number | null,
+      openDropdownItem: null as IVacancyItem | null,
       dropdownStyles: {
         position: 'absolute',
         top: '0px',
@@ -103,6 +81,10 @@ export default {
   mounted() {
     this.getVacancies()
     this.getVacancyStatus()
+    document.addEventListener('click', this.handleClickOutside)
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleClickOutside)
   },
   methods: {
     refresh() {
@@ -150,37 +132,55 @@ export default {
     },
     async handleToggleVacancy(item: IVacancyItem, status: string) {
       this.loading = true
-      const oldStatus = item.status
+      const newItem = { ...item }
       try {
-        item.status = status
-        const id = item.id
-        delete item.id
-        delete item.slug
-        delete item.createdAt
-        delete item.updatedAt
-        delete item.deletedAt
-        await update(id, item)
+        newItem.status = status
+        delete newItem.id
+        delete newItem.slug
+        delete newItem.createdAt
+        delete newItem.position
+        delete newItem.department
+        await update(item.id, newItem)
         this.$snotify.success('Vaga atualizada com sucesso!')
+        this.refresh()
       } catch (error) {
         this.$snotify.error('Erro ao atualizar a vaga: ' + error)
-        item.status = oldStatus
       } finally {
-        this.openDropdownId = null
+        this.openDropdownItem = null
         this.loading = false
       }
     },
-    toggleDropdown(event: Event, itemId: number | null) {
-      const rect = event.target.getBoundingClientRect()
+    toggleDropdown(event: Event, item: IVacancyItem) {
+      const rect = (event.target as HTMLElement).getBoundingClientRect()
+
+      // Toggle
+      if (this.openDropdownItem === item) {
+        this.openDropdownItem = null
+        return
+      }
+
       this.dropdownStyles = {
         position: 'absolute',
         top: `${rect.bottom + window.scrollY + 10}px`,
         left: `${rect.left + window.scrollX - 30}px`,
       }
-      this.openDropdownId = this.openDropdownId === itemId ? null : itemId
+      this.openDropdownItem = item
     },
-    handleEditVacancy(item: IVacancyItem) {
-      this.$router.push({ name: 'recruiterVacancyForm', params: { id: item.id } })
-    },
+    handleClickOutside(event: MouseEvent) {
+      setTimeout(() => {
+        const dropdown = this.$refs.dropdown as HTMLElement | undefined
+        const target = event.target as Node
+        const buttonClicked = (event.target as HTMLElement).closest('.actions')
+
+        if (
+          dropdown &&
+          !dropdown.contains(target) &&
+          !buttonClicked // garante que o botão também não foi clicado
+        ) {
+          this.openDropdownItem = null
+        }
+      }, 0)
+    }
   },
   computed: {
     filters() {
@@ -227,7 +227,9 @@ main {
     }
 
     .actions {
-      button {
+
+      button,
+      a {
         padding: 5px;
         border: none;
         display: flex;
