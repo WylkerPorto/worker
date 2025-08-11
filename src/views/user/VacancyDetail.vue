@@ -18,13 +18,13 @@
       <p><b>Local: </b>{{ vacancy.city }} - {{ vacancy.state }}</p>
       <hr />
       <h3>Detalhes da vaga</h3>
-      <p>{{ vacancy.description }}</p>
+      <div v-html="vacancy.description"></div>
       <p><b>Conhecimentos:</b></p>
-      <p>{{ vacancy.niceToHave }}</p>
+      <div v-html="vacancy.niceToHave"></div>
       <p><b>Responsabilidades:</b></p>
-      <p>{{ vacancy.responsibilities }}</p>
+      <div v-html="vacancy.responsibilities"></div>
       <p><b>Requisitos:</b></p>
-      <p>{{ vacancy.requirements }}</p>
+      <div v-html="vacancy.requirements"></div>
       <MyButton v-if="vacancy.status === 'Ativa'" class="btn success" type="button" :loading="loading" @click="apply">
         Candidatar-se
       </MyButton>
@@ -134,6 +134,35 @@ export default {
       b {
         font-weight: bold;
       }
+    }
+  }
+}
+</style>
+
+<style>
+section {
+  div {
+    margin-bottom: 1rem;
+
+    ul {
+      padding-left: 20px;
+      list-style: disc;
+      margin-bottom: 1rem;
+    }
+
+    ol {
+      padding-left: 20px;
+      list-style: decimal;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin-bottom: 0.8rem;
+    }
+
+    strong,
+    b {
+      font-weight: bold;
     }
   }
 }

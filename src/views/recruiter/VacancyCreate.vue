@@ -11,7 +11,7 @@
       <form @submit.prevent="validate">
         <FormInput label="Título" type="text" placeholder="Analista de Sistemas Sênior" v-model="form.title"
           :error="errors.title" required />
-        <FormInput label="Descrição" type="text" placeholder="Descrição completa da vaga." v-model="form.description"
+        <Editor label="Descrição" placeholder="Descrição completa da vaga." v-model="form.description"
           :error="errors.description" required />
         <div class="flex">
           <MySelect label="Departamento" :options="departmentList" v-model="form.departmentId"
@@ -19,12 +19,12 @@
           <MySelect label="Cargo" :options="positionList" v-model="form.positionId" :error="errors.positionId"
             required />
         </div>
-        <FormInput label="Conhecimento Desejável" type="text" placeholder="Experiência com Docker, Kubernetes."
+        <Editor label="Conhecimento Desejável" placeholder="Experiência com Docker, Kubernetes."
           v-model="form.niceToHave" :error="errors.niceToHave" required />
-        <FormInput label="Responsabilidades" type="text" placeholder="Desenvolver APIs, integrar sistemas"
-          v-model="form.responsibilities" :error="errors.responsibilities" required />
-        <FormInput label="Requisitos" type="text" placeholder="Conhecimentos sólidos em NestJS, PostgreSQL."
-          v-model="form.requirements" :error="errors.requirements" required />
+        <Editor label="Responsabilidades" placeholder="Descrição completa da vaga." v-model="form.responsibilities"
+          :error="errors.responsibilities" required />
+        <Editor label="Requisitos" placeholder="Descrição completa da vaga." v-model="form.requirements"
+          :error="errors.requirements" required />
         <div class="flex">
           <MySelect label="Modelo de Trabalho" :options="workModelList" v-model="form.workModel"
             :error="errors.workModel" required />
@@ -48,6 +48,7 @@
           Cancelar
         </MyButton>
       </form>
+
     </section>
   </main>
 </template>
@@ -63,11 +64,13 @@ import { create, get, update } from '@/api/vacancy'
 import { list as getDepartments } from '@/api/department'
 import { list as getPositions } from '@/api/position'
 import { getWorkModels, getEmploymentTypes } from '@/api/filters'
+import Editor from '@/components/core/Editor.vue'
 
 export default {
   name: 'RecruiterVacancyCreate',
   components: {
     Icon,
+    Editor,
     MyButton,
     MySelect,
     FormInput,

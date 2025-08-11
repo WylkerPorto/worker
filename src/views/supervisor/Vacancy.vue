@@ -4,19 +4,13 @@
       <header>
         <h1>Vagas</h1>
       </header>
-      <DataTable
-        :items="items"
-        :columns="columns"
-        :loading="loading"
-        :total="total"
-        :loadMore="loadMore"
-        @onLoadMore="handleLoadMore"
-        @onSearch="handleSearch"
-      >
+      <DataTable :items="items" :columns="columns" :loading="loading" :total="total" :loadMore="loadMore"
+        @onLoadMore="handleLoadMore" @onSearch="handleSearch">
         <template #actions="{ item }">
-          <button class="rounded primary" @click="handleViewVacancy(item)" title="Ver Candidatos">
+          <RouterLink class="rounded primary" :to="{ name: 'supervisorVacancyDetail', params: { id: item.id } }"
+            title="Ver Candidatos">
             <Icon icon="mdi:user" />
-          </button>
+          </RouterLink>
         </template>
       </DataTable>
     </section>
@@ -69,9 +63,6 @@ export default {
       this.page++
       this.getVacancies()
     },
-    handleViewVacancy(item: IVacancyItem) {
-      console.log('handleViewVacancy', item)
-    },
   },
   computed: {
     filters() {
@@ -110,7 +101,7 @@ main {
     }
 
     .actions {
-      button {
+      a {
         padding: 5px;
         border: none;
         display: flex;

@@ -82,6 +82,11 @@ export default [
         name: 'vacancyController',
         component: () => import('@/views/supervisor/Vacancy.vue'),
       },
+      {
+        path: 'vacancy/:id/detail',
+        name: 'supervisorVacancyDetail',
+        component: () => import('@/views/supervisor/AplicationsVacancy.vue'),
+      },
     ],
   },
 

@@ -17,6 +17,9 @@ import recruiterDashboardLayout from '@/components/layouts/RecruiterDashboard.vu
 import userDashboardLayout from '@/components/layouts/UserDashboard.vue'
 import moment from 'moment'
 
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+
 // Define o locale global
 moment.locale('pt-br')
 
@@ -37,6 +40,7 @@ app.component('adminDashboardLayout', adminDashboardLayout)
 app.component('supervisorDashboardLayout', supervisorDashboard)
 app.component('recruiterDashboardLayout', recruiterDashboardLayout)
 app.component('userDashboardLayout', userDashboardLayout)
+app.component('QuillEditor', QuillEditor)
 
 app.use(createPinia())
 app.use(router)

@@ -87,7 +87,7 @@ export default {
       try {
         const response = await getAplicationsByVacancy(this.$route.params.id, this.filters)
         this.items.push(...response.data.data)
-        this.total = response.data.meta.total
+        this.total = response.data.meta.totalPages
       } catch (error) {
         this.$snotify.error(error)
       } finally {
@@ -164,19 +164,19 @@ export default {
           this.openDropdownItem = null
         }
       }, 0)
+    }
+  },
+  computed: {
+    filters() {
+      return {
+        page: this.page,
+        search: this.search,
+      }
     },
-    computed: {
-      filters() {
-        return {
-          page: this.page,
-          search: this.search,
-        }
-      },
-      loadMore() {
-        return this.page < this.total
-      },
+    loadMore() {
+      return this.page < this.total
     },
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>
