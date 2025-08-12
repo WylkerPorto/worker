@@ -64,7 +64,7 @@
 import { type IPersonForm } from '@/interfaces/IPerson'
 import { type IWorkItem } from '@/interfaces/IWork'
 import { type IGraduationItem } from '@/interfaces/IGraduation'
-import { type ICourseItem } from '@/interfaces/ICourse'
+import { type ICourseItem } from '@/interfaces/ICourses'
 import { type ILanguageItem } from '@/interfaces/ILanguage'
 import { get as getPerson } from '@/api/user'
 import { list as getExperience } from '@/api/experience'
