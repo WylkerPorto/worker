@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <header>
-      <h1>Vagas disponiveis</h1>
+      <h1>Vagas disponiveis {{ total }}</h1>
       <form @submit.stop.prevent="handleSearch">
         <SearchInput v-model="search" />
       </form>
@@ -10,21 +10,26 @@
       <div class="card" v-for="item in items" :key="item.id">
         <h2>{{ item.title }}</h2>
         <article>
-          <p><Icon icon="solar:point-on-map-bold" /> {{ item.city }} - {{ item.state }}</p>
-          <p><Icon icon="material-symbols:home-work" /> {{ item.employmentType }}</p>
-          <p><Icon icon="ic:baseline-work" /> {{ item.workModel }}</p>
-          <p><Icon icon="solar:calendar-bold" /> {{ toFormatDate(item.expirationDate) }}</p>
+          <p>
+            <Icon icon="solar:point-on-map-bold" /> {{ item.city }} - {{ item.state }}
+          </p>
+          <p>
+            <Icon icon="material-symbols:home-work" /> {{ item.employmentType }}
+          </p>
+          <p>
+            <Icon icon="ic:baseline-work" /> {{ item.workModel }}
+          </p>
+          <p>
+            <Icon icon="solar:calendar-bold" /> {{ toFormatDate(item.expirationDate) }}
+          </p>
         </article>
 
-        <RouterLink
-          class="btn primary"
-          :to="{ name: 'userVacancyDetail', params: { id: item.id } }"
-          target="_blank"
-        >
+        <RouterLink class="btn primary" :to="{ name: 'userVacancyDetail', params: { id: item.id } }" target="_blank">
           Detalhes
         </RouterLink>
       </div>
     </section>
+    <MyButton @click="handleLoadMore" v-if="loadMore">Carregar mais</MyButton>
   </main>
 </template>
 
@@ -34,11 +39,13 @@ import { type IVacancyItem } from '@/interfaces/IVacancy'
 import { list as getVacancy } from '@/api/vacancy'
 import { Icon } from '@iconify/vue'
 import { toFormatDate } from '@/utils/conversors'
+import MyButton from '@/components/core/MyButton.vue'
 
 export default {
   name: 'UserVacancy',
   components: {
     SearchInput,
+    MyButton,
     Icon,
   },
   data() {
@@ -60,7 +67,7 @@ export default {
       try {
         const response = await getVacancy(this.filters)
         this.items.push(...response.data.vacancies)
-        this.total = response.total
+        this.total = response.data?.total
       } catch (error) {
         this.$snotify.error(error)
       } finally {
@@ -83,6 +90,9 @@ export default {
         page: this.page,
         search: this.search,
       }
+    },
+    loadMore() {
+      return this.items.length < this.total
     },
   },
 }
@@ -117,11 +127,12 @@ export default {
     padding: 1rem;
     border-radius: 0.5rem;
     gap: 1rem;
+    justify-content: space-evenly;
 
     .card {
       height: auto;
       flex: 1 1 300px;
-      max-width: 350px;
+      max-width: 300px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -129,6 +140,11 @@ export default {
 
       &:hover {
         box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-wrap: balance;
+        word-wrap: anywhere;
       }
 
       article {
@@ -146,6 +162,10 @@ export default {
         text-align: center;
       }
     }
+  }
+
+  button {
+    margin-bottom: 30px;
   }
 }
 </style>

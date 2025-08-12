@@ -7,30 +7,13 @@
           <Icon icon="qlementine-icons:new-16" />
         </button>
       </header>
-      <DataTable
-        :items="items"
-        :columns="columns"
-        :loading="loading"
-        :total="total"
-        :loadMore="loadMore"
-        @onLoadMore="handleLoadMore"
-        @onSearch="handleSearch"
-      >
+      <DataTable :items="items" :columns="columns" :loading="loading" :total="items.length" :loadMore="loadMore"
+        @onLoadMore="handleLoadMore" @onSearch="handleSearch">
         <template #actions="{ item }">
-          <button
-            v-if="item.status"
-            class="rounded warning"
-            @click="handleToggleDepartment(item)"
-            title="Pausar"
-          >
+          <button v-if="item.status" class="rounded warning" @click="handleToggleDepartment(item)" title="Pausar">
             <Icon icon="ic:round-pause" />
           </button>
-          <button
-            v-else
-            class="rounded primary"
-            @click="handleToggleDepartment(item)"
-            title="Ativar"
-          >
+          <button v-else class="rounded primary" @click="handleToggleDepartment(item)" title="Ativar">
             <Icon icon="ic:round-play-arrow" />
           </button>
           <button class="rounded success" @click="handleEditDepartment(item)">
@@ -43,18 +26,10 @@
       </DataTable>
     </section>
   </main>
-  <FormDepartmentModal
-    :show="showFormDepartmentModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onSave="refresh"
-  />
-  <DeleteDepartmentModal
-    :show="showDeleteDepartmentModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onConfirm="refresh"
-  />
+  <FormDepartmentModal :show="showFormDepartmentModal" :dataForm="editItem" @onClose="closeAllModals"
+    @onSave="refresh" />
+  <DeleteDepartmentModal :show="showDeleteDepartmentModal" :dataForm="editItem" @onClose="closeAllModals"
+    @onConfirm="refresh" />
 </template>
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'

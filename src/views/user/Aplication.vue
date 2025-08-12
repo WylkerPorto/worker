@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <header>
-      <h1>Vagas candidatadas</h1>
+      <h1>Vagas candidatadas {{ total }}</h1>
       <form @submit.stop.prevent="handleSearch">
         <SearchInput v-model="search" />
       </form>
@@ -34,6 +34,7 @@
         </RouterLink>
       </div>
     </section>
+    <MyButton @click="handleLoadMore" v-if="loadMore">Carregar mais</MyButton>
   </main>
 </template>
 <script lang="ts">
@@ -41,21 +42,23 @@ import { getAplicationByUser } from '@/api/aplication'
 import SearchInput from '@/components/core/SearchInput.vue'
 import { Icon } from '@iconify/vue'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
+import MyButton from '@/components/core/MyButton.vue'
 
 export default {
   name: 'UserAplication',
   components: {
     SearchInput,
     Icon,
+    MyButton,
   },
   data() {
     return {
       items: [],
-      search: '',
-      editItem: {} as IVacancyItem,
       loading: false,
+      editItem: {} as IVacancyItem,
       total: 0,
       page: 1,
+      search: '',
     }
   },
   mounted() {
@@ -67,7 +70,7 @@ export default {
       try {
         const data = await getAplicationByUser(localStorage.getItem('uid'), this.filters)
         this.total = data.data.meta.total
-        this.items = data.data.data
+        this.items.push(...data.data.data)
       } catch (error) {
         this.$snotify.error('Erro ao buscar as vagas: ' + error)
       } finally {
@@ -90,6 +93,9 @@ export default {
         page: this.page,
         search: this.search,
       }
+    },
+    loadMore() {
+      return this.items.length < this.total
     },
   },
 }
@@ -124,11 +130,12 @@ export default {
     padding: 1rem;
     border-radius: 0.5rem;
     gap: 1rem;
+    justify-content: space-evenly;
 
     .card {
       height: auto;
       flex: 1 1 300px;
-      max-width: 350px;
+      max-width: 300px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -136,6 +143,11 @@ export default {
 
       &:hover {
         box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-wrap: balance;
+        word-wrap: anywhere;
       }
 
       article {
@@ -153,6 +165,10 @@ export default {
         text-align: center;
       }
     }
+  }
+
+  button {
+    margin-bottom: 30px;
   }
 }
 </style>

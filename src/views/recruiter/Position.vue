@@ -7,22 +7,10 @@
           <Icon icon="qlementine-icons:new-16" />
         </button>
       </header>
-      <DataTable
-        :items="items"
-        :columns="columns"
-        :loading="loading"
-        :total="total"
-        :loadMore="loadMore"
-        @onLoadMore="handleLoadMore"
-        @onSearch="handleSearch"
-      >
+      <DataTable :items="items" :columns="columns" :loading="loading" :total="items.length" :loadMore="loadMore"
+        @onLoadMore="handleLoadMore" @onSearch="handleSearch">
         <template #actions="{ item }">
-          <button
-            v-if="item.status"
-            class="rounded warning"
-            @click="handleTogglePosition(item)"
-            title="Pausar"
-          >
+          <button v-if="item.status" class="rounded warning" @click="handleTogglePosition(item)" title="Pausar">
             <Icon icon="ic:round-pause" />
           </button>
           <button v-else class="rounded primary" @click="handleTogglePosition(item)" title="Ativar">
@@ -38,18 +26,9 @@
       </DataTable>
     </section>
   </main>
-  <FormPositionModal
-    :show="showFormPositionModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onSave="refresh"
-  />
-  <DeletePositionModal
-    :show="showDeletePositionModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onConfirm="refresh"
-  />
+  <FormPositionModal :show="showFormPositionModal" :dataForm="editItem" @onClose="closeAllModals" @onSave="refresh" />
+  <DeletePositionModal :show="showDeletePositionModal" :dataForm="editItem" @onClose="closeAllModals"
+    @onConfirm="refresh" />
 </template>
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'

@@ -105,7 +105,7 @@ export default {
       try {
         const response = await list(this.filters)
         this.items.push(...response.data.vacancies)
-        this.total = response.total
+        this.total = response.data.total
       } catch (error) {
         this.$snotify.error(error)
       } finally {
