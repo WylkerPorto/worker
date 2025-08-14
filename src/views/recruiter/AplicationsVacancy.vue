@@ -2,6 +2,9 @@
   <main>
     <section class="card">
       <header>
+        <button class="rounded" @click="$router.push({ name: 'recruiterVacancy' })" title="Voltar">
+          <Icon icon="lets-icons:back"></Icon>
+        </button>
         <h1>Candidatos a vaga {{ vaga.title }}</h1>
       </header>
       <DataTable :items="items" :columns="columns" :loading="loading" :total="total" :loadMore="loadMore"
@@ -87,7 +90,7 @@ export default {
       try {
         const response = await getAplicationsByVacancy(this.$route.params.id, this.filters)
         this.items.push(...response.data.data)
-        this.total = response.data.meta.totalPages
+        this.total = response.data.meta.total
       } catch (error) {
         this.$snotify.error(error)
       } finally {
@@ -174,7 +177,7 @@ export default {
       }
     },
     loadMore() {
-      return this.page < this.total
+      return this.items.length < this.total
     },
   },
 }
@@ -191,13 +194,28 @@ main {
 
     header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       margin-bottom: 1rem;
       border-bottom: 1px solid var(--text);
 
       h1 {
-        margin: 0;
+        margin: 0 auto;
+      }
+
+      button {
+        background: none;
+        border: none;
+        color: var(--text);
+        cursor: pointer;
+
+        svg {
+          width: 24px;
+          height: 24px;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
 

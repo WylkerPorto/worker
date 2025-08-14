@@ -4,7 +4,7 @@
       <header>
         <h1>Candidatos a vaga {{ vaga.title }}</h1>
         <span>{{ vaga.workModel }} - {{ vaga.employmentType }}</span>
-        <p>{{ vaga.description }}</p>
+        <div v-html="vaga.description"></div>
       </header>
       <DataTable :items="items" :columns="columns" :loading="loading" :total="total" :loadMore="loadMore"
         @onLoadMore="handleLoadMore" @onSearch="handleSearch">
@@ -103,7 +103,7 @@ main {
 
     header {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
       margin-bottom: 1rem;
       border-bottom: 1px solid var(--text);
