@@ -10,8 +10,8 @@
         </div>
 
         <div v-if="dropdownOpen" class="dropdown-menu">
-          <router-link to="/profile">Perfil</router-link>
-          <router-link to="/logout">Logout</router-link>
+          <router-link :to="{ name: 'supervisorProfile' }">Perfil</router-link>
+          <router-link :to="{ name: 'logout' }">Logout</router-link>
         </div>
       </div>
     </header>
@@ -64,11 +64,11 @@ export default {
           name: 'recruiterController',
           icon: 'fluent-mdl2:recruitment-management',
         },
-        {
-          label: 'Vagas',
-          name: 'vacancyController',
-          icon: 'material-symbols:work-outline',
-        },
+        // {
+        //   label: 'Vagas',
+        //   name: 'vacancyController',
+        //   icon: 'material-symbols:work-outline',
+        // },
         {
           label: 'Sair',
           name: 'logout',
@@ -140,7 +140,7 @@ export default {
     }
   }
 
-  > main {
+  >main {
     display: flex;
     flex: 1;
 

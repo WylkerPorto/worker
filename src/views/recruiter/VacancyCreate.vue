@@ -138,6 +138,8 @@ export default {
           delete this.form.updatedAt
           delete this.form.deletedAt
           delete this.form.slug
+          delete this.form.applications
+          delete this.form.isApplied
 
           await update(this.$route.params.id, this.form)
         } else {

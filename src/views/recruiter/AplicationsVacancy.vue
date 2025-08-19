@@ -23,7 +23,7 @@
     <article v-if="openDropdownItem" ref="dropdown" :style="dropdownStyles" class="dropdown-status">
       <ul>
         <li v-for="status in aplicationStatus" :key="status.id"
-          @click="handleToggleStatus(openDropdownItem, status.value)">
+          @click="handleToggleStatus(openDropdownItem, status.title)">
           {{ status.title }}
         </li>
       </ul>
@@ -128,6 +128,7 @@ export default {
         delete newItem.createdAt
         delete newItem.vacancy
         delete newItem.person
+        console.log('Atualizando candidatura:', newItem);
         await update(item.id, newItem)
         this.$snotify.success('Candidatura atualizada com sucesso!')
         item.status = status
@@ -197,10 +198,7 @@ main {
       align-items: center;
       margin-bottom: 1rem;
       border-bottom: 1px solid var(--text);
-
-      h1 {
-        margin: 0 auto;
-      }
+      gap: 20px;
 
       button {
         background: none;
@@ -216,6 +214,11 @@ main {
         &:hover {
           opacity: 0.8;
         }
+      }
+
+      h1 {
+        margin: 0 auto;
+        text-align: center;
       }
     }
 

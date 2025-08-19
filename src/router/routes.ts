@@ -87,6 +87,11 @@ export default [
         name: 'supervisorVacancyDetail',
         component: () => import('@/views/supervisor/AplicationsVacancy.vue'),
       },
+      {
+        path: 'profile',
+        name: 'supervisorProfile',
+        component: () => import('@/views/supervisor/Profile.vue'),
+      },
     ],
   },
 
@@ -132,6 +137,11 @@ export default [
         path: 'departments',
         name: 'recruiterDepartment',
         component: () => import('@/views/recruiter/Department.vue'),
+      },
+      {
+        path: 'profile',
+        name: 'recruiterProfile',
+        component: () => import('@/views/recruiter/Profile.vue'),
       },
     ],
   },

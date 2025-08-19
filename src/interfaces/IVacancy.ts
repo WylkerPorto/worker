@@ -32,6 +32,7 @@ export interface IVacancyItem {
   departmentId: number
   positionId: number
   recruiter: number
+  isApplied: boolean
 }
 
 export interface IVacancyForm {

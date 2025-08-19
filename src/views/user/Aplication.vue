@@ -9,29 +9,28 @@
     <section>
       <div class="card" v-for="item in items" :key="item.id">
         <h2>{{ item.vacancy.title }}</h2>
-        <article>
-          <p>
-            <Icon icon="solar:point-on-map-bold"></Icon>
-            {{ item.vacancy.city }} - {{ item.vacancy.state }}
-          </p>
-          <p>
-            <Icon icon="ic:baseline-work"></Icon>
-            {{ item.vacancy.workModel }} - {{ item.vacancy.employmentType }}
-          </p>
-          <p>
-            <Icon icon="solar:calendar-bold"></Icon>
-            {{ item.vacancy.expirationDate }}
-          </p>
-          <p>
-            <Icon icon="pajamas:status"></Icon>
-            {{ item.status }}
-          </p>
-        </article>
+        <p>
+          <Icon icon="pajamas:status" v-if="item.status == 'Candidatura Enviada'"></Icon>
+          <Icon icon="pajamas:error" v-if="item.status == 'Em Análise'"></Icon>
+          <Icon icon="pajamas:check-circle-dashed" v-if="item.status == 'Aprovada'"></Icon>
+          <Icon icon="pajamas:canceled-circle" v-if="item.status == 'Rejeitada'"></Icon>
+          <Icon icon="pajamas:multiple-choice" v-if="item.status == 'Candidatura Retirada'"></Icon>
+          {{ item.status }}
+        </p>
 
-        <RouterLink class="btn primary" :to="{ name: 'userVacancyDetail', params: { id: item.vacancy.id } }"
-          target="_blank">
-          Ver detalhes
-        </RouterLink>
+        <div class="btn-group">
+          <RouterLink class="btn primary" :to="{ name: 'userVacancyDetail', params: { id: item.vacancy.id } }"
+            target="_blank">
+            Ver detalhes
+          </RouterLink>
+          <MyButton v-if="item.status === 'Candidatura Retirada'" class="btn success" type="button" :loading="loading"
+            @click="reApply(item)">
+            Recandidatar
+          </MyButton>
+          <MyButton v-else class="btn danger" type="button" :loading="loading" @click="removeApplication(item)">
+            Desistir
+          </MyButton>
+        </div>
       </div>
     </section>
     <MyButton @click="handleLoadMore" v-if="loadMore">Carregar mais</MyButton>
@@ -43,6 +42,7 @@ import SearchInput from '@/components/core/SearchInput.vue'
 import { Icon } from '@iconify/vue'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
 import MyButton from '@/components/core/MyButton.vue'
+import { update } from '@/api/aplication'
 
 export default {
   name: 'UserAplication',
@@ -85,6 +85,30 @@ export default {
     handleLoadMore() {
       this.page += 1
       this.getApplications()
+    },
+    async removeApplication(item) {
+      this.loading = true
+      try {
+        await update(item.id, { vacancyId: item.vacancy.id, status: 'Candidatura Retirada' })
+        this.$snotify.success('Candidatura removida com sucesso!')
+        item.status = 'Candidatura Retirada'
+      } catch (error) {
+        this.$snotify.error('Erro ao remover candidatura: ' + error)
+      } finally {
+        this.loading = false
+      }
+    },
+    async reApply(item) {
+      this.loading = true
+      try {
+        await update(item.id, { vacancyId: item.vacancy.id, status: 'Candidatura Enviada' })
+        this.$snotify.success('Candidatura reenviada com sucesso!')
+        item.status = 'Candidatura Enviada'
+      } catch (error) {
+        this.$snotify.error('Erro ao reenviar candidatura: ' + error)
+      } finally {
+        this.loading = false
+      }
     },
   },
   computed: {
@@ -147,28 +171,21 @@ export default {
 
       h2 {
         text-wrap: balance;
-        word-wrap: anywhere;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
-      article {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem; // opcional, para espaçamento entre os <p>
+      .btn-group {
+        display: contents;
 
-        p {
-          flex: 1 1 calc(50% - 0.5rem); // 2 por linha
-          max-width: 50%;
+        .btn {
+          text-align: center;
         }
       }
-
-      .btn {
-        text-align: center;
-      }
     }
-  }
-
-  button {
-    margin-bottom: 30px;
   }
 }
 </style>

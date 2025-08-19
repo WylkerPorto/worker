@@ -10,8 +10,8 @@
         </div>
 
         <div v-if="dropdownOpen" class="dropdown-menu">
-          <router-link to="/profile">Perfil</router-link>
-          <router-link to="/logout">Logout</router-link>
+          <router-link :to="{ name: 'recruiterProfile' }">Perfil</router-link>
+          <router-link :to="{ name: 'logout' }">Logout</router-link>
         </div>
       </div>
     </header>
@@ -145,7 +145,7 @@ export default {
     }
   }
 
-  > main {
+  >main {
     display: flex;
     flex: 1;
 

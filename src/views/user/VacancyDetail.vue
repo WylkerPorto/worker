@@ -25,16 +25,21 @@
       <div v-html="vacancy.responsibilities"></div>
       <p><b>Requisitos:</b></p>
       <div v-html="vacancy.requirements"></div>
-      <MyButton v-if="vacancy.status === 'Ativa'" class="btn success" type="button" :loading="loading" @click="apply">
+      <MyButton v-if="vacancy.status === 'Ativa' && !vacancy.isApplied" class="btn success" type="button"
+        :loading="loading" @click="apply">
         Candidatar-se
       </MyButton>
+      <!-- <MyButton v-if="vacancy.status === 'Ativa' && vacancy.isApplied" class="btn danger" type="button"
+        :loading="loading" @click="remove">
+        Desistir
+      </MyButton> -->
     </section>
   </main>
 </template>
 <script lang="ts">
 import { Icon } from '@iconify/vue'
 import { get } from '@/api/vacancy'
-import { create as apply } from '@/api/aplication'
+import { create as apply, update as remove } from '@/api/aplication'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
 import { toFormatDate } from '@/utils/conversors'
 import MyButton from '@/components/core/MyButton.vue'
@@ -67,8 +72,21 @@ export default {
     async apply() {
       this.loading = true
       try {
-        await apply({ vacancyId: parseInt(this.$route.params.id), status: 'applied' })
+        await apply({ vacancyId: parseInt(this.$route.params.id), status: 'Candidatura Enviada' })
         this.$snotify.success('Vaga aplicada com sucesso!')
+        this.vacancy.isApplied = true
+      } catch (error) {
+        this.$snotify.error(error)
+      } finally {
+        this.loading = false
+      }
+    },
+    async remove() {
+      this.loading = true
+      try {
+        await remove(this.vacancy.applications[0].id, { vacancyId: parseInt(this.$route.params.id), status: 'Candidatura Retirada' })
+        this.$snotify.success('Candidatura removida com sucesso!')
+        this.vacancy.isApplied = false
       } catch (error) {
         this.$snotify.error(error)
       } finally {
