@@ -1,1 +1,0 @@
-import{h as p}from"./http-CmPME1wD.js";import{t as i}from"./conversors-DMBNotbN.js";const n=t=>p.authApi().post("/application",t),s=(t,a)=>p.authApi().put(`/application/${t}`,a),e=(t,a)=>p.authApi().get(`/application/vacancy/${t}?${i(a)}`),r=(t,a)=>p.authApi().get(`/application/person/${t}?${i(a)}`);export{r as a,n as c,e as g,s as u};
