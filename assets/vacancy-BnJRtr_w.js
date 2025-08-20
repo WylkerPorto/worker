@@ -1,1 +1,0 @@
-import{h as a}from"./http-DutMbpAR.js";import{t as s}from"./conversors-CuQg-zXY.js";const p=t=>a.authApi().post("/vacancy",t),n=t=>a.authApi().get(`/vacancy/${t}`),r=t=>a.authApi().get(`/vacancy?${s(t)}`),i=(t,c)=>a.authApi().put(`/vacancy/${t}`,c),u=t=>a.authApi().delete(`/vacancy/${t}`);export{p as c,n as g,r as l,u as r,i as u};
