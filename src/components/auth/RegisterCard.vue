@@ -78,6 +78,7 @@ export default {
       try {
         await create(this.form)
         this.$snotify.success('Cadastro realizado com sucesso!')
+        this.localForm.type = 'login'
       } catch (error) {
         this.$snotify.error('Erro ao cadastrar: ' + error.message)
       } finally {
