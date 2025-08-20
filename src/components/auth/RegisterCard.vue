@@ -11,7 +11,7 @@
     <hr />
     <span>
       Já é cadastrado?
-      <a href="#" @click="localForm.type = 'login'">Entrar</a>
+      <a href="#" @click.prevent="localForm.type = 'login'">Entrar</a>
     </span>
   </form>
 </template>

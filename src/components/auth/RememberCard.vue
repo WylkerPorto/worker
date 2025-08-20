@@ -1,18 +1,12 @@
 <template>
   <form class="card" @submit.stop.prevent="validate">
     <h2>Recuperar Senha</h2>
-    <FormInput
-      label="E-mail"
-      v-model="form.email"
-      :error="errors.email"
-      type="email"
-      placeholder="Digite seu e-mail"
-    />
+    <FormInput label="E-mail" v-model="form.email" :error="errors.email" type="email" placeholder="Digite seu e-mail" />
     <MyButton class="primary" :loading="loading">Recuperar</MyButton>
     <hr />
     <span>
       Lembrou sua senha?
-      <a href="#" @click="localForm.type = 'login'">Entrar</a>
+      <a href="#" @click.prevent="localForm.type = 'login'">Entrar</a>
     </span>
   </form>
 </template>
@@ -81,7 +75,7 @@ form {
     text-align: center;
   }
 
-  > a {
+  >a {
     text-align: right;
   }
 }

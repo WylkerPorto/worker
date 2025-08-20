@@ -8,12 +8,12 @@
       <MySwitch v-model="admin" />
       <span @click="admin = !admin">{{ admin ? 'Empresa' : 'Candidato' }}</span>
     </div>
-    <a href="#" @click="localForm.type = 'forgot-password'">Esqueci minha senha</a>
+    <a href="#" @click.prevent="localForm.type = 'forgot-password'">Esqueci minha senha</a>
     <MyButton class="primary" :loading="loading">Entrar</MyButton>
     <hr />
     <span>
       Ainda não tem conta?
-      <a href="#" @click="localForm.type = 'register'">Cadastre-se</a>
+      <a href="#" @click.prevent="localForm.type = 'register'">Cadastre-se</a>
     </span>
   </form>
 </template>
