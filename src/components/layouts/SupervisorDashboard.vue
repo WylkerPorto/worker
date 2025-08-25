@@ -64,11 +64,11 @@ export default {
           name: 'recruiterController',
           icon: 'fluent-mdl2:recruitment-management',
         },
-        // {
-        //   label: 'Vagas',
-        //   name: 'vacancyController',
-        //   icon: 'material-symbols:work-outline',
-        // },
+        {
+          label: 'Vagas',
+          name: 'vacancyController',
+          icon: 'material-symbols:work-outline',
+        },
         {
           label: 'Sair',
           name: 'logout',

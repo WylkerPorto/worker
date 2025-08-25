@@ -11,6 +11,10 @@
             title="Ver Candidatos">
             <Icon icon="mdi:user" />
           </RouterLink>
+          <RouterLink class="rounded primary" :to="{ name: 'jobDetail', params: { slug: item.slug } }" target="_blank"
+            title="Compartilhar Vaga">
+            <Icon icon="mdi:share" />
+          </RouterLink>
         </template>
       </DataTable>
     </section>
@@ -58,6 +62,12 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    handleSearch(search: string) {
+      this.search = search
+      this.page = 1
+      this.items = []
+      this.getVacancies()
     },
     handleLoadMore() {
       this.page++

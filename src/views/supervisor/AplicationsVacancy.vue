@@ -4,7 +4,6 @@
       <header>
         <h1>Candidatos a vaga {{ vaga.title }}</h1>
         <span>{{ vaga.workModel }} - {{ vaga.employmentType }}</span>
-        <div v-html="vaga.description"></div>
       </header>
       <DataTable :items="items" :columns="columns" :loading="loading" :total="total" :loadMore="loadMore"
         @onLoadMore="handleLoadMore" @onSearch="handleSearch">

@@ -12,6 +12,12 @@ export default [
     meta: { layout: 'empty' },
   },
   {
+    path: '/job/:slug',
+    name: 'jobDetail',
+    component: () => import('@/views/JobDetail.vue'),
+    meta: { layout: 'empty' },
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/Auth.vue'),

@@ -2,148 +2,167 @@
   <main>
     <!-- header section start -->
     <header id="navbar">
-      <h2>KlikTalent</h2>
-      <nav>
-        <ul>
-          <li>
-            <a href="#inicio">Inicio</a>
-          </li>
-          <li>
-            <a href="#sobre">Sobre</a>
-          </li>
-          <li>
-            <a href="#tecnologias">Tecnologias</a>
-          </li>
-          <li>
-            <a href="#visao">Visão</a>
-          </li>
-          <li>
-            <a href="#contato">Contato</a>
-          </li>
-          <li>
-            <RouterLink :to="{ name: 'login' }">Login</RouterLink>
-          </li>
-        </ul>
-      </nav>
+      <div class="container">
+        <h2>KlikTalent</h2>
+        <RouterLink :to="{ name: 'login' }">Login</RouterLink>
+      </div>
     </header>
     <!-- end header section -->
 
     <!-- do section -->
-    <section id="inicio"></section>
-    <!-- end do section -->
-
-    <!-- sobre section -->
-    <section id="sobre">
-      <h2>Sobre nós</h2>
-      <p>
-        Nós somos a <b><i>KlikTalent</i></b
-        >, uma plataforma digital criada para conectar talentos e empresas de forma rápida e
-        eficiente. Nosso objetivo é transformar o processo de recrutamento e seleção, proporcionando
-        uma experiência simples e intuitiva tanto para candidatos quanto para empresas que buscam os
-        melhores profissionais.
-      </p>
-      <p>
-        Com uma interface moderna e fácil de usar, oferecemos um espaço onde candidatos podem criar
-        e cadastrar seus currículos de maneira prática, enquanto empresas podem encontrar as pessoas
-        certas para suas vagas com agilidade e precisão. Nossa missão é otimizar o processo de busca
-        por oportunidades de trabalho, criando uma ponte entre quem busca um novo desafio e quem
-        precisa de profissionais qualificados.
-      </p>
-      <p>
-        Acreditamos que cada talento merece uma chance, e cada empresa precisa das pessoas certas
-        para crescer. Por isso, nos empenhamos em oferecer um serviço que une tecnologia e inovação
-        para facilitar a conexão entre profissionais e empresas de maneira eficaz.
-      </p>
-      <p>
-        Se você está à procura de uma nova oportunidade ou deseja cadastrar sua vaga, estamos aqui
-        para ajudar a transformar sua jornada profissional. Junte-se a nós e faça parte dessa
-        comunidade!
-      </p>
-    </section>
-    <!-- end sobre section -->
-
-    <!-- work section -->
-    <section id="tecnologias">
-      <h2>O Melhor da tecnologia para você</h2>
-      <div>
-        <Icon icon="logos:html-5" />
-        <Icon icon="logos:css-3" />
-        <Icon icon="logos:sass" />
-        <Icon icon="logos:javascript" />
-        <Icon icon="logos:vue" />
-        <Icon icon="logos:nextjs-icon" />
-        <Icon icon="logos:nodejs" />
+    <section id="inicio">
+      <div class="container">
+        <div>
+          <h1>Bem-vindo ao KlikTalent</h1>
+          <p>Lorem ipsum dolor sit amet consectetur. Convallis eget interdum mauris senectus elit duis. Vitae curabitur
+            aliquam amet tempus at scelerisque volutpat nulla. Elementum velit platea ut tortor mauris at laoreet nunc
+            risus. Diam morbi tortor eget eu habitasse vestibulum commodo viverra. </p>
+          <p>Vel libero dolor libero risus lorem non feugiat. Habitant amet ornare senectus scelerisque enim imperdiet
+            consequat pharetra odio.
+            Dignissim sed vulputate enim nisi. Non sem amet adipiscing enim.
+          </p>
+          <p>Vel libero dolor libero risus lorem non feugiat. Habitant amet ornare senectus scelerisque enim imperdiet
+            consequat pharetra odio.
+            Dignissim sed vulputate enim nisi. Non sem amet adipiscing enim.
+          </p>
+        </div>
+        <figure>
+          <img src="/assets/imgs/img1.svg" alt="Descrição da imagem" />
+        </figure>
       </div>
-      <p>
-        No desenvolvimento dos nossos projetos, buscamos sempre utilizar as melhores tecnologiass e
-        tecnologias para garantir um código de alta qualidade, performance e escalabilidade. Aqui
-        estão algumas das tecnologias que fazemos uso para entregar soluções modernas e eficientes:
-      </p>
-      <ul>
-        <li>
-          <b>HTML5:</b> A base da estruturação de páginas web, garantindo semântica e acessibilidade
-          aprimoradas para todos os dispositivos.
-        </li>
-        <li>
-          <b>CSS3:</b> Criamos layouts responsivos e estilos incríveis, com animações e transições
-          que melhoram a experiência do usuário.
-        </li>
-        <li>
-          <b>JavaScript:</b> A linguagem de programação que traz interatividade e dinamismo para as
-          páginas, permitindo funcionalidades modernas e responsivas.
-        </li>
-        <li>
-          <b>Vue.js:</b> Usamos este poderoso framework para criar interfaces de usuário rápidas e
-          reativas, com uma experiência fluida e de fácil manutenção.
-        </li>
-        <li>
-          <b>SASS:</b> Para tornar o desenvolvimento de estilos mais modular e escalável, utilizando
-          variáveis, mixins e outras funcionalidades que tornam o código CSS mais eficiente.
-        </li>
-        <li>
-          <b>Next.js:</b> Framework React para otimizar a renderização de páginas, proporcionando
-          uma excelente performance e uma experiência de usuário excepcional, além de
-          funcionalidades como SEO otimizado e rotas dinâmicas.
-        </li>
-        <li>
-          <b>Node.js:</b> Usado no backend, possibilitando o desenvolvimento de APIs rápidas e
-          escaláveis, com suporte a uma vasta gama de bibliotecas e frameworks.
-        </li>
-      </ul>
-      <p>
-        Com essas tecnologias, entregamos soluções modernas, responsivas e que proporcionam uma
-        experiência única aos usuários.
-      </p>
     </section>
-    <!-- end work section -->
+    <!-- end do section -->
 
     <!-- visão section -->
     <section id="visao">
-      <h2>Nossa Visão</h2>
-      <p>
-        Nossa visão é ser a plataforma líder na conexão entre talentos e empresas, transformando a
-        maneira como profissionais e empregadores se encontram no mercado de trabalho. Buscamos
-        criar um ambiente dinâmico e inovador, onde as oportunidades sejam acessíveis a todos e a
-        busca por um novo emprego ou por novos colaboradores seja mais eficiente, justa e
-        transparente.
-      </p>
-      <p>
-        Acreditamos que, ao simplificar e otimizar os processos de recrutamento e cadastro de
-        currículos, podemos contribuir para um mercado de trabalho mais inclusivo e conectado, onde
-        tanto candidatos quanto empresas possam alcançar seus objetivos de forma ágil e
-        satisfatória.
-      </p>
-      <p>
-        Nosso compromisso é facilitar a jornada de profissionais que buscam crescimento e desafios,
-        bem como ajudar empresas a encontrar os melhores talentos para fortalecer suas equipes e
-        impulsionar seu sucesso.
-      </p>
+      <div class="container">
+        <h2>Nossa Visão</h2>
+        <p>
+          Acreditamos que, ao simplificar e otimizar os processos de recrutamento e cadastro de
+          currículos, podemos contribuir para um mercado de trabalho mais inclusivo e conectado, onde
+          tanto candidatos quanto empresas possam alcançar seus objetivos de forma ágil e
+          satisfatória.
+        </p>
+        <p>
+          Nosso compromisso é facilitar a jornada de profissionais que buscam crescimento e desafios,
+          bem como ajudar empresas a encontrar os melhores talentos para fortalecer suas equipes e
+          impulsionar seu sucesso.
+        </p>
+        <p>
+          Nossa visão é ser a plataforma líder na conexão entre talentos e empresas, transformando a
+          maneira como profissionais e empregadores se encontram no mercado de trabalho. Buscamos
+          criar um ambiente dinâmico e inovador, onde as oportunidades sejam acessíveis a todos e a
+          busca por um novo emprego ou por novos colaboradores seja mais eficiente, justa e
+          transparente.
+        </p>
+      </div>
     </section>
     <!-- end visão section -->
 
+    <!-- vagas section -->
+    <section id="vagas">
+      <div class="container">
+        <h2>Vagas em Destaque</h2>
+        <DataTable v-if="vagas.length > 0" :items="vagas" :columns="columns" :loading="loading" :total="total"
+          :loadMore="loadMore" @onLoadMore="handleLoadMore" @onSearch="handleSearch">
+          <template #actions="{ item }">
+            <RouterLink class="rounded primary" :to="{ name: 'jobDetail', params: { id: item.slug } }" title="Ver Vaga">
+              <Icon icon="mdi:eye" />
+            </RouterLink>
+          </template>
+        </DataTable>
+        <div v-else>
+          <p>Ainda não estamos divulgando vagas.</p>
+        </div>
+      </div>
+    </section>
+    <!-- end vagas section -->
+
+    <!-- tecnologias section -->
+    <section id="tecnologias">
+      <div class="container">
+        <h2>O Melhor da tecnologia para você</h2>
+        <figure>
+          <Icon icon="logos:html-5" />
+          <Icon icon="logos:css-3" />
+          <Icon icon="logos:sass" />
+          <Icon icon="logos:javascript" />
+          <Icon icon="logos:vue" />
+          <Icon icon="logos:nextjs-icon" />
+          <Icon icon="logos:nodejs" />
+        </figure>
+        <p>
+          No desenvolvimento dos nossos projetos, buscamos sempre utilizar as melhores tecnologiass e
+          tecnologias para garantir um código de alta qualidade, performance e escalabilidade. Aqui
+          estão algumas das tecnologias que fazemos uso para entregar soluções modernas e eficientes:
+        </p>
+        <ul>
+          <li>
+            <b>HTML5:</b> A base da estruturação de páginas web, garantindo semântica e acessibilidade
+            aprimoradas para todos os dispositivos.
+          </li>
+          <li>
+            <b>CSS3:</b> Criamos layouts responsivos e estilos incríveis, com animações e transições
+            que melhoram a experiência do usuário.
+          </li>
+          <li>
+            <b>JavaScript:</b> A linguagem de programação que traz interatividade e dinamismo para as
+            páginas, permitindo funcionalidades modernas e responsivas.
+          </li>
+          <li>
+            <b>Vue.js:</b> Usamos este poderoso framework para criar interfaces de usuário rápidas e
+            reativas, com uma experiência fluida e de fácil manutenção.
+          </li>
+          <li>
+            <b>SASS:</b> Para tornar o desenvolvimento de estilos mais modular e escalável, utilizando
+            variáveis, mixins e outras funcionalidades que tornam o código CSS mais eficiente.
+          </li>
+          <li>
+            <b>Next.js:</b> Framework React para otimizar a renderização de páginas, proporcionando
+            uma excelente performance e uma experiência de usuário excepcional, além de
+            funcionalidades como SEO otimizado e rotas dinâmicas.
+          </li>
+          <li>
+            <b>Node.js:</b> Usado no backend, possibilitando o desenvolvimento de APIs rápidas e
+            escaláveis, com suporte a uma vasta gama de bibliotecas e frameworks.
+          </li>
+        </ul>
+        <p>
+          Com essas tecnologias, entregamos soluções modernas, responsivas e que proporcionam uma
+          experiência única aos usuários.
+        </p>
+      </div>
+    </section>
+    <!-- end tecnologias section -->
+
+    <!-- sobre section -->
+    <section id="sobre">
+      <div class="container">
+        <h2>Sobre nós</h2>
+        <p>
+          Nossa visão é ser a plataforma líder na conexão entre talentos e empresas, transformando a maneira como
+          profissionais e empregadores se encontram no mercado de trabalho. Buscamos criar um ambiente dinâmico e
+          inovador, onde as oportunidades sejam acessíveis a todos e a busca por um novo emprego ou por novos
+          colaboradores seja mais eficiente, justa e transparente.
+        </p>
+        <p>
+          Acreditamos que, ao simplificar e otimizar os processos de recrutamento e cadastro de currículos, podemos
+          contribuir para um mercado de trabalho mais inclusivo e conectado, onde tanto candidatos quanto empresas
+          possam alcançar seus objetivos de forma ágil e satisfatória.
+        </p>
+        <p>
+          Nosso compromisso é facilitar a jornada de profissionais que buscam crescimento e desafios, bem como ajudar
+          empresas a encontrar os melhores talentos para fortalecer suas equipes e impulsionar seu sucesso.
+        </p>
+      </div>
+    </section>
+    <!-- end sobre section -->
+
     <!-- footer section -->
     <section id="footer">
-      <p>&copy; 2020 All Rights Reserved By</p>
+      <div class="container">
+        <p>&copy; 2020 All Rights Reserved By</p>
+      </div>
     </section>
     <!-- end footer section -->
 
@@ -195,12 +214,25 @@
 
 <script lang="ts">
 import { Icon } from '@iconify/vue'
+import { type IVacancyItem, type IVacancyColumnItem } from '@/interfaces/IVacancy'
+import DataTable from '@/components/core/DataTable.vue'
+
 export default {
   name: 'HomeView',
-  components: { Icon },
+  components: { Icon, DataTable },
   data() {
     return {
       lgpd: false,
+      loading: false,
+      columns: [
+        { key: 'title', title: 'Vaga' },
+        { key: 'employmentType', title: 'Tipo de Vaga' },
+        { key: 'expirationDate', title: 'Data de Expiração', type: 'date' }
+      ] as IVacancyColumnItem[],
+      vagas: [] as IVacancyItem[],
+      total: 0,
+      page: 1,
+      search: ''
     }
   },
   mounted() {
@@ -214,99 +246,246 @@ export default {
       localStorage.setItem('lgpd', 'true')
       this.lgpd = false
     },
+    async getVacancies() {
+      this.loading = true
+      try {
+        const { response } = await getVacancyPub(this.filters)
+        this.vagas = response.data
+        this.total = response.total
+      } catch (error) {
+        this.$snotify.error(error)
+      } finally {
+        this.loading = false
+      }
+    },
+    handleSearch() {
+      this.page = 1
+      this.vagas = []
+      this.getVacancies()
+    },
+    handleLoadmore() {
+      this.page++
+      this.getVacancies()
+    }
   },
+  computed: {
+    filters() {
+      return {
+        page: this.page,
+        search: this.search
+      }
+    },
+    loadMore() {
+      return this.vagas.length < this.total
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 main {
-  background: var(--white);
-  color: var(--black);
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
 
-  section {
-    padding: 50px 40px;
-    align-content: center;
-
-    &:nth-child(even) {
-      background: var(--background);
+  :not(#navbar) {
+    .container {
+      padding: 100px 0;
     }
+  }
 
-    > h2 {
+  .container {
+    max-width: 1440px;
+    margin: auto;
+
+    h2 {
+      font-weight: 700;
+      font-style: Bold;
+      font-size: 40px;
+      line-height: 40px;
+      letter-spacing: 0%;
       text-align: center;
-      margin-bottom: 20px;
+      color: #111827;
+      margin-bottom: 30px;
     }
   }
-}
 
-#navbar {
-  position: sticky;
-  display: flex;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  background: var(--white);
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 15px;
-
-  h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text);
+  #navbar,
+  #visao,
+  #tecnologias {
+    background: #fff;
   }
 
-  nav {
-    ul {
+  #vagas,
+  #sobre {
+    background: #ebf1f2;
+  }
+
+  #navbar {
+    padding: 27px 0;
+
+    .container {
       display: flex;
-      list-style: none;
-      gap: 20px;
-    }
-  }
-}
+      align-items: center;
+      justify-content: space-between;
 
-#inicio {
-  height: 100vh;
-  background: url('/assets/imgs/hero-bg.jpg') no-repeat center center/cover;
-}
+      h2 {
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 100%;
+        letter-spacing: 0%;
+      }
 
-#tecnologias {
-  div {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-bottom: 20px;
-
-    .iconify {
-      font-size: 50px;
-      color: var(--text);
-    }
-  }
-
-  p {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  ul {
-    list-style-type: none;
-    margin-bottom: 20px;
-
-    li {
-      text-align: justify;
-
-      b {
-        font-weight: 600;
+      a {
+        border-radius: 20px;
+        border: 1px solid var(--blue);
+        padding: 10px 20px;
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 100%;
+        letter-spacing: 0%;
       }
     }
   }
-}
 
-#footer {
-  text-align: center;
+  #inicio {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--glass) 20%, transparent) 0%, color-mix(in srgb, var(--blue) 20%, transparent) 100%);
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      >div {
+        max-width: 710px;
+
+        h1 {
+          font-weight: 500;
+          font-size: 40px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          margin-bottom: 20px;
+        }
+
+        p {
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          color: #4B5563;
+          margin-bottom: 20px;
+          text-wrap: balance;
+        }
+      }
+
+      figure {
+        width: 560px;
+        background: var(--blue);
+        height: 560px;
+        border-radius: 50%;
+        display: grid;
+        justify-content: center;
+        align-content: end;
+
+        img {
+          border-bottom-left-radius: 255px;
+          border-bottom-right-radius: 255px;
+        }
+      }
+    }
+  }
+
+  #visao {
+    .container {
+      p {
+        font-weight: 400;
+        font-style: Regular;
+        font-size: 20px;
+        leading-trim: NONE;
+        line-height: 28px;
+        letter-spacing: 0%;
+        text-align: center;
+        color: #4B5563;
+        margin-bottom: 10px;
+        text-wrap: balance;
+      }
+    }
+  }
+
+  #vagas {
+    p {
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 20px;
+      leading-trim: NONE;
+      line-height: 28px;
+      letter-spacing: 0%;
+      text-align: center;
+      color: #4B5563;
+      margin-bottom: 20px;
+    }
+  }
+
+  #tecnologias {
+    figure {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 50px;
+
+      svg {
+        font-size: 80px;
+      }
+    }
+
+    p {
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 20px;
+      leading-trim: NONE;
+      line-height: 28px;
+      letter-spacing: 0%;
+      text-align: center;
+      color: #4B5563;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      margin-bottom: 20px;
+
+      li {
+        font-weight: 400;
+        font-style: Regular;
+        font-size: 18px;
+        leading-trim: NONE;
+        line-height: 28px;
+        letter-spacing: 0%;
+        color: #4B5563;
+
+        b {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  #sobre {
+    p {
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 20px;
+      leading-trim: NONE;
+      line-height: 28px;
+      letter-spacing: 0%;
+      text-align: center;
+      color: #4B5563;
+    }
+  }
+
+  #footer {
+    background: #13293D;
+  }
 }
 
 #lgpd {
@@ -321,7 +500,7 @@ main {
   align-items: center;
   z-index: 1000;
 
-  > div {
+  >div {
     background: var(--white);
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -337,15 +516,17 @@ main {
       margin-bottom: 20px;
       text-align: center;
     }
+
     h3 {
       font-size: 20px;
       margin-top: 10px;
     }
+
     p {
       margin-bottom: 10px;
     }
-    button {
-    }
+
+    button {}
   }
 }
 </style>

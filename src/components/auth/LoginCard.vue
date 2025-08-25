@@ -108,7 +108,9 @@ export default {
           this.$router.push({ name: 'recruiterDashboard' })
           return
         case 4:
-          this.$router.push({ name: 'userAplication' })
+          // verifica se tem o parametro de redirecionamento na rota, se tiver manda para rota da vaga se não manda para a home do usuario
+          const redirect = this.$route.query.redirect
+          this.$router.push(redirect ? { name: 'userVacancyDetail', params: { id: redirect } } : { name: 'userAplication' })
           return
         default:
           this.$snotify.error('Erro ao logar: Regra invalida')

@@ -33,9 +33,7 @@ const http = new (function () {
       (response) => response,
       (error) => {
         if (error.response && error.response.status === 401) {
-          localStorage.removeItem('token') // limpa o token
-          localStorage.removeItem('role') // limpa a regra
-          router.push({ name: 'login' }) // ajuste a rota conforme sua aplicação
+          router.push({ name: 'logout' }) // ajuste a rota conforme sua aplicação
         }
         return Promise.reject(error)
       },
