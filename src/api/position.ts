@@ -5,7 +5,7 @@ export const create = (params: string) => http.authApi().post('/position', param
 
 export const get = (id: string) => http.authApi().get(`/position/${id}`)
 
-export const list = (params?: string) => http.authApi().get(`/position?${toQueryString(params)}`)
+export const list = () => http.authApi().get(`/position`)
 
 export const update = (id: string, params: string) => http.authApi().put(`/position/${id}`, params)
 

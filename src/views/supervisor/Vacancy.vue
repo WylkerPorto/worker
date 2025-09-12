@@ -4,8 +4,9 @@
       <header>
         <h1>Vagas</h1>
       </header>
-      <DataTable :items="items" :columns="columns" :loading="loading" :total="total" :loadMore="loadMore"
-        @onLoadMore="handleLoadMore" @onSearch="handleSearch">
+      <DataTable :items="items" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
+        :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
+        @onPreviousPage="handleLoadMore(-1)">
         <template #actions="{ item }">
           <RouterLink class="rounded primary" :to="{ name: 'supervisorVacancyDetail', params: { id: item.id } }"
             title="Ver Candidatos">
@@ -44,6 +45,7 @@ export default {
       items: [] as IVacancyItem[],
       total: 0,
       page: 1,
+      totalPage: 0,
       search: '',
     }
   },
@@ -54,9 +56,11 @@ export default {
     async getVacancies() {
       this.loading = true
       try {
-        const response = await list(this.filters)
-        this.items.push(...response.data.vacancies)
-        this.total = response.total
+        const { data } = await list(this.filters)
+        console.log(data);
+        this.items = data.vacancies
+        this.total = data.total
+        this.totalPage = Math.ceil(data.total / data.rows)
       } catch (error) {
         this.$snotify.error(error)
       } finally {
@@ -69,8 +73,8 @@ export default {
       this.items = []
       this.getVacancies()
     },
-    handleLoadMore() {
-      this.page++
+    handleLoadMore(pageChange: number) {
+      this.page += pageChange
       this.getVacancies()
     },
   },
@@ -80,9 +84,6 @@ export default {
         page: this.page,
         search: this.search,
       }
-    },
-    loadMore() {
-      return this.items.length < this.total
     },
   },
 }

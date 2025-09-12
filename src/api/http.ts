@@ -33,7 +33,12 @@ const http = new (function () {
       (response) => response,
       (error) => {
         if (error.response && error.response.status === 401) {
-          router.push({ name: 'logout' }) // ajuste a rota conforme sua aplicação
+          const logado = localStorage.getItem('token')
+          if (!logado) {
+            router.push({ name: 'login' }) // ajuste a rota conforme sua aplicação
+            return Promise.reject(error)
+          }
+          router.push({ name: 'not-found' }) // ajuste a rota conforme sua aplicação
         }
         return Promise.reject(error)
       },

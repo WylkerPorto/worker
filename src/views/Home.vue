@@ -351,10 +351,15 @@ main {
     .container {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: space-evenly;
+      flex-wrap: wrap-reverse;
+      gap: 1.5em;
 
       >div {
+        flex: 1 1 300px;
+        /* cresce (1), encolhe (1), base inicial 300px */
         max-width: 710px;
+        /* não passa disso */
 
         h1 {
           font-weight: 500;
@@ -376,9 +381,11 @@ main {
       }
 
       figure {
+        flex: 0 0 560px;
+        /* não cresce, não encolhe, base fixa de 560px */
         width: 560px;
-        background: var(--blue);
         height: 560px;
+        background: var(--blue);
         border-radius: 50%;
         display: grid;
         justify-content: center;
@@ -430,6 +437,7 @@ main {
       justify-content: center;
       gap: 40px;
       margin-bottom: 50px;
+      flex-wrap: wrap;
 
       svg {
         font-size: 80px;

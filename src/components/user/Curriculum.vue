@@ -2,21 +2,23 @@
   <form @submit.prevent="validate">
     <MyAccordeon title="Dados pessoais" :isOpen="true">
       <div class="group">
-        <FormInput v-model="form.name" :error="errors.name" type="text" placeholder="Digite seu nome" label="Name" />
+        <FormInput v-model="form.name" :error="errors.name" type="text" placeholder="Digite seu nome" label="Name*" />
       </div>
 
       <div class="group">
-        <FormInput v-model="form.email" :error="errors.email" type="email" placeholder="Digite seu e-mail"
-          label="Email" />
+        <FormInput v-model="form.email" :error="errors.email" type="email" placeholder="Digite seu e-mail*"
+          label="Email*" />
       </div>
 
       <div class="group flex">
-        <FormInput v-model="form.cpf" :error="errors.cpf" type="text" placeholder="Digite seu CPF" label="CPF" />
-        <FormInput v-model="form.rg" :error="errors.rg" type="text" placeholder="Digite seu RG" label="RG" />
+        <FormInput v-model="form.cpf" :error="errors.cpf" type="text" mask="cpf" placeholder="999.999.999-99"
+          label="CPF*" />
+        <FormInput v-model="form.rg" :error="errors.rg" type="text" mask="rg" placeholder="99.999.999-9" label="RG*" />
       </div>
 
       <div class="group flex">
-        <FormInput v-model="form.cnh" :error="errors.cnh" type="text" placeholder="Digite sua CNH" label="CNH" />
+        <FormInput v-model="form.cnh" :error="errors.cnh" type="text" mask="cnh" placeholder="99999999999"
+          label="CNH" />
         <FormInput v-model="form.typeCnh" :error="errors.typeCnh" type="text" placeholder="Digite o tipo de CNH"
           label="Tipo de CNH" />
       </div>
@@ -31,17 +33,19 @@
       </div>
 
       <div class="group flex">
-        <MySelect :options="genders" v-model="form.gender" label="Sexo" :error="errors.gender" />
-        <MySelect :options="maritalStatus" v-model.number="form.maritalStatusId" label="Estado Civil"
+        <MySelect :options="genders" v-model="form.gender" label="Sexo*" :error="errors.gender" />
+        <MySelect :options="maritalStatus" v-model.number="form.maritalStatusId" label="Estado Civil*"
           :error="errors.maritalStatusId" />
       </div>
 
       <div class="group flex">
         <FormInput v-model="form.phoneNumber" :error="errors.phoneNumber" type="tel" mask="tel"
-          placeholder="(99) 99999-9999" label="Telefone" />
+          placeholder="(99) 99999-9999" label="Telefone*" />
         <FormInput v-model="form.phoneNumber2" :error="errors.phoneNumber2" type="tel" mask="tel"
           placeholder="(99) 99999-9999" label="Telefone 2" />
       </div>
+
+      <MyButton class="primary" :loading="loading" type="button" @click="validatePerson">Salvar</MyButton>
     </MyAccordeon>
 
     <MyAccordeon title="Sobre">
@@ -49,22 +53,25 @@
         <textarea class="textarea" v-model="form.presentation" :error="errors.presentation"
           placeholder="Apresentação" />
       </div>
+
+      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
     </MyAccordeon>
 
     <MyAccordeon title="Localidade">
       <div class="group">
-        <MySelect :options="nationalities" v-model="form.nationality" label="Nacionalidade"
+        <MySelect :options="nationalities" v-model="form.nationality" label="Nacionalidade*"
           :error="errors.nationality" />
       </div>
 
       <div class="group">
-        <FormInput v-model="form.postalCode" :error="errors.postalCode" type="text" placeholder="Digite o CEP"
-          label="CEP" />
+        <FormInput v-model="form.postalCode" :error="errors.postalCode" type="text" placeholder="Digite o CEP*"
+          label="CEP*" />
       </div>
 
       <div class="group flex">
-        <FormInput v-model="form.street" :error="errors.street" type="text" placeholder="Digite a rua" label="Rua" />
-        <FormInput v-model.number="form.number" :error="errors.number" type="number" placeholder="555" label="Número" />
+        <FormInput v-model="form.street" :error="errors.street" type="text" placeholder="Digite a rua" label="Rua*" />
+        <FormInput v-model.number="form.number" :error="errors.number" type="number" placeholder="555"
+          label="Número*" />
       </div>
 
       <div class="group">
@@ -74,14 +81,16 @@
 
       <div class="group flex">
         <FormInput v-model="form.neighborhood" :error="errors.neighborhood" type="text" placeholder="Limeira"
-          label="Bairro" />
-        <FormInput v-model="form.city" :error="errors.city" type="text" placeholder="São Paulo" label="Cidade" />
+          label="Bairro*" />
+        <FormInput v-model="form.city" :error="errors.city" type="text" placeholder="São Paulo" label="Cidade*" />
       </div>
 
       <div class="group flex">
-        <FormInput v-model="form.state" :error="errors.state" type="text" placeholder="SP" label="Estado" />
-        <FormInput v-model="form.country" :error="errors.country" type="text" placeholder="Brasil" label="País" />
+        <FormInput v-model="form.state" :error="errors.state" type="text" placeholder="SP" label="Estado*" />
+        <FormInput v-model="form.country" :error="errors.country" type="text" placeholder="Brasil" label="País*" />
       </div>
+
+      <MyButton class="primary" :loading="loading" type="button" @click="validateLocation">Salvar</MyButton>
     </MyAccordeon>
 
     <MyAccordeon title="Profissional" class="school">
@@ -125,6 +134,8 @@
           </div>
         </li>
       </ul>
+
+      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
     </MyAccordeon>
 
     <MyAccordeon title="Conhecimento" class="school">
@@ -201,6 +212,8 @@
           </div>
         </li>
       </ul>
+
+      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
     </MyAccordeon>
 
     <MyAccordeon title="Social">
@@ -218,9 +231,9 @@
         <FormInput v-model="form.personalUrl" :error="errors.personalUrl" type="url" placeholder="Digite o link pessoal"
           label="Site Pessoal" />
       </div>
-    </MyAccordeon>
 
-    <MyButton class="primary" :loading="loading" type="submit" @click="validate">Atualizar</MyButton>
+      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
+    </MyAccordeon>
   </form>
 
   <GraduationModal :show="showGraduationModal" @onClose="closeModals" @onSave="loadGraduations"
@@ -326,23 +339,80 @@ export default {
     this.loadWorkExperiences()
   },
   methods: {
-    validate() {
+    validatePerson() {
+      const onlyDigits = (value?: string) => value ? value.replace(/\D/g, '') : '';
+
       const schema = yup.object({
         name: yup
           .string()
           .min(3, 'Nome deve ter pelo menos 3 caracteres')
           .required('Nome é obrigatório'),
-        email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
-        gender: yup.string().min(1, 'Selecione um sexo').required('Sexo é obrigatório'),
+
+        email: yup
+          .string()
+          .email('E-mail inválido')
+          .required('E-mail é obrigatório'),
+
+        cpf: yup
+          .string()
+          .required('CPF é obrigatório')
+          .test('cpf-length', 'CPF inválido', val => onlyDigits(val).length === 11),
+
+        rg: yup
+          .string()
+          .required('RG é obrigatório')
+          .test('rg-length', 'RG inválido', val => {
+            const digits = onlyDigits(val);
+            return digits.length >= 7 && digits.length <= 9;
+          }),
+
+        cnh: yup
+          .string()
+          .nullable()
+          .test('cnh-length', 'CNH inválida', val => {
+            if (!val) return true; // CNH pode ser opcional
+            return onlyDigits(val).length === 11;
+          }),
+
+        gender: yup
+          .string()
+          .min(1, 'Selecione um sexo')
+          .required('Sexo é obrigatório'),
+
         maritalStatusId: yup
           .number()
           .min(1, 'Selecione um estado civil')
           .required('Estado civil é obrigatório'),
+
+        phoneNumber: yup
+          .string()
+          .required('Telefone é obrigatório')
+          .test('phone-length', 'Telefone inválido', val => {
+            const digits = onlyDigits(val);
+            return digits.length >= 10 && digits.length <= 11; // aceita fixo (10) ou celular (11)
+          }),
+      });
+
+      schema
+        .validate(this.form, { abortEarly: false })
+        .then(() => {
+          this.errors = {};
+          this.submitForm();
+        })
+        .catch((err) => {
+          const errors: Record<string, string> = {};
+          err.inner.forEach((error) => {
+            errors[error.path] = error.message;
+          });
+          this.errors = errors;
+        });
+    },
+    validateLocation() {
+      const schema = yup.object({
         nationality: yup
           .string()
           .min(1, 'Selecione uma nacionalidade')
           .required('Nacionalidade é obrigatória'),
-        phoneNumber: yup.string().min(10, 'Telefone inválido').required('Telefone é obrigatório'),
         postalCode: yup.string().min(8, 'CEP inválido').required('CEP é obrigatório'),
         street: yup
           .string()
@@ -368,6 +438,25 @@ export default {
           .string()
           .min(3, 'País deve ter pelo menos 3 caracteres')
           .required('País é obrigatório'),
+      })
+
+      schema
+        .validate(this.form, { abortEarly: false })
+        .then(() => {
+          this.errors = {}
+          this.submitForm()
+        })
+        .catch((err) => {
+          const errors = {}
+          err.inner.forEach((error) => {
+            errors[error.path] = error.message
+          })
+          this.errors = errors
+        })
+    },
+    validate() {
+      const schema = yup.object({
+
       })
 
       schema

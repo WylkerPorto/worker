@@ -7,16 +7,24 @@
           <Icon icon="qlementine-icons:new-16" />
         </button>
       </header>
-      <DataTable :items="items" :columns="columns" :loading="loading" :total="total" :loadMore="loadMore"
-        @onLoadMore="handleLoadMore" @onSearch="handleSearch">
+      <DataTable :items="items" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
+        :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
+        @onPreviousPage="handleLoadMore(-1)">
         <template #actions="{ item }">
           <button class="rounded" @click="toggleDropdown($event, item)" title="Editar Status">
             <Icon icon="fluent:status-12-filled" />
           </button>
-          <RouterLink class="rounded primary" :to="{ name: 'recruiterVacancyDetail', params: { id: item.id } }"
+          <RouterLink class="rounded primary" :to="{ name: 'jobDetail', params: { slug: item.slug } }" target="_blank"
+            title="Compartilhar Vaga">
+            <Icon icon="mdi:share" />
+          </RouterLink>
+          <RouterLink class="rounded warning" :to="{ name: 'recruiterVacancyDetail', params: { id: item.id } }"
             title="Ver Candidatos">
             <Icon icon="mdi:user" />
           </RouterLink>
+          <button class="rounded light" @click="handleCloneVacancy(item)" title="Duplicar">
+            <Icon icon="zondicons:duplicate" />
+          </button>
           <RouterLink class="rounded success" :to="{ name: 'recruiterVacancyForm', params: { id: item.id } }"
             title="Editar">
             <Icon icon="carbon:edit" />
@@ -43,7 +51,7 @@
 import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
 import { type IVacancyItem, type IVacancyColumnItem } from '@/interfaces/IVacancy'
-import { list, update } from '@/api/vacancy'
+import { list, update, create } from '@/api/vacancy'
 import { getVacancyStatus } from '@/api/filters'
 import DeleteVacancyModal from '@/components/recruiter/DeleteVacancyModal.vue'
 
@@ -75,6 +83,7 @@ export default {
       vacancyStatus: [] as string[],
       total: 0,
       page: 1,
+      totalPage: 0,
       search: '',
     }
   },
@@ -103,9 +112,10 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        const response = await list(this.filters)
-        this.items.push(...response.data.vacancies)
-        this.total = response.data.total
+        const { data } = await list(this.filters)
+        this.items = data.vacancies
+        this.total = data.total
+        this.totalPage = Math.ceil(data.total / data.rows)
       } catch (error) {
         this.$snotify.error(error)
       } finally {
@@ -126,8 +136,8 @@ export default {
       this.editItem = {} as IVacancyItem
       this.showDeleteVacancyModal = false
     },
-    handleLoadMore() {
-      this.page++
+    handleLoadMore(pageChange: number) {
+      this.page += pageChange
       this.getVacancies()
     },
     async handleToggleVacancy(item: IVacancyItem, status: string) {
@@ -180,7 +190,28 @@ export default {
           this.openDropdownItem = null
         }
       }, 0)
-    }
+    },
+    async handleCloneVacancy(item: IVacancyItem) {
+      this.loading = true
+      const newItem = { ...item }
+      try {
+        newItem.title += '-copia'
+        newItem.departmentId = item.department.id
+        newItem.positionId = item.position.id
+        delete newItem.id
+        delete newItem.slug
+        delete newItem.createdAt
+        delete newItem.position
+        delete newItem.department
+        await create(newItem)
+        this.$snotify.success('Vaga duplicada com sucesso!')
+        this.refresh()
+      } catch (error) {
+        this.$snotify.error('Erro ao duplicar a vaga: ' + error)
+      } finally {
+        this.loading = false
+      }
+    },
   },
   computed: {
     filters() {
@@ -188,9 +219,6 @@ export default {
         page: this.page,
         search: this.search,
       }
-    },
-    loadMore() {
-      return this.items.length < this.total
     },
   },
 }

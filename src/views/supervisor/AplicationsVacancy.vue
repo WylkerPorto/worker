@@ -5,8 +5,9 @@
         <h1>Candidatos a vaga {{ vaga.title }}</h1>
         <span>{{ vaga.workModel }} - {{ vaga.employmentType }}</span>
       </header>
-      <DataTable :items="items" :columns="columns" :loading="loading" :total="total" :loadMore="loadMore"
-        @onLoadMore="handleLoadMore" @onSearch="handleSearch">
+      <DataTable :items="items" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
+        :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
+        @onPreviousPage="handleLoadMore(-1)">
       </DataTable>
     </section>
   </main>
@@ -35,6 +36,7 @@ export default {
       loading: false,
       total: 0,
       page: 1,
+      totalPage: 0,
       search: '',
     }
   },
@@ -46,9 +48,10 @@ export default {
     async getAplicationsByVacancy() {
       this.loading = true
       try {
-        const response = await getAplicationsByVacancy(this.$route.params.id, this.filters)
-        this.items.push(...response.data.data)
-        this.total = response.data.meta.total
+        const { data } = await getAplicationsByVacancy(this.$route.params.id, this.filters)
+        this.items = data.data
+        this.total = data.meta.total
+        this.totalPage = data.meta.totalPages
       } catch (error) {
         this.$snotify.error(error)
       } finally {
@@ -66,8 +69,8 @@ export default {
         this.loading = false
       }
     },
-    handleLoadMore() {
-      this.page++
+    handleLoadMore(pageChange: number) {
+      this.page += pageChange
       this.getAplicationsByVacancy()
     },
     handleSearch(search: string) {
@@ -83,9 +86,6 @@ export default {
         page: this.page,
         search: this.search,
       }
-    },
-    loadMore() {
-      return this.page < this.total
     },
   },
 }

@@ -1,50 +1,16 @@
 <template>
-  <ModalBase
-    :open="show"
-    :loading="loading"
-    title="Nova Experiência Profissional"
-    @onClose="$emit('onClose')"
-  >
+  <ModalBase :open="show" :loading="loading" title="Nova Experiência Profissional" @onClose="$emit('onClose')">
     <template #content>
       <form @submit.prevent="validate">
-        <FormInput
-          label="Cargo"
-          type="text"
-          placeholder="Nome do Cargo"
-          v-model="form.position"
-          :error="errors.position"
-          required
-        />
-        <FormInput
-          label="Departamento"
-          type="text"
-          placeholder="Nome do Departamento"
-          v-model="form.department"
-          :error="errors.department"
-          required
-        />
-        <FormInput
-          label="Empresa"
-          type="text"
-          placeholder="Nome da Empresa"
-          v-model="form.companyName"
-          :error="errors.companyName"
-          required
-        />
+        <FormInput label="Cargo" type="text" placeholder="Nome do Cargo" v-model="form.position"
+          :error="errors.position" required />
+        <FormInput label="Departamento" type="text" placeholder="Nome do Departamento" v-model="form.department"
+          :error="errors.department" required />
+        <FormInput label="Empresa" type="text" placeholder="Nome da Empresa" v-model="form.companyName"
+          :error="errors.companyName" required />
         <div class="flex">
-          <FormInput
-            label="Data de Início"
-            type="date"
-            v-model="form.startDate"
-            :error="errors.startDate"
-            required
-          />
-          <FormInput
-            label="Data de Término"
-            type="date"
-            v-model="form.endDate"
-            :error="errors.endDate"
-          />
+          <FormInput label="Data de Início" type="date" v-model="form.startDate" :error="errors.startDate" required />
+          <FormInput label="Data de Término" type="date" v-model="form.endDate" :error="errors.endDate" />
           <div class="switch">
             <label>Atualmente Trabalhando</label>
             <SwitchButton v-model="form.isCurrentJob" required />
@@ -52,31 +18,15 @@
         </div>
 
         <div class="flex">
-          <FormInput
-            label="Tipo de Contratação"
-            type="text"
-            placeholder="full-time, part-time, freelance"
-            v-model="form.employmentType"
-            :error="errors.employmentType"
-            required
-          />
-          <FormInput
-            label="Salário"
-            type="number"
-            placeholder="Informe seu salário"
-            v-model.number="form.salary"
-            :error="errors.salary"
-          />
+          <FormInput label="Tipo de Contratação" type="text" placeholder="full-time, part-time, freelance"
+            v-model="form.employmentType" :error="errors.employmentType" required />
+          <FormInput label="Salário" type="number" placeholder="Informe seu salário" v-model.number="form.salary"
+            :error="errors.salary" />
         </div>
 
         <div>
-          <textarea
-            class="textarea"
-            :class="{ error: errors.description }"
-            v-model="form.description"
-            placeholder="Descreva suas responsabilidades e conquistas"
-            rows="5"
-          ></textarea>
+          <textarea class="textarea" :class="{ error: errors.description }" v-model="form.description"
+            placeholder="Descreva suas responsabilidades e conquistas" rows="5"></textarea>
           <span>{{ errors.description }}</span>
         </div>
       </form>
@@ -211,6 +161,8 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-height: 70vh;
+  overflow: auto;
 
   .flex {
     display: flex;

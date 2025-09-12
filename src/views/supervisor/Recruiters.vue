@@ -7,15 +7,9 @@
           <Icon icon="tdesign:user-add"></Icon>
         </button>
       </header>
-      <DataTable
-        :items="items"
-        :columns="columns"
-        :loading="loading"
-        :total="total"
-        :loadMore="loadMore"
-        @onLoadMore="handleLoadMore"
-        @onSearch="handleSearch"
-      >
+      <DataTable :items="items" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
+        :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
+        @onPreviousPage="handleLoadMore(-1)">
         <template #createdAt="{ item }">
           <p>{{ item }}</p>
         </template>
@@ -30,18 +24,9 @@
       </DataTable>
     </section>
   </main>
-  <FormRecruiterModal
-    :show="showRecruiterModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onSave="refresh"
-  />
-  <DeleteRecruiterModal
-    :show="showDeleteRecruiterModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onConfirm="refresh"
-  />
+  <FormRecruiterModal :show="showRecruiterModal" :dataForm="editItem" @onClose="closeAllModals" @onSave="refresh" />
+  <DeleteRecruiterModal :show="showDeleteRecruiterModal" :dataForm="editItem" @onClose="closeAllModals"
+    @onConfirm="refresh" />
 </template>
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'
@@ -73,6 +58,7 @@ export default {
       editItem: {} as IRecruiterItem,
       total: 0,
       page: 1,
+      totalPage: 0,
       search: '',
     }
   },
@@ -88,9 +74,10 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        const response = await list(this.filters)
-        this.items.push(...response.data.data)
-        this.total = response.data.total
+        const { data } = await list(this.filters)
+        this.items = data.data
+        this.total = data.total
+        this.totalPage = Math.ceil(data.total / data.per_page)
       } catch (error) {
         this.$snotify.error('Erro ao buscar os recrutadores: ' + error)
       } finally {
@@ -120,8 +107,8 @@ export default {
       this.showRecruiterModal = false
       this.showDeleteRecruiterModal = false
     },
-    handleLoadMore() {
-      this.page += 1
+    handleLoadMore(pageChange: number) {
+      this.page += pageChange
       this.getRecruiters()
     },
   },
@@ -132,9 +119,6 @@ export default {
         page: this.page,
         filter: this.search,
       }
-    },
-    loadMore() {
-      return this.items.length < this.total
     },
   },
 }

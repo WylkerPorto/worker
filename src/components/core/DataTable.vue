@@ -5,7 +5,7 @@
         <tr>
           <th :colspan="columns.length + ($slots['actions'] ? 1 : 0)">
             <section>
-              <span v-if="total">#{{ total }}</span>
+              <span v-if="totalItems">#{{ totalItems }}</span>
               <form action="#" @submit.stop.prevent="handleSearch">
                 <SearchInput v-model="search" />
               </form>
@@ -42,12 +42,21 @@
           </td>
         </tr>
       </tbody>
-      <tfoot v-if="loadMore">
+      <tfoot v-if="totalPage > 1 && !loading">
         <tr>
           <td :colspan="columns?.length + ($slots['actions'] ? 1 : 0)">
-            <MyButton v-if="!loading" class="primary" @click="$emit('onLoadMore')">
-              Carregar mais
-            </MyButton>
+
+            <div class="pagination">
+              <MyButton v-if="currentPage > 1" :loading="loading" class="light" @click="$emit('onPreviousPage')">
+                <Icon icon="icons8:left-round" />
+              </MyButton>
+              <MyButton class="light" disabled>
+                {{ currentPage }} / {{ totalPage }}
+              </MyButton>
+              <MyButton v-if="currentPage < totalPage" :loading="loading" class="light" @click="$emit('onNextPage')">
+                <Icon icon="icons8:right-round" />
+              </MyButton>
+            </div>
           </td>
         </tr>
       </tfoot>
@@ -76,16 +85,20 @@ export default {
     columns: {
       type: Array,
     },
-    total: {
+    totalItems: {
       type: Number,
     },
     loading: {
       type: Boolean,
       default: false,
     },
-    loadMore: {
-      type: Boolean,
-      default: false,
+    totalPage: {
+      type: Number,
+      default: 0,
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
     },
   },
   components: {
@@ -93,7 +106,7 @@ export default {
     Icon,
     MyButton,
   },
-  emits: ['onSearch', 'onLoadMore'],
+  emits: ['onSearch', 'onNextPage', 'onPreviousPage'],
   methods: {
     handleSearch() {
       this.$emit('onSearch', this.search)
@@ -104,7 +117,7 @@ export default {
   },
   computed: {
     justifyWasAction() {
-      return this.total ? 'space-between' : 'end'
+      return this.totalItems ? 'space-between' : 'end'
     },
   },
 }
@@ -175,6 +188,25 @@ main.data-table {
           .loader {
             font-size: 30px;
           }
+        }
+      }
+    }
+
+    tfoot {
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+
+        .light:not(:has(svg)) {
+          cursor: text;
+          pointer-events: none;
+          text-wrap: nowrap;
+        }
+
+        svg {
+          font-size: 25px;
         }
       }
     }

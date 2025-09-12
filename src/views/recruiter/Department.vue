@@ -7,8 +7,8 @@
           <Icon icon="qlementine-icons:new-16" />
         </button>
       </header>
-      <DataTable :items="items" :columns="columns" :loading="loading" :total="items.length" :loadMore="loadMore"
-        @onLoadMore="handleLoadMore" @onSearch="handleSearch">
+      <DataTable :items="filteredItems" :columns="columns" :loading="loading" :totalItems="total"
+        @onSearch="handleSearch">
         <template #actions="{ item }">
           <button v-if="item.status" class="rounded warning" @click="handleToggleDepartment(item)" title="Pausar">
             <Icon icon="ic:round-pause" />
@@ -60,7 +60,6 @@ export default {
       items: [] as IDepartmentItem[],
       editItem: {} as IDepartmentItem,
       total: 0,
-      page: 1,
       search: '',
     }
   },
@@ -76,9 +75,9 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        const response = await list(this.filters)
-        this.items.push(...response.data)
-        this.total = response.data.total
+        const { data } = await list(this.filters)
+        this.items = data
+        this.total = data.length
       } catch (error) {
         this.$snotify.error('Erro ao buscar os setor: ' + error)
       } finally {
@@ -100,9 +99,6 @@ export default {
     },
     handleSearch(el: string) {
       this.search = el
-      this.page = 1
-      this.items = []
-      this.getDepartments()
     },
     handleNewDepartment() {
       this.editItem = {} as IDepartmentItem
@@ -121,20 +117,12 @@ export default {
       this.showFormDepartmentModal = false
       this.showDeleteDepartmentModal = false
     },
-    handleLoadMore() {
-      this.page += 1
-      this.getDepartments()
-    },
   },
   computed: {
-    filters() {
-      return {
-        page: this.page,
-        filter: this.search,
-      }
-    },
-    loadMore() {
-      return this.items.length < this.total
+    filteredItems() {
+      return this.items.filter((item) =>
+        item.name.toLowerCase().includes(this.search.toLowerCase())
+      )
     },
   },
 }

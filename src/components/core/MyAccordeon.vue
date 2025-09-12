@@ -48,7 +48,6 @@ export default {
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--white);
-  overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   margin-bottom: 1rem;
 }
@@ -86,6 +85,7 @@ export default {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

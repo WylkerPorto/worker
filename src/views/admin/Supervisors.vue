@@ -7,15 +7,9 @@
           <Icon icon="tdesign:user-add"></Icon>
         </button>
       </header>
-      <DataTable
-        :items="items"
-        :columns="columns"
-        :loading="loading"
-        :total="total"
-        :loadMore="loadMore"
-        @onLoadMore="handleLoadMore"
-        @onSearch="handleSearch"
-      >
+      <DataTable :items="items" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
+        :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
+        @onPreviousPage="handleLoadMore(-1)">
         <template #actions="{ item }">
           <button class="rounded success" @click="handleEditSupervisor(item)">
             <Icon icon="carbon:edit"></Icon>
@@ -27,18 +21,10 @@
       </DataTable>
     </section>
   </main>
-  <FormSupervisorModal
-    :show="showFormSupervisorModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onSave="refresh"
-  />
-  <DeleteSupervisorModal
-    :show="showDeleteSupervisorModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onConfirm="refresh"
-  />
+  <FormSupervisorModal :show="showFormSupervisorModal" :dataForm="editItem" @onClose="closeAllModals"
+    @onSave="refresh" />
+  <DeleteSupervisorModal :show="showDeleteSupervisorModal" :dataForm="editItem" @onClose="closeAllModals"
+    @onConfirm="refresh" />
 </template>
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'
@@ -70,6 +56,7 @@ export default {
       editItem: {} as ISupervisorItem,
       total: 0,
       page: 1,
+      totalPage: 0,
       search: '',
     }
   },
@@ -85,9 +72,10 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        const response = await list(this.filters)
-        this.items.push(...response.data.data)
-        this.total = response.data.total
+        const { data } = await list(this.filters)
+        this.items = data.data
+        this.total = data.total
+        this.totalPage = Math.ceil(data.total / data.per_page)
       } catch (error) {
         this.$snotify.error('Erro ao buscar os recrutadores: ' + error)
       } finally {
@@ -117,8 +105,8 @@ export default {
       this.showFormSupervisorModal = false
       this.showDeleteSupervisorModal = false
     },
-    handleLoadMore() {
-      this.page += 1
+    handleLoadMore(pageChange: number) {
+      this.page += pageChange
       this.getSupervisors()
     },
   },
@@ -129,9 +117,6 @@ export default {
         page: this.page,
         filter: this.search,
       }
-    },
-    loadMore() {
-      return this.items.length < this.total
     },
   },
 }
