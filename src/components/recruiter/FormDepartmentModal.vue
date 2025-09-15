@@ -2,14 +2,8 @@
   <ModalBase :open="show" :loading="loading" title="Novo Setor" @onClose="closeModal">
     <template #content>
       <form @submit.prevent="validate">
-        <FormInput
-          label="Setor"
-          type="text"
-          placeholder="Digite o setor"
-          v-model="form.name"
-          :error="errors.name"
-          required
-        />
+        <FormInput label="Setor" type="text" placeholder="Digite o setor" v-model="form.name" :error="errors.name"
+          required />
       </form>
     </template>
     <template #actions>
@@ -46,7 +40,7 @@ export default {
   data() {
     return {
       form: {
-        status: false,
+        status: true,
       } as IPositionForm,
       errors: {} as IPositionForm,
       loading: false,
@@ -105,7 +99,7 @@ export default {
     },
     closeModal() {
       this.form = {
-        status: false,
+        status: true,
       } as IDepartmentForm
       this.errors = {} as IDepartmentForm
       this.$emit('onClose')
