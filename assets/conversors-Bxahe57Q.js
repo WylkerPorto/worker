@@ -1,0 +1,1 @@
+import{q as e}from"./index-C0iXwPwW.js";const s=t=>{if(!t)return"";const r=Object.fromEntries(Object.entries(t).filter(([n,o])=>o!=null));return new URLSearchParams(r).toString()},c=t=>t?e.utc(t).format("DD/MM/YYYY"):"";export{s as a,c as t};
