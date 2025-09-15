@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      userName: 'Recrutador',
+      userName: localStorage.getItem('name') || 'Recrutador',
       dropdownOpen: false,
     }
   },

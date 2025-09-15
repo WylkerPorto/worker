@@ -63,9 +63,12 @@
           :error="errors.nationality" />
       </div>
 
-      <div class="group">
+      <div class="group flex">
         <FormInput v-model="form.postalCode" :error="errors.postalCode" type="text" placeholder="Digite o CEP*"
           label="CEP*" />
+        <MyButton class="secondary" type="button" :loading="loading" @click="searchAddress">
+          Buscar Endereço
+        </MyButton>
       </div>
 
       <div class="group flex">
@@ -94,7 +97,7 @@
     </MyAccordeon>
 
     <MyAccordeon title="Profissional" class="school">
-      <div class="group flex">
+      <div class="group flex wrap">
         <div class="switch">
           <span>Disponibilidade para viagem?</span>
           <MySwitch v-model="form.availableToTravel" />
@@ -270,6 +273,7 @@ import { list as listGraduation, remove as removeGraduation } from '@/api/gradua
 import { list as listCourses, remove as removeCourse } from '@/api/course'
 import { list as listLanguages, remove as removeLanguage } from '@/api/language'
 import { list as listWork, remove as removeWork } from '@/api/experience'
+import { getAddressByCep } from '@/api/viaCep'
 
 import { type IPerson } from '@/interfaces/IPerson'
 import { type IGraduationItem } from '@/interfaces/IGraduation'
@@ -651,6 +655,22 @@ export default {
         this.loadWorkExperiences()
       }
     },
+    async searchAddress() {
+      this.loading = true
+      try {
+        const response = await getAddressByCep(this.form.postalCode)
+        console.log(response);
+        this.form.street = response.logradouro || ''
+        this.form.neighborhood = response.bairro || ''
+        this.form.city = response.localidade || ''
+        this.form.state = response.uf || ''
+        this.form.country = 'Brasil' // ViaCEP retorna apenas endereços do Brasil
+      } catch (error) {
+        this.$snotify.error(error + ' ' + this.form.postalCode)
+      } finally {
+        this.loading = false
+      }
+    },
   },
 }
 </script>
@@ -675,6 +695,10 @@ form {
         gap: 1rem;
         align-items: center;
       }
+
+      button {
+        align-self: flex-end;
+      }
     }
   }
 
@@ -694,6 +718,10 @@ form {
       button {
         margin-left: auto;
       }
+    }
+
+    .wrap {
+      flex-wrap: wrap;
     }
 
     ul {

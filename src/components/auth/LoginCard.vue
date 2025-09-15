@@ -23,6 +23,9 @@ import FormInput from '../core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
 import MySwitch from '../core/SwitchButton.vue'
 import { adminAuth, userAuth } from '@/api/auth'
+import { get as getAdmin } from '@/api/admin'
+import { get as getSupervisor } from '@/api/supervisor'
+import { get as getRecruiter } from '@/api/recruiter'
 import { ILoginForm } from '@/interfaces/IEnter'
 
 export default {
@@ -96,15 +99,21 @@ export default {
       localStorage.setItem('uid', uid.toString())
       this.sendToDashboard(role)
     },
-    sendToDashboard(role: number) {
+    async sendToDashboard(role: number) {
       switch (role) {
         case 1:
+          const { data: admin } = await getAdmin(Number(localStorage.getItem('uid')))
+          localStorage.setItem('name', admin.name)
           this.$router.push({ name: 'adminDashboard' })
           return
         case 2:
+          const { data: sup } = await getSupervisor(Number(localStorage.getItem('uid')))
+          localStorage.setItem('name', sup.name)
           this.$router.push({ name: 'supervisorDashboard' })
           return
         case 3:
+          const { data: rec } = await getRecruiter(Number(localStorage.getItem('uid')))
+          localStorage.setItem('name', rec.name)
           this.$router.push({ name: 'recruiterDashboard' })
           return
         case 4:

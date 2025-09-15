@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      userName: 'Supervisor',
+      userName: localStorage.getItem('name') || 'Supervisor',
       dropdownOpen: false,
     }
   },

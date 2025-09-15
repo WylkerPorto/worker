@@ -1,6 +1,8 @@
 <template>
   <section>
-    <p>Saindo <Icon icon="svg-spinners:3-dots-bounce" /></p>
+    <p>Saindo
+      <Icon icon="svg-spinners:3-dots-bounce" />
+    </p>
   </section>
 </template>
 <script lang="ts">
@@ -15,6 +17,8 @@ export default {
     localStorage.removeItem('login')
     localStorage.removeItem('token')
     localStorage.removeItem('role')
+    localStorage.removeItem('name')
+    localStorage.removeItem('uid')
     this.$router.push({ name: 'login' })
   },
 }

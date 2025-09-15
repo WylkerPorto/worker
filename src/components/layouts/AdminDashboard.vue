@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      userName: 'Administrador',
+      userName: localStorage.getItem('name') || 'Usuário',
       dropdownOpen: false,
     }
   },
@@ -144,7 +144,7 @@ export default {
     }
   }
 
-  > main {
+  >main {
     display: flex;
     flex: 1;
 

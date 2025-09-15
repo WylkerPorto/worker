@@ -16,7 +16,14 @@ const http = new (function () {
     })
   }
 
-  this.authApi = function () {
+/*************  ✨ Windsurf Command ⭐  *************/
+  /**
+   * Retorna uma inst ncia de axios com token de autentica  para fazer requisi es
+   * para endpoints que exigem autentica .
+   * Interceptor de resposta para tratar 401 e redirecionar para a p gina de login ou not-found
+   * @returns {AxiosInstance} - Inst ncia de axios com token de autentica .
+   */
+/*******  f6dcc84e-4d65-471b-b7d6-40975f3d2951  *******/  this.authApi = function () {
     const token = localStorage.getItem('token') || ''
 
     const instance = axios.create({
