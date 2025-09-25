@@ -10,12 +10,6 @@
       <DataTable :items="filteredItems" :columns="columns" :loading="loading" :totalItems="total"
         @onSearch="handleSearch">
         <template #actions="{ item }">
-          <button v-if="item.status" class="rounded warning" @click="handleToggleDepartment(item)" title="Pausar">
-            <Icon icon="ic:round-pause" />
-          </button>
-          <button v-else class="rounded primary" @click="handleToggleDepartment(item)" title="Ativar">
-            <Icon icon="ic:round-play-arrow" />
-          </button>
           <button class="rounded success" @click="handleEditDepartment(item)">
             <Icon icon="carbon:edit" />
           </button>
@@ -37,7 +31,7 @@ import { Icon } from '@iconify/vue'
 import FormDepartmentModal from '@/components/recruiter/FormDepartmentModal.vue'
 import DeleteDepartmentModal from '@/components/recruiter/DeleteDepartmentModal.vue'
 import { type IDepartmentItem, type IDepartmentColumnItem } from '@/interfaces/IDepartment'
-import { list, update } from '@/api/department'
+import { list } from '@/api/department'
 
 export default {
   name: 'RecruiterDepartment',
@@ -80,19 +74,6 @@ export default {
         this.total = data.length
       } catch (error) {
         this.$snotify.error('Erro ao buscar os setor: ' + error)
-      } finally {
-        this.loading = false
-      }
-    },
-    async handleToggleDepartment(item: IDepartmentItem) {
-      this.loading = true
-      try {
-        item.status = !item.status
-        await update(item.id, { status: item.status })
-        this.$snotify.success('Setor atualizado com sucesso!')
-      } catch (error) {
-        this.$snotify.error('Erro ao atualizar o setor: ' + error)
-        item.status = !item.status
       } finally {
         this.loading = false
       }

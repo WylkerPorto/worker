@@ -4,6 +4,10 @@
       <form @submit.prevent="validate">
         <FormInput label="Cargo" type="text" placeholder="Digite o cargo" v-model="form.name" :error="errors.name"
           required />
+        <div>
+          <label>Status</label>
+          <SwitchButton v-model="form.status" />
+        </div>
       </form>
     </template>
     <template #actions>
@@ -17,6 +21,7 @@ import * as yup from 'yup'
 import ModalBase from '@/components/core/ModalBase.vue'
 import FormInput from '@/components/core/FormInput.vue'
 import MyButton from '../core/MyButton.vue'
+import SwitchButton from '../core/SwitchButton.vue'
 import { type IPositionForm } from '@/interfaces/IPosition'
 import { create, update } from '@/api/position'
 
@@ -26,6 +31,7 @@ export default {
     ModalBase,
     FormInput,
     MyButton,
+    SwitchButton,
   },
   props: {
     show: {
@@ -115,5 +121,15 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    label {
+      margin: 0;
+    }
+  }
 }
 </style>

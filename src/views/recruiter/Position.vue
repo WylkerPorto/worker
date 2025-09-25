@@ -10,12 +10,6 @@
       <DataTable :items="filteredItems" :columns="columns" :loading="loading" :totalItems="total"
         @onSearch="handleSearch">
         <template #actions="{ item }">
-          <button v-if="item.status" class="rounded warning" @click="handleTogglePosition(item)" title="Pausar">
-            <Icon icon="ic:round-pause" />
-          </button>
-          <button v-else class="rounded primary" @click="handleTogglePosition(item)" title="Ativar">
-            <Icon icon="ic:round-play-arrow" />
-          </button>
           <button class="rounded success" @click="handleEditPosition(item)">
             <Icon icon="carbon:edit" />
           </button>
@@ -36,7 +30,7 @@ import { Icon } from '@iconify/vue'
 import FormPositionModal from '@/components/recruiter/FormPositionModal.vue'
 import DeletePositionModal from '@/components/recruiter/DeletePositionModal.vue'
 import { type IPositionItem, type IPositionColumnItem } from '@/interfaces/IPosition'
-import { list, update } from '@/api/position'
+import { list } from '@/api/position'
 
 export default {
   name: 'RecruiterPosition',
@@ -79,19 +73,6 @@ export default {
         this.total = data.length
       } catch (error) {
         this.$snotify.error('Erro ao buscar os cargos: ' + error)
-      } finally {
-        this.loading = false
-      }
-    },
-    async handleTogglePosition(item: IPositionItem) {
-      this.loading = true
-      try {
-        item.status = !item.status
-        await update(item.id, { status: item.status })
-        this.$snotify.success('Cargo atualizado com sucesso!')
-      } catch (error) {
-        this.$snotify.error('Erro ao atualizar o cargo: ' + error)
-        item.status = !item.status
       } finally {
         this.loading = false
       }

@@ -7,6 +7,11 @@
           <Icon icon="qlementine-icons:new-16" />
         </button>
       </header>
+      <div class="filters">
+        <MyButton class="btn primary" v-for="stt in vacancyStatus" :key="stt.id" @click="handleChangeFilter(stt.title)">
+          {{ stt.title }}s
+        </MyButton>
+      </div>
       <DataTable :items="items" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
         :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
         @onPreviousPage="handleLoadMore(-1)">
@@ -54,6 +59,7 @@ import { type IVacancyItem, type IVacancyColumnItem } from '@/interfaces/IVacanc
 import { list, update, create } from '@/api/vacancy'
 import { getVacancyStatus } from '@/api/filters'
 import DeleteVacancyModal from '@/components/recruiter/DeleteVacancyModal.vue'
+import MyButton from '@/components/core/MyButton.vue'
 
 export default {
   name: 'RecruiterVacancy',
@@ -61,6 +67,7 @@ export default {
     DataTable,
     DeleteVacancyModal,
     Icon,
+    MyButton
   },
   data() {
     return {
@@ -85,6 +92,7 @@ export default {
       page: 1,
       totalPage: 0,
       search: '',
+      status: 'Ativa'
     }
   },
   mounted() {
@@ -212,12 +220,19 @@ export default {
         this.loading = false
       }
     },
+    handleChangeFilter(status: string) {
+      this.status = status
+      this.page = 1
+      this.items = []
+      this.getVacancies()
+    },
   },
   computed: {
     filters() {
       return {
         page: this.page,
         search: this.search,
+        status: this.status
       }
     },
   },
@@ -252,6 +267,13 @@ main {
         cursor: pointer;
         font-size: 25px;
       }
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
     }
 
     .actions {

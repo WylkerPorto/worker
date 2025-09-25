@@ -1,6 +1,10 @@
 <template>
   <main class="data-table">
     <table>
+      <colgroup>
+        <col v-for="(column, index) in columns" :key="index" style="width: 1fr;" />
+        <col v-if="$slots['actions']" style="width: auto;" />
+      </colgroup>
       <thead>
         <tr>
           <th :colspan="columns.length + ($slots['actions'] ? 1 : 0)">
@@ -182,7 +186,7 @@ main.data-table {
         td {
           padding: 0.5rem;
           text-wrap: nowrap;
-          overflow-x: auto;
+          overflow-x: clip;
           text-overflow: ellipsis;
 
           .loader {
@@ -215,6 +219,8 @@ main.data-table {
       display: flex;
       justify-content: center;
       gap: 0.5rem;
+      flex-wrap: wrap;
+      overflow: visible;
     }
   }
 }
