@@ -1,0 +1,1 @@
+import{h as o}from"./http-CsAOctKh.js";import"./index-B8aSx-8m.js";const a=t=>o.authApi().post("/position",t),e=()=>o.authApi().get("/position"),n=(t,i)=>o.authApi().put(`/position/${t}`,i),r=t=>o.authApi().delete(`/position/${t}`);export{a as c,e as l,r,n as u};
