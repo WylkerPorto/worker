@@ -6,7 +6,7 @@
         <col v-if="$slots['actions']" style="width: auto;" />
       </colgroup>
       <thead>
-        <tr>
+        <tr v-if="showFilter">
           <th :colspan="columns.length + ($slots['actions'] ? 1 : 0)">
             <section>
               <span v-if="totalItems">#{{ totalItems }}</span>
@@ -104,6 +104,10 @@ export default {
       type: Number,
       default: 1,
     },
+    showFilter: {
+      type: Boolean,
+      default: true,
+    }
   },
   components: {
     SearchInput,

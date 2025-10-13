@@ -12,3 +12,6 @@ export const update = (id: string, params: string) => http.authApi().put(`/vacan
 export const remove = (id: string) => http.authApi().delete(`/vacancy/${id}`)
 
 export const getBySlug = (slug: string) => http.authApi().get(`/vacancy/slug/${slug}`)
+
+export const publicList = (params: string) =>
+  http.api().get(`/vacancy/public?${toQueryString(params)}`)

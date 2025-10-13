@@ -63,17 +63,32 @@
     <section id="vagas">
       <div class="container">
         <h2>Vagas em Destaque</h2>
-        <DataTable v-if="vagas.length > 0" :items="vagas" :columns="columns" :loading="loading" :total="total"
-          :loadMore="loadMore" @onLoadMore="handleLoadMore" @onSearch="handleSearch">
+        <form @submit.prevent="handleSearch">
+          <FormInput label="Título" type="text" placeholder="Desenvolvedor Frontend" v-model="search" />
+
+          <div class="flex">
+            <MySelect v-if="departmentList.length > 0" label="Departamento" :options="departmentList"
+              v-model="departmentId" />
+            <MySelect v-if="positionList.length > 0" label="Cargo" :options="positionList" v-model="positionId" />
+          </div>
+
+          <div class="flex">
+            <FormInput label="Cidade" type="text" placeholder="São Paulo" v-model="city" />
+            <FormInput label="Estado" type="text" placeholder="SP" v-model="state" />
+          </div>
+
+          <MyButton class="btn success" type="submit" :loading="loading">Filtrar</MyButton>
+        </form>
+
+        <DataTable :items="vagas" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
+          :showFilter="false" :currentPage="page" @onNextPage="handleLoadmore(+1)" @onPreviousPage="handleLoadmore(-1)">
           <template #actions="{ item }">
-            <RouterLink class="rounded primary" :to="{ name: 'jobDetail', params: { id: item.slug } }" title="Ver Vaga">
+            <RouterLink class="rounded primary" :to="{ name: 'jobDetail', params: { slug: item.slug } }" target="_blank"
+              title="Ver Vaga">
               <Icon icon="mdi:eye" />
             </RouterLink>
           </template>
         </DataTable>
-        <div v-else>
-          <p>Ainda não estamos divulgando vagas.</p>
-        </div>
       </div>
     </section>
     <!-- end vagas section -->
@@ -216,23 +231,37 @@
 import { Icon } from '@iconify/vue'
 import { type IVacancyItem, type IVacancyColumnItem } from '@/interfaces/IVacancy'
 import DataTable from '@/components/core/DataTable.vue'
+import MySelect from '@/components/core/MySelect.vue'
+import FormInput from '@/components/core/FormInput.vue'
+import MyButton from '@/components/core/MyButton.vue'
+import { publicList } from '@/api/vacancy'
+import { list as getDepartments } from '@/api/department'
+import { list as getPositions } from '@/api/position'
 
 export default {
   name: 'HomeView',
-  components: { Icon, DataTable },
+  components: { Icon, DataTable, MySelect, FormInput, MyButton },
   data() {
     return {
       lgpd: false,
       loading: false,
+      form: {} as IVacancyItem,
       columns: [
-        { key: 'title', title: 'Vaga' },
-        { key: 'employmentType', title: 'Tipo de Vaga' },
-        { key: 'expirationDate', title: 'Data de Expiração', type: 'date' }
+        { key: 'title', title: 'Título' },
+        { key: 'employmentType', title: 'Tipo' },
+        { key: 'expirationDate', title: 'Validade', type: 'date' }
       ] as IVacancyColumnItem[],
       vagas: [] as IVacancyItem[],
+      departmentList: [] as { id: string; title: string }[],
+      positionList: [] as { id: string; title: string }[],
       total: 0,
       page: 1,
-      search: ''
+      totalPage: 0,
+      search: '',
+      city: '',
+      state: '',
+      departmentId: null,
+      positionId: null,
     }
   },
   mounted() {
@@ -240,18 +269,39 @@ export default {
     if (!lgpd) {
       this.lgpd = true
     }
+    // this.getFilters()
+    this.getVacancies()
   },
   methods: {
     setLgpd() {
       localStorage.setItem('lgpd', 'true')
       this.lgpd = false
     },
+    async getFilters() {
+      this.loading = true
+      try {
+        const [departments, positions] = await Promise.all([getDepartments(), getPositions()])
+        this.departmentList = departments.data?.map((dept: { id: string; name: string }) => ({
+          id: dept.id,
+          title: dept.name
+        }))
+        this.positionList = positions.data?.map((pos: { id: string; name: string }) => ({
+          id: pos.id,
+          title: pos.name
+        }))
+      } catch (error) {
+        this.$snotify.error(error)
+      } finally {
+        this.loading = false
+      }
+    },
     async getVacancies() {
       this.loading = true
       try {
-        const { response } = await getVacancyPub(this.filters)
-        this.vagas = response.data
-        this.total = response.total
+        const { data } = await publicList(this.filters)
+        this.vagas = data.vacancies
+        this.total = data.total
+        this.totalPage = data.totalPages
       } catch (error) {
         this.$snotify.error(error)
       } finally {
@@ -263,8 +313,8 @@ export default {
       this.vagas = []
       this.getVacancies()
     },
-    handleLoadmore() {
-      this.page++
+    handleLoadmore(pageChange: number) {
+      this.page += pageChange
       this.getVacancies()
     }
   },
@@ -272,12 +322,13 @@ export default {
     filters() {
       return {
         page: this.page,
-        search: this.search
+        search: this.search,
+        city: this.city,
+        state: this.state,
+        departmentId: this.departmentId,
+        positionId: this.positionId
       }
     },
-    loadMore() {
-      return this.vagas.length < this.total
-    }
   }
 }
 </script>
@@ -427,6 +478,36 @@ main {
       text-align: center;
       color: #4B5563;
       margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 15px;
+
+      .flex {
+        display: flex;
+        gap: 1rem;
+
+        main {
+          flex: 1;
+        }
+      }
+    }
+
+    .actions {
+
+      button,
+      a {
+        padding: 5px;
+        border: none;
+        display: flex;
+
+        .iconify {
+          font-size: 15px;
+        }
+      }
     }
   }
 
