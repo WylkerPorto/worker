@@ -16,35 +16,46 @@
         :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
         @onPreviousPage="handleLoadMore(-1)">
         <template #actions="{ item }">
-          <button class="rounded" @click="toggleDropdown($event, item)" title="Editar Status">
-            <Icon icon="fluent:status-12-filled" />
-          </button>
-          <RouterLink class="rounded primary" :to="{ name: 'jobDetail', params: { slug: item.slug } }" target="_blank"
-            title="Compartilhar Vaga">
-            <Icon icon="mdi:share" />
-          </RouterLink>
-          <RouterLink class="rounded warning" :to="{ name: 'recruiterVacancyDetail', params: { id: item.id } }"
-            title="Ver Candidatos">
-            <Icon icon="mdi:user" />
-          </RouterLink>
-          <button class="rounded light" @click="handleCloneVacancy(item)" title="Duplicar">
-            <Icon icon="zondicons:duplicate" />
-          </button>
           <RouterLink class="rounded success" :to="{ name: 'recruiterVacancyForm', params: { id: item.id } }"
             title="Editar">
             <Icon icon="carbon:edit" />
           </RouterLink>
-          <button class="rounded danger" @click="handleConfirmDelete(item)" title="Excluir">
-            <Icon icon="carbon:trash-can" />
+          <button class="rounded" @click="toggleDropdown($event, item)" title="Mais Ações">
+            <Icon icon="tabler:dots" />
           </button>
         </template>
       </DataTable>
     </section>
     <article v-if="openDropdownItem" ref="dropdown" :style="dropdownStyles" class="dropdown-status">
       <ul>
-        <li v-for="status in vacancyStatus" :key="status.id"
+        <li @click="toogleStatus = !toogleStatus">
+          <Icon icon="fluent:status-12-filled" />
+          <span>Alterar Status</span>
+        </li>
+
+        <li v-show="toogleStatus" v-for="status in vacancyStatus" :key="status.id"
           @click="handleToggleVacancy(openDropdownItem, status.title)">
           {{ status.title }}
+        </li>
+
+        <li @click="openNewTab(openDropdownItem.slug)">
+          <Icon icon="mdi:share" />
+          <span>Compartilhar Vaga</span>
+        </li>
+
+        <li @click="openLink(openDropdownItem.id)">
+          <Icon icon="mdi:user" />
+          <span>Ver Candidatos</span>
+        </li>
+
+        <li @click="handleCloneVacancy(openDropdownItem)">
+          <Icon icon="zondicons:duplicate" />
+          <span>Duplicar Vaga</span>
+        </li>
+
+        <li @click="handleConfirmDelete(openDropdownItem)">
+          <Icon icon="carbon:trash-can" />
+          <span>Excluir Vaga</span>
         </li>
       </ul>
     </article>
@@ -72,6 +83,7 @@ export default {
   data() {
     return {
       openDropdownItem: null as IVacancyItem | null,
+      toogleStatus: false,
       dropdownStyles: {
         position: 'absolute',
         top: '0px',
@@ -104,6 +116,15 @@ export default {
     document.removeEventListener('click', this.handleClickOutside)
   },
   methods: {
+    openNewTab(slug: string) {
+      const url = this.$router.resolve({ name: 'jobDetail', params: { slug } }).href
+      window.open(url, '_blank')
+      this.openDropdownItem = null
+      this.toogleStatus = false
+    },
+    openLink(id: number) {
+      this.$router.push({ name: 'recruiterVacancyDetail', params: { id } })
+    },
     refresh() {
       this.items = []
       this.getVacancies()
@@ -139,6 +160,9 @@ export default {
     handleConfirmDelete(item: IVacancyItem) {
       this.editItem = item
       this.showDeleteVacancyModal = true
+      this.openDropdownItem = null
+      this.loading = false
+      this.toogleStatus = false
     },
     closeAllModals() {
       this.editItem = {} as IVacancyItem
@@ -166,6 +190,7 @@ export default {
       } finally {
         this.openDropdownItem = null
         this.loading = false
+        this.toogleStatus = false
       }
     },
     toggleDropdown(event: Event, item: IVacancyItem) {
@@ -179,8 +204,8 @@ export default {
 
       this.dropdownStyles = {
         position: 'absolute',
-        top: `${rect.bottom + window.scrollY + 10}px`,
-        left: `${rect.left + window.scrollX - 30}px`,
+        top: `${rect.bottom + window.scrollY + 5}px`,
+        left: `${rect.left + window.scrollX - 150}px`,
       }
       this.openDropdownItem = item
     },
@@ -196,6 +221,7 @@ export default {
           !buttonClicked // garante que o botão também não foi clicado
         ) {
           this.openDropdownItem = null
+          this.toogleStatus = false
         }
       }, 0)
     },
@@ -217,7 +243,9 @@ export default {
       } catch (error) {
         this.$snotify.error('Erro ao duplicar a vaga: ' + error)
       } finally {
+        this.openDropdownItem = null
         this.loading = false
+        this.toogleStatus = false
       }
     },
     handleChangeFilter(status: string) {
@@ -307,6 +335,8 @@ article {
     li {
       padding: 10px 20px;
       cursor: pointer;
+      display: flex;
+      gap: 10px;
 
       &:hover {
         background-color: var(--blue);
