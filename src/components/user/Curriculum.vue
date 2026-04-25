@@ -6,8 +6,8 @@
       </div>
 
       <div class="group">
-        <FormInput v-model="form.email" :error="errors.email" type="email" placeholder="Digite seu e-mail*"
-          label="Email*" />
+        <FormInput v-model="form.socialName" :error="errors.socialName" type="text" placeholder="Digite seu nome social"
+          label="Nome Social" />
       </div>
 
       <div class="group flex">
@@ -24,6 +24,9 @@
       </div>
 
       <div class="group flex">
+        <FormInput v-model="form.birthday" :error="errors.birthday" type="date"
+          placeholder="Digite sua data de nascimento" label="Data de Nascimento*" />
+
         <div class="switch">
           <span>Possui deficiência?</span>
           <MySwitch v-model="form.hasDisability" />
@@ -38,11 +41,21 @@
           :error="errors.maritalStatusId" />
       </div>
 
+      <div class="group">
+        <FormInput v-model="form.email" :error="errors.email" type="email" placeholder="Digite seu e-mail*"
+          label="Email*" />
+      </div>
+
       <div class="group flex">
         <FormInput v-model="form.phoneNumber" :error="errors.phoneNumber" type="tel" mask="tel"
           placeholder="(99) 99999-9999" label="Telefone*" />
         <FormInput v-model="form.phoneNumber2" :error="errors.phoneNumber2" type="tel" mask="tel"
           placeholder="(99) 99999-9999" label="Telefone 2" />
+      </div>
+
+      <div class="group">
+        <MySelect :options="nationalities" v-model="form.nationality" label="Nacionalidade*"
+          :error="errors.nationality" />
       </div>
 
       <MyButton class="primary" :loading="loading" type="button" @click="validatePerson">Salvar</MyButton>
@@ -51,18 +64,13 @@
     <MyAccordeon title="Sobre">
       <div class="group">
         <textarea class="textarea" v-model="form.presentation" :error="errors.presentation"
-          placeholder="Apresentação" />
+          placeholder="Sou um profissional dedicado, com interesse em desenvolver minhas habilidades e contribuir de forma positiva para a equipe. Tenho facilidade em aprender, boa comunicação e comprometimento com resultados. Busco oportunidades que me permitam crescer profissionalmente e agregar valor à empresa." />
       </div>
 
       <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
     </MyAccordeon>
 
     <MyAccordeon title="Localidade">
-      <div class="group">
-        <MySelect :options="nationalities" v-model="form.nationality" label="Nacionalidade*"
-          :error="errors.nationality" />
-      </div>
-
       <div class="group flex">
         <FormInput v-model="form.postalCode" :error="errors.postalCode" type="text" placeholder="Digite o CEP*"
           label="CEP*" />
@@ -96,52 +104,7 @@
       <MyButton class="primary" :loading="loading" type="button" @click="validateLocation">Salvar</MyButton>
     </MyAccordeon>
 
-    <MyAccordeon title="Profissional" class="school">
-      <div class="group flex wrap">
-        <div class="switch">
-          <span>Disponibilidade para viagem?</span>
-          <MySwitch v-model="form.availableToTravel" />
-        </div>
-
-        <div class="switch">
-          <span>Primeiro Emprego?</span>
-          <MySwitch v-model="form.firstJob" />
-        </div>
-
-        <FormInput v-model.number="form.salaryClaim" :error="errors.salaryClaim" type="number" placeholder="5000"
-          label="Pretensão Salarial" />
-      </div>
-
-      <div class="flex mt">
-        <h2>Experiência Profissional</h2>
-        <MyButton class="primary" type="button" @click="() => (showWorkExperienceModal = true)">
-          Nova Experiência
-        </MyButton>
-      </div>
-      <ul v-if="workExperiences.length > 0">
-        <li v-for="work in workExperiences" :key="work.id">
-          <div>
-            <p>{{ work.position }}</p>
-            <p>
-              {{ work.companyName }} - {{ toFormatDate(work.startDate) }} até
-              {{ toFormatDate(work.endDate) || (work.isCurrentJob && 'Atualmente') }}
-            </p>
-          </div>
-          <div class="btns">
-            <MyButton class="info" type="button" @click="editWorkExperience(work)">
-              <Icon icon="iconamoon:pen" />
-            </MyButton>
-            <MyButton class="danger" type="button" @click="() => confirmDeleteWorkExperience(work)">
-              <Icon icon="iconamoon:trash" />
-            </MyButton>
-          </div>
-        </li>
-      </ul>
-
-      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
-    </MyAccordeon>
-
-    <MyAccordeon title="Conhecimento" class="school">
+    <MyAccordeon title="Escolaridade" class="school">
       <div class="flex">
         <h2>Graduações</h2>
         <MyButton class="primary" type="button" @click="() => (showGraduationModal = true)">
@@ -219,6 +182,79 @@
       <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
     </MyAccordeon>
 
+    <MyAccordeon title="Profissional" class="school">
+      <div class="group">
+        <span class="text-red">*Para Araraquara</span>
+
+        <div class="flex wrap">
+          <div class="switch flex gap">
+            <span>Disponibilidade para viagem?</span>
+            <MySwitch v-model="form.availableToTravelAraraquara" />
+          </div>
+
+          <div class="switch flex gap">
+            <span>Disponibilidade para mudança?</span>
+            <MySwitch v-model="form.availableToMove" />
+          </div>
+        </div>
+      </div>
+
+      <div class="group ">
+        <span class="text-red">*Para outra cidade</span>
+        <div class="flex wrap">
+          <div class="switch flex gap">
+            <span>Disponibilidade para viagem?</span>
+            <MySwitch v-model="form.availableToTravel" />
+          </div>
+
+          <div>
+            <span>Disponibilidade de horário</span>
+            <MySelect :options="timeAvailability" v-model="form.timeAvailability" />
+          </div>
+        </div>
+      </div>
+
+      <div class="group flex wrap">
+
+        <div class="switch">
+          <span>Primeiro Emprego?</span>
+          <MySwitch v-model="form.firstJob" />
+        </div>
+
+        <FormInput v-model="form.salaryClaim" :error="errors.salaryClaim" type="text" placeholder="5000" mask="money"
+          label="Pretensão Salarial" />
+      </div>
+
+      <div class="flex mt">
+        <h2>Experiência Profissional</h2>
+        <MyButton class="primary" type="button" @click="() => (showWorkExperienceModal = true)">
+          Nova Experiência
+        </MyButton>
+      </div>
+
+      <ul v-if="workExperiences.length > 0">
+        <li v-for="work in workExperiences" :key="work.id">
+          <div>
+            <p>{{ work.position }}</p>
+            <p>
+              {{ work.companyName }} - {{ toFormatDate(work.startDate) }} até
+              {{ toFormatDate(work.endDate) || (work.isCurrentJob && 'Atualmente') }}
+            </p>
+          </div>
+          <div class="btns">
+            <MyButton class="info" type="button" @click="editWorkExperience(work)">
+              <Icon icon="iconamoon:pen" />
+            </MyButton>
+            <MyButton class="danger" type="button" @click="() => confirmDeleteWorkExperience(work)">
+              <Icon icon="iconamoon:trash" />
+            </MyButton>
+          </div>
+        </li>
+      </ul>
+
+      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
+    </MyAccordeon>
+
     <MyAccordeon title="Social">
 
       <div class="group flex">
@@ -255,30 +291,30 @@
 <script lang="ts">
 import * as yup from 'yup'
 import FormInput from '../core/FormInput.vue'
-import MySwitch from '../core/SwitchButton.vue'
-import MySelect from '../core/MySelect.vue'
-import MyButton from '../core/MyButton.vue'
 import MyAccordeon from '../core/MyAccordeon.vue'
-import GraduationModal from './GraduationModal.vue'
+import MyButton from '../core/MyButton.vue'
+import MySelect from '../core/MySelect.vue'
+import MySwitch from '../core/SwitchButton.vue'
 import CoursesModal from './CoursesModal.vue'
+import DeleteConfirmationModal from './DeleteConfirmationModal.vue'
+import GraduationModal from './GraduationModal.vue'
 import LanguageModal from './LanguageModal.vue'
 import WorkExperienceModal from './WorkExperienceModal.vue'
-import DeleteConfirmationModal from './DeleteConfirmationModal.vue'
 
 import { Icon } from '@iconify/vue'
 
-import { getDisabilities, getGenders, getMaritalstatus, getNationalities } from '@/api/filters'
-import { get as getUser, update as updateUser } from '@/api/user'
-import { list as listGraduation, remove as removeGraduation } from '@/api/graduation'
 import { list as listCourses, remove as removeCourse } from '@/api/course'
-import { list as listLanguages, remove as removeLanguage } from '@/api/language'
 import { list as listWork, remove as removeWork } from '@/api/experience'
+import { getDisabilities, getGenders, getMaritalstatus, getNationalities } from '@/api/filters'
+import { list as listGraduation, remove as removeGraduation } from '@/api/graduation'
+import { list as listLanguages, remove as removeLanguage } from '@/api/language'
+import { get as getUser, update as updateUser } from '@/api/user'
 import { getAddressByCep } from '@/api/viaCep'
 
-import { type IPerson } from '@/interfaces/IPerson'
-import { type IGraduationItem } from '@/interfaces/IGraduation'
 import { type ICourseItem } from '@/interfaces/ICourses'
+import { type IGraduationItem } from '@/interfaces/IGraduation'
 import { type ILanguageItem } from '@/interfaces/ILanguages'
+import { type IPersonForm } from '@/interfaces/IPerson'
 import { type IWorkItem } from '@/interfaces/IWork'
 import { toFormatDate } from '@/utils/conversors'
 
@@ -288,7 +324,7 @@ export default {
     return {
       toFormatDate,
       id: null,
-      form: {} as IPerson,
+      form: {} as IPersonForm,
       disabilities: [],
       genders: [],
       maritalStatus: [],
@@ -297,6 +333,7 @@ export default {
       courses: [] as ICourseItem[],
       languages: [] as ILanguageItem[],
       workExperiences: [] as IWorkItem[],
+      timeAvailability: [],
       errors: {},
       loading: false,
       showGraduationModal: false,
@@ -502,11 +539,19 @@ export default {
         const genders = await getGenders()
         const maritalStatus = await getMaritalstatus()
         const nationality = await getNationalities()
+        const times = await Promise.resolve([
+          { id: 'morning', title: 'Manhã' },
+          { id: 'afternoon', title: 'Tarde' },
+          { id: 'evening', title: 'Noite' },
+          { id: 'daytime', title: 'Diurno' },
+          { id: 'all', title: 'Todos' },
+        ])
 
         this.disabilities = disabilities.data.map((data) => ({ id: data.title, title: data.title }))
         this.genders = genders.data.map((data) => ({ id: data.title, title: data.title }))
         this.maritalStatus = maritalStatus.data.map((data) => ({ id: data.id, title: data.title }))
         this.nationalities = nationality.data.map((data) => ({ id: data.title, title: data.title }))
+        this.timeAvailability = times.map((time) => ({ id: time.id, title: time.title }))
       } catch (error) {
         console.error('Error loading filters:', error)
       }
@@ -518,6 +563,8 @@ export default {
           ...this.form, // valores default
           ...response.data,
           hasDisability: !!response.data.hasDisability, // garante boolean
+          availableToTravelAraraquara: !!response.data.availableToTravelAraraquara,
+          availableToMove: !!response.data.availableToMove,
           availableToTravel: !!response.data.availableToTravel,
           firstJob: !!response.data.firstJob,
         }
@@ -750,6 +797,11 @@ form {
           }
         }
       }
+    }
+
+    .switch.gap {
+      gap: 0.5rem;
+      justify-content: flex-start;
     }
   }
 }

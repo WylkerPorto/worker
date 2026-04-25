@@ -1,22 +1,21 @@
 export interface IPersonForm {
   id: number
   name: string
-  email: string
+  socialName: string
   password: string
   cpf: string
   rg: string
   cnh: string
   typeCnh: string
+  birthday: Date
   hasDisability: boolean
   typeDisability: string
   gender: string
   maritalStatusId: number
-  nationality: string
+  email: string
   phoneNumber: string
   phoneNumber2: string
-  availableToTravel: boolean
-  salaryClaim: number
-  firstJob: boolean
+  nationality: string
   presentation: string
   postalCode: string
   street: string
@@ -26,6 +25,12 @@ export interface IPersonForm {
   city: string
   state: string
   country: string
+  availableToTravelAraraquara: boolean
+  availableToMove: boolean
+  availableToTravel: boolean
+  timeAvailability: string
+  firstJob: boolean
+  salaryClaim: number
   facebookUrl: string
   instagramUrl: string
   linkedinUrl: string

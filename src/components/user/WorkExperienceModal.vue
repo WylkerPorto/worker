@@ -10,7 +10,8 @@
           :error="errors.companyName" required />
         <div class="flex">
           <FormInput label="Data de Início" type="date" v-model="form.startDate" :error="errors.startDate" required />
-          <FormInput label="Data de Término" type="date" v-model="form.endDate" :error="errors.endDate" />
+          <FormInput label="Data de Término" type="date" v-model="form.endDate" :error="errors.endDate"
+            :readonly="form.isCurrentJob" />
           <div class="switch">
             <label>Atualmente Trabalhando</label>
             <SwitchButton v-model="form.isCurrentJob" required />
@@ -20,8 +21,8 @@
         <div class="flex">
           <FormInput label="Tipo de Contratação" type="text" placeholder="full-time, part-time, freelance"
             v-model="form.employmentType" :error="errors.employmentType" required />
-          <FormInput label="Salário" type="number" placeholder="Informe seu salário" v-model.number="form.salary"
-            :error="errors.salary" />
+          <FormInput label="Salário" type="number" placeholder="Informe seu salário" v-model="form.salary"
+            :error="errors.salary" mask="money" />
         </div>
 
         <div>
@@ -39,13 +40,13 @@
 </template>
 
 <script lang="ts">
+import { create, update } from '@/api/experience'
+import { type IWorkForm } from '@/interfaces/IWork'
 import * as yup from 'yup'
-import ModalBase from '../core/ModalBase.vue'
 import FormInput from '../core/FormInput.vue'
+import ModalBase from '../core/ModalBase.vue'
 import MyButton from '../core/MyButton.vue'
 import SwitchButton from '../core/SwitchButton.vue'
-import { type IWorkForm } from '@/interfaces/IWork'
-import { create, update } from '@/api/experience'
 
 export default {
   name: 'WorkExperienceModal',
