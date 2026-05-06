@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="validate">
+
     <MyAccordeon title="Dados pessoais" :isOpen="true">
       <div class="group">
         <FormInput v-model="form.name" :error="errors.name" type="text" placeholder="Digite seu nome" label="Name*" />
@@ -24,7 +25,7 @@
       </div>
 
       <div class="group flex">
-        <FormInput v-model="form.birthday" :error="errors.birthday" type="date"
+        <FormInput v-model="form.birthdate" :error="errors.birthdate" type="date"
           placeholder="Digite sua data de nascimento" label="Data de Nascimento*" />
 
         <div class="switch">
@@ -53,9 +54,14 @@
           placeholder="(99) 99999-9999" label="Telefone 2" />
       </div>
 
-      <div class="group">
+      <div class="group flex">
         <MySelect :options="nationalities" v-model="form.nationality" label="Nacionalidade*"
           :error="errors.nationality" />
+
+        <div class="switch">
+          <span>Aceito participar do banco de talentos</span>
+          <MySwitch v-model="form.acceptsTalentPool" />
+        </div>
       </div>
 
       <MyButton class="primary" :loading="loading" type="button" @click="validatePerson">Salvar</MyButton>
@@ -189,12 +195,12 @@
         <div class="flex wrap">
           <div class="switch flex gap">
             <span>Disponibilidade para viagem?</span>
-            <MySwitch v-model="form.availableToTravelAraraquara" />
+            <MySwitch v-model="form.availableToCommuteToAraraquara" />
           </div>
 
           <div class="switch flex gap">
             <span>Disponibilidade para mudança?</span>
-            <MySwitch v-model="form.availableToMove" />
+            <MySwitch v-model="form.willingToRelocateToAraraquara" />
           </div>
         </div>
       </div>
@@ -305,7 +311,7 @@ import { Icon } from '@iconify/vue'
 
 import { list as listCourses, remove as removeCourse } from '@/api/course'
 import { list as listWork, remove as removeWork } from '@/api/experience'
-import { getDisabilities, getGenders, getMaritalstatus, getNationalities } from '@/api/filters'
+import { getDisabilities, getGenders, getMaritalstatus, getNationalities, getTimeAvailability } from '@/api/filters'
 import { list as listGraduation, remove as removeGraduation } from '@/api/graduation'
 import { list as listLanguages, remove as removeLanguage } from '@/api/language'
 import { get as getUser, update as updateUser } from '@/api/user'
@@ -334,7 +340,7 @@ export default {
       languages: [] as ILanguageItem[],
       workExperiences: [] as IWorkItem[],
       timeAvailability: [],
-      errors: {},
+      errors: {} as IPersonForm,
       loading: false,
       showGraduationModal: false,
       selectedGraduation: null as number | null,
@@ -539,19 +545,13 @@ export default {
         const genders = await getGenders()
         const maritalStatus = await getMaritalstatus()
         const nationality = await getNationalities()
-        const times = await Promise.resolve([
-          { id: 'morning', title: 'Manhã' },
-          { id: 'afternoon', title: 'Tarde' },
-          { id: 'evening', title: 'Noite' },
-          { id: 'daytime', title: 'Diurno' },
-          { id: 'all', title: 'Todos' },
-        ])
+        const times = await getTimeAvailability()
 
         this.disabilities = disabilities.data.map((data) => ({ id: data.title, title: data.title }))
         this.genders = genders.data.map((data) => ({ id: data.title, title: data.title }))
         this.maritalStatus = maritalStatus.data.map((data) => ({ id: data.id, title: data.title }))
         this.nationalities = nationality.data.map((data) => ({ id: data.title, title: data.title }))
-        this.timeAvailability = times.map((time) => ({ id: time.id, title: time.title }))
+        this.timeAvailability = times.data.map((time) => ({ id: time.title, title: time.title }))
       } catch (error) {
         console.error('Error loading filters:', error)
       }
@@ -563,10 +563,11 @@ export default {
           ...this.form, // valores default
           ...response.data,
           hasDisability: !!response.data.hasDisability, // garante boolean
-          availableToTravelAraraquara: !!response.data.availableToTravelAraraquara,
-          availableToMove: !!response.data.availableToMove,
+          availableToCommuteToAraraquara: !!response.data.availableToCommuteToAraraquara,
+          willingToRelocateToAraraquara: !!response.data.willingToRelocateToAraraquara,
           availableToTravel: !!response.data.availableToTravel,
           firstJob: !!response.data.firstJob,
+          acceptsTalentPool: !!response.data.acceptsTalentPool,
         }
       } catch (error) {
         console.error('Error loading data:', error)

@@ -19,8 +19,10 @@
         </div>
 
         <div class="flex">
-          <FormInput label="Tipo de Contratação" type="text" placeholder="full-time, part-time, freelance"
-            v-model="form.employmentType" :error="errors.employmentType" required />
+          <div class="main">
+            <span>Tipo de Contratação</span>
+            <MySelect :options="hiringContractTypes" v-model="form.employmentType" :error="errors.employmentType" />
+          </div>
           <FormInput label="Salário" type="number" placeholder="Informe seu salário" v-model="form.salary"
             :error="errors.salary" mask="money" />
         </div>
@@ -41,16 +43,18 @@
 
 <script lang="ts">
 import { create, update } from '@/api/experience'
+import { getHiringContractTypes } from '@/api/filters'
 import { type IWorkForm } from '@/interfaces/IWork'
 import * as yup from 'yup'
 import FormInput from '../core/FormInput.vue'
 import ModalBase from '../core/ModalBase.vue'
 import MyButton from '../core/MyButton.vue'
+import MySelect from '../core/MySelect.vue'
 import SwitchButton from '../core/SwitchButton.vue'
 
 export default {
   name: 'WorkExperienceModal',
-  components: { ModalBase, FormInput, MyButton, SwitchButton },
+  components: { ModalBase, FormInput, MyButton, SwitchButton, MySelect },
   props: {
     show: {
       type: Boolean,
@@ -66,6 +70,7 @@ export default {
       form: {} as IWorkForm,
       errors: {} as IWorkForm,
       loading: false,
+      hiringContractTypes: [],
     }
   },
   watch: {
@@ -79,11 +84,15 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
     // Initialize form with default values
     this.form = {
       isCurrentJob: false,
     } as IWorkForm
+
+    // Fetch hiring contract types
+    const { data } = await getHiringContractTypes()
+    this.hiringContractTypes = data.map((type) => ({ id: type.title, title: type.title }))
   },
   methods: {
     validate() {
@@ -169,7 +178,8 @@ form {
     display: flex;
     gap: 1rem;
 
-    main {
+    main,
+    .main {
       flex: 1;
     }
 

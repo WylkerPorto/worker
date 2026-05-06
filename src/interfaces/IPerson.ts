@@ -7,7 +7,7 @@ export interface IPersonForm {
   rg: string
   cnh: string
   typeCnh: string
-  birthday: Date
+  birthdate: Date
   hasDisability: boolean
   typeDisability: string
   gender: string
@@ -25,9 +25,10 @@ export interface IPersonForm {
   city: string
   state: string
   country: string
-  availableToTravelAraraquara: boolean
-  availableToMove: boolean
+  availableToCommuteToAraraquara: boolean
+  willingToRelocateToAraraquara: boolean
   availableToTravel: boolean
+  acceptsTalentPool: boolean
   timeAvailability: string
   firstJob: boolean
   salaryClaim: number

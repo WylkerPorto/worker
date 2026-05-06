@@ -9,51 +9,35 @@
     </header>
     <!-- end header section -->
 
-    <!-- do section -->
+    <!-- banner section -->
     <section id="inicio">
-      <div class="container">
-        <div>
-          <h1>Bem-vindo ao KlikTalent</h1>
-          <p>Lorem ipsum dolor sit amet consectetur. Convallis eget interdum mauris senectus elit duis. Vitae curabitur
-            aliquam amet tempus at scelerisque volutpat nulla. Elementum velit platea ut tortor mauris at laoreet nunc
-            risus. Diam morbi tortor eget eu habitasse vestibulum commodo viverra. </p>
-          <p>Vel libero dolor libero risus lorem non feugiat. Habitant amet ornare senectus scelerisque enim imperdiet
-            consequat pharetra odio.
-            Dignissim sed vulputate enim nisi. Non sem amet adipiscing enim.
-          </p>
-          <p>Vel libero dolor libero risus lorem non feugiat. Habitant amet ornare senectus scelerisque enim imperdiet
-            consequat pharetra odio.
-            Dignissim sed vulputate enim nisi. Non sem amet adipiscing enim.
-          </p>
-        </div>
-        <figure>
-          <img src="/assets/imgs/img1.svg" alt="Descrição da imagem" />
-        </figure>
+      <img src="/assets/imgs/SCA.jpeg" alt="banner">
+      <div class="centralizer">
+        <img src="/assets/imgs/Logo SCA.png" alt="logo">
       </div>
     </section>
-    <!-- end do section -->
+    <!-- end banner section -->
 
     <!-- visão section -->
     <section id="visao">
       <div class="container">
-        <h2>Nossa Visão</h2>
+        <h2>Santa Casa</h2>
+        <p><b>CUIDAR DE VIDAS TRANSFORMA O MUNDO, E SUA CARREIRA PODE CRESCER COM A GENTE!</b></p>
         <p>
-          Acreditamos que, ao simplificar e otimizar os processos de recrutamento e cadastro de
-          currículos, podemos contribuir para um mercado de trabalho mais inclusivo e conectado, onde
-          tanto candidatos quanto empresas possam alcançar seus objetivos de forma ágil e
-          satisfatória.
+          Construir a sua trajetória na Santa Casa de Araraquara começa agora. Somos movidos pelo propósito de cuidar de
+          vidas com excelência, humanização e compromisso, e acreditamos que grandes histórias profissionais nascem em
+          ambientes onde propósito e desenvolvimento caminham juntos.
         </p>
         <p>
-          Nosso compromisso é facilitar a jornada de profissionais que buscam crescimento e desafios,
-          bem como ajudar empresas a encontrar os melhores talentos para fortalecer suas equipes e
-          impulsionar seu sucesso.
+          Aqui, cada pessoa faz a diferença. Mais do que um hospital, somos uma instituição centenária que impacta
+          diariamente a vida de milhares de pessoas, promovendo saúde, acolhimento e transformação social. Fazer parte
+          da Santa Casa é integrar um time comprometido, que trabalha com empatia, inovação, ética e espírito
+          colaborativo.
         </p>
         <p>
-          Nossa visão é ser a plataforma líder na conexão entre talentos e empresas, transformando a
-          maneira como profissionais e empregadores se encontram no mercado de trabalho. Buscamos
-          criar um ambiente dinâmico e inovador, onde as oportunidades sejam acessíveis a todos e a
-          busca por um novo emprego ou por novos colaboradores seja mais eficiente, justa e
-          transparente.
+          Aqui, você encontra oportunidades para desenvolver sua carreira em uma instituição sólida, reconhecida e
+          movida por um propósito maior: cuidar de pessoas. São os talentos que fazem a nossa história acontecer todos
+          os dias, e podem ajudar a escrever os próximos capítulos.
         </p>
       </div>
     </section>
@@ -228,15 +212,15 @@
 </template>
 
 <script lang="ts">
-import { Icon } from '@iconify/vue'
-import { type IVacancyItem, type IVacancyColumnItem } from '@/interfaces/IVacancy'
-import DataTable from '@/components/core/DataTable.vue'
-import MySelect from '@/components/core/MySelect.vue'
-import FormInput from '@/components/core/FormInput.vue'
-import MyButton from '@/components/core/MyButton.vue'
-import { publicList } from '@/api/vacancy'
 import { list as getDepartments } from '@/api/department'
 import { list as getPositions } from '@/api/position'
+import { publicList } from '@/api/vacancy'
+import DataTable from '@/components/core/DataTable.vue'
+import FormInput from '@/components/core/FormInput.vue'
+import MyButton from '@/components/core/MyButton.vue'
+import MySelect from '@/components/core/MySelect.vue'
+import { type IVacancyColumnItem, type IVacancyItem } from '@/interfaces/IVacancy'
+import { Icon } from '@iconify/vue'
 
 export default {
   name: 'HomeView',
@@ -339,22 +323,19 @@ main {
   :not(#navbar) {
     .container {
       padding: 100px 0;
-    }
-  }
+      max-width: 1440px;
+      margin: auto;
 
-  .container {
-    max-width: 1440px;
-    margin: auto;
-
-    h2 {
-      font-weight: 700;
-      font-style: Bold;
-      font-size: 40px;
-      line-height: 40px;
-      letter-spacing: 0%;
-      text-align: center;
-      color: #111827;
-      margin-bottom: 30px;
+      h2 {
+        font-weight: 700;
+        font-style: Bold;
+        font-size: 40px;
+        line-height: 40px;
+        letter-spacing: 0%;
+        text-align: center;
+        color: #111827;
+        margin-bottom: 30px;
+      }
     }
   }
 
@@ -370,9 +351,11 @@ main {
   }
 
   #navbar {
-    padding: 27px 0;
+    padding: 15px 0;
 
     .container {
+      max-width: 1440px;
+      margin: auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -397,55 +380,29 @@ main {
   }
 
   #inicio {
-    background: linear-gradient(90deg, color-mix(in srgb, var(--glass) 20%, transparent) 0%, color-mix(in srgb, var(--blue) 20%, transparent) 100%);
+    width: 100%;
+    height: 30vw;
 
-    .container {
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .centralizer {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
       display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      flex-wrap: wrap-reverse;
-      gap: 1.5em;
+      background-color: var(--white);
+      box-shadow: var(--text) 0px 6px 12px -2px, var(--black) 0px 3px 7px -3px;
+      padding: 0.75rem;
+      border-radius: 1rem;
 
-      >div {
-        flex: 1 1 300px;
-        /* cresce (1), encolhe (1), base inicial 300px */
-        max-width: 710px;
-        /* não passa disso */
-
-        h1 {
-          font-weight: 500;
-          font-size: 40px;
-          line-height: 100%;
-          letter-spacing: 0%;
-          margin-bottom: 20px;
-        }
-
-        p {
-          font-weight: 500;
-          font-size: 20px;
-          line-height: 100%;
-          letter-spacing: 0%;
-          color: #4B5563;
-          margin-bottom: 20px;
-          text-wrap: balance;
-        }
-      }
-
-      figure {
-        flex: 0 0 560px;
-        /* não cresce, não encolhe, base fixa de 560px */
-        width: 560px;
-        height: 560px;
-        background: var(--blue);
-        border-radius: 50%;
-        display: grid;
-        justify-content: center;
-        align-content: end;
-
-        img {
-          border-bottom-left-radius: 255px;
-          border-bottom-right-radius: 255px;
-        }
+      img {
+        width: 100px;
+        height: auto;
       }
     }
   }
@@ -456,13 +413,16 @@ main {
         font-weight: 400;
         font-style: Regular;
         font-size: 20px;
-        leading-trim: NONE;
         line-height: 28px;
         letter-spacing: 0%;
-        text-align: center;
+        text-align: left;
         color: #4B5563;
         margin-bottom: 10px;
         text-wrap: balance;
+
+        b {
+          font-weight: 600;
+        }
       }
     }
   }
