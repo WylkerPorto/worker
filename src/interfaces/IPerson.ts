@@ -7,7 +7,7 @@ export interface IPersonForm {
   rg: string
   cnh: string
   typeCnh: string
-  birthdate: Date
+  birthDate: Date
   hasDisability: boolean
   typeDisability: string
   gender: string

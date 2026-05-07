@@ -32,6 +32,7 @@ export default {
 
   position: relative;
   width: $switch-width;
+  min-width: $switch-width;
   height: $switch-height;
   display: inline-block;
   cursor: pointer;
@@ -62,6 +63,7 @@ export default {
     .switch__track {
       background: var(--blue);
     }
+
     .switch__thumb {
       left: calc(100% - #{$thumb-size} - 2px);
       background: #fff;

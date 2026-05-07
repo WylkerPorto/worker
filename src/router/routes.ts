@@ -166,6 +166,12 @@ export default [
         component: () => import('@/views/recruiter/Profile.vue'),
         meta: { title: 'Perfil' },
       },
+      {
+        path: 'talent-pool',
+        name: 'recruiterTalentPool',
+        component: () => import('@/views/recruiter/TalentPool.vue'),
+        meta: { title: 'Lista de Talentos' },
+      },
     ],
   },
 

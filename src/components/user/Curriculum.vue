@@ -25,7 +25,7 @@
       </div>
 
       <div class="group flex">
-        <FormInput v-model="form.birthdate" :error="errors.birthdate" type="date"
+        <FormInput v-model="form.birthDate" :error="errors.birthDate" type="date"
           placeholder="Digite sua data de nascimento" label="Data de Nascimento*" />
 
         <div class="switch">
@@ -37,7 +37,7 @@
       </div>
 
       <div class="group flex">
-        <MySelect :options="genders" v-model="form.gender" label="Sexo*" :error="errors.gender" />
+        <MySelect :options="genders" v-model="form.gender" label="Genero*" :error="errors.gender" />
         <MySelect :options="maritalStatus" v-model.number="form.maritalStatusId" label="Estado Civil*"
           :error="errors.maritalStatusId" />
       </div>

@@ -3,7 +3,7 @@ import moment from 'moment'
 export const toQueryString = (paramsObj?: Record<string, any>): string => {
   if (!paramsObj) return ''
   const cleanParams = Object.fromEntries(
-    Object.entries(paramsObj).filter(([_, v]) => v !== null && v !== undefined),
+    Object.entries(paramsObj).filter(([_, v]) => v !== null && v !== undefined && v !== ''),
   )
   return new URLSearchParams(cleanParams).toString()
 }
