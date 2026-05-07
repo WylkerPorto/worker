@@ -84,7 +84,14 @@
         </div>
       </div>
       <DataTable :items="users" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
-        :currentPage="page" @onNextPage="handleLoadMore(+1)" @onPreviousPage="handleLoadMore(-1)" :showFilter="false" />
+        :currentPage="page" @onNextPage="handleLoadMore(+1)" @onPreviousPage="handleLoadMore(-1)" :showFilter="false">
+        <template #actions="{ item }">
+          <RouterLink class="rounded primary" :to="{ name: 'recruiterCandidateDetail', params: { id: item.id } }"
+            title="Ver Candidato" target="_blank">
+            <Icon icon="mdi:user" />
+          </RouterLink>
+        </template>
+      </DataTable>
     </section>
   </main>
 </template>
@@ -96,6 +103,7 @@ import FormInput from '@/components/core/FormInput.vue';
 import MyButton from '@/components/core/MyButton.vue';
 import MySelect from '@/components/core/MySelect.vue';
 import MySwitch from '@/components/core/SwitchButton.vue';
+import { Icon } from '@iconify/vue';
 
 export default {
   name: 'RecruiterTalentPool',
@@ -104,7 +112,8 @@ export default {
     MyButton,
     FormInput,
     MySwitch,
-    MySelect
+    MySelect,
+    Icon,
   },
   data() {
     return {
@@ -324,6 +333,20 @@ export default {
           &.right {
             justify-content: flex-end;
           }
+        }
+      }
+    }
+
+    .actions {
+
+      button,
+      a {
+        padding: 5px;
+        border: none;
+        display: flex;
+
+        .iconify {
+          font-size: 15px;
         }
       }
     }
