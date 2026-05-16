@@ -25,9 +25,9 @@
 </template>
 
 <script lang="ts">
-import RecruiterAsideMenu from '@/components/admin/SideMenu.vue';
-import { Icon } from '@iconify/vue';
-import { RouterView } from 'vue-router';
+import RecruiterAsideMenu from '@/components/admin/SideMenu.vue'
+import { Icon } from '@iconify/vue'
+import { RouterView } from 'vue-router'
 
 export default {
   name: 'RecruiterLayout',
@@ -75,7 +75,7 @@ export default {
           icon: 'material-symbols:work-outline',
         },
         {
-          label: 'Lista de Talentos',
+          label: 'Banco de Talentos',
           name: 'recruiterTalentPool',
           icon: 'solar:star-line-duotone',
         },
@@ -150,7 +150,7 @@ export default {
     }
   }
 
-  >main {
+  > main {
     display: flex;
     flex: 1;
 

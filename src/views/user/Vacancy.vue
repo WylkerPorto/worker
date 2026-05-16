@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <header>
-      <h1>Vagas disponiveis {{ total }}</h1>
+      <h1>Vagas disponíveis {{ total }}</h1>
       <form @submit.stop.prevent="handleSearch">
         <SearchInput v-model="search" />
       </form>
@@ -10,21 +10,17 @@
       <div class="card" v-for="item in items" :key="item.id">
         <h2>{{ item.title }}</h2>
         <article>
-          <p>
-            <Icon icon="solar:point-on-map-bold" /> {{ item.city }} - {{ item.state }}
-          </p>
-          <p>
-            <Icon icon="material-symbols:home-work" /> {{ item.employmentType }}
-          </p>
-          <p>
-            <Icon icon="ic:baseline-work" /> {{ item.workModel }}
-          </p>
-          <p>
-            <Icon icon="solar:calendar-bold" /> {{ toFormatDate(item.expirationDate) }}
-          </p>
+          <p><Icon icon="solar:point-on-map-bold" /> {{ item.city }} - {{ item.state }}</p>
+          <p><Icon icon="material-symbols:home-work" /> {{ item.employmentType }}</p>
+          <p><Icon icon="ic:baseline-work" /> {{ item.workModel }}</p>
+          <p><Icon icon="solar:calendar-bold" /> {{ toFormatDate(item.expirationDate) }}</p>
         </article>
 
-        <RouterLink class="btn primary" :to="{ name: 'userVacancyDetail', params: { id: item.id } }" target="_blank">
+        <RouterLink
+          class="btn primary"
+          :to="{ name: 'userVacancyDetail', params: { id: item.id } }"
+          target="_blank"
+        >
           Detalhes
         </RouterLink>
       </div>

@@ -9,7 +9,7 @@
     <section>
       <h2>{{ vacancy.title }}</h2>
       <div class="flex">
-        <span><b>Criado em: </b>{{ toFormatDate(vacancy.createdAt) }}</span>
+        <!-- <span><b>Criado em: </b>{{ toFormatDate(vacancy.createdAt) }}</span> -->
         <span><b>Data de expiração: </b>{{ toFormatDate(vacancy.expirationDate) }}</span>
       </div>
       <hr />
@@ -25,8 +25,13 @@
       <div v-html="vacancy.responsibilities"></div>
       <p><b>Requisitos:</b></p>
       <div v-html="vacancy.requirements"></div>
-      <MyButton v-if="vacancy.status === 'Ativa' && !vacancy.isApplied" class="btn success" type="button"
-        :loading="loading" @click="apply">
+      <MyButton
+        v-if="vacancy.status === 'Ativa' && !vacancy.isApplied"
+        class="btn success"
+        type="button"
+        :loading="loading"
+        @click="apply"
+      >
         Candidatar-se
       </MyButton>
       <!-- <MyButton v-if="vacancy.status === 'Ativa' && vacancy.isApplied" class="btn danger" type="button"
@@ -37,12 +42,12 @@
   </main>
 </template>
 <script lang="ts">
-import { Icon } from '@iconify/vue'
-import { get } from '@/api/vacancy'
 import { create as apply, update as remove } from '@/api/aplication'
+import { get } from '@/api/vacancy'
+import MyButton from '@/components/core/MyButton.vue'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
 import { toFormatDate } from '@/utils/conversors'
-import MyButton from '@/components/core/MyButton.vue'
+import { Icon } from '@iconify/vue'
 
 export default {
   name: 'UserVacancyDetail',
@@ -84,7 +89,10 @@ export default {
     async remove() {
       this.loading = true
       try {
-        await remove(this.vacancy.applications[0].id, { vacancyId: parseInt(this.$route.params.id), status: 'Candidatura Retirada' })
+        await remove(this.vacancy.applications[0].id, {
+          vacancyId: parseInt(this.$route.params.id),
+          status: 'Candidatura Retirada',
+        })
         this.$snotify.success('Candidatura removida com sucesso!')
         this.vacancy.isApplied = false
       } catch (error) {

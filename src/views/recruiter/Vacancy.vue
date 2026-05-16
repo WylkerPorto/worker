@@ -3,21 +3,41 @@
     <section class="card">
       <header>
         <h1>Vagas</h1>
-        <button class="rounded" @click="() => $router.push({ name: 'recruiterVacancyForm' })" title="Nova Vaga">
+        <button
+          class="rounded"
+          @click="() => $router.push({ name: 'recruiterVacancyForm' })"
+          title="Nova Vaga"
+        >
           <Icon icon="qlementine-icons:new-16" />
         </button>
       </header>
       <div class="filters">
-        <MyButton class="btn primary" v-for="stt in vacancyStatus" :key="stt.id" @click="handleChangeFilter(stt.title)">
-          {{ stt.title }}s
+        <MyButton
+          class="btn primary"
+          v-for="stt in vacancyStatus"
+          :key="stt.id"
+          @click="handleChangeFilter(stt.title)"
+        >
+          {{ stt.title }}
         </MyButton>
       </div>
-      <DataTable :items="items" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
-        :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
-        @onPreviousPage="handleLoadMore(-1)">
+      <DataTable
+        :items="items"
+        :columns="columns"
+        :loading="loading"
+        :totalItems="total"
+        :totalPage="totalPage"
+        :currentPage="page"
+        @onSearch="handleSearch"
+        @onNextPage="handleLoadMore(+1)"
+        @onPreviousPage="handleLoadMore(-1)"
+      >
         <template #actions="{ item }">
-          <RouterLink class="rounded success" :to="{ name: 'recruiterVacancyForm', params: { id: item.id } }"
-            title="Editar">
+          <RouterLink
+            class="rounded success"
+            :to="{ name: 'recruiterVacancyForm', params: { id: item.id } }"
+            title="Editar"
+          >
             <Icon icon="carbon:edit" />
           </RouterLink>
           <button class="rounded" @click="toggleDropdown($event, item)" title="Mais Ações">
@@ -33,8 +53,12 @@
           <span>Alterar Status</span>
         </li>
 
-        <li v-show="toogleStatus" v-for="status in vacancyStatus" :key="status.id"
-          @click="handleToggleVacancy(openDropdownItem, status.title)">
+        <li
+          v-show="toogleStatus"
+          v-for="status in vacancyStatus"
+          :key="status.id"
+          @click="handleToggleVacancy(openDropdownItem, status.title)"
+        >
           {{ status.title }}
         </li>
 
@@ -59,8 +83,12 @@
         </li>
       </ul>
     </article>
-    <DeleteVacancyModal :show="showDeleteVacancyModal" :dataForm="editItem" @onClose="closeAllModals"
-      @onConfirm="refresh" />
+    <DeleteVacancyModal
+      :show="showDeleteVacancyModal"
+      :dataForm="editItem"
+      @onClose="closeAllModals"
+      @onConfirm="refresh"
+    />
   </main>
 </template>
 <script lang="ts">
@@ -78,7 +106,7 @@ export default {
     DataTable,
     DeleteVacancyModal,
     Icon,
-    MyButton
+    MyButton,
   },
   data() {
     return {
@@ -104,7 +132,7 @@ export default {
       page: 1,
       totalPage: 0,
       search: '',
-      status: 'Ativa'
+      status: 'Ativa',
     }
   },
   mounted() {
@@ -260,7 +288,7 @@ export default {
       return {
         page: this.page,
         search: this.search,
-        status: this.status
+        status: this.status,
       }
     },
   },
@@ -305,7 +333,6 @@ main {
     }
 
     .actions {
-
       button,
       a {
         padding: 5px;

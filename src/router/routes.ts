@@ -24,6 +24,12 @@ export default [
     meta: { layout: 'empty', title: 'Entrar' },
   },
   {
+    path: '/cadastro',
+    name: 'register',
+    component: () => import('@/views/Auth.vue'),
+    meta: { layout: 'empty', title: 'Cadastrar' },
+  },
+  {
     path: '/logout',
     name: 'logout',
     component: () => import('@/views/Logout.vue'),

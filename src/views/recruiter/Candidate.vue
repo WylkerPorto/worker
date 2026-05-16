@@ -1,7 +1,5 @@
 <template>
-  <main v-if="loading">
-    Carregando candidato...
-  </main>
+  <main v-if="loading">Carregando candidato...</main>
   <main v-else>
     <h1>{{ candidate.name }}</h1>
     <span>{{ candidate.email }}</span>
@@ -13,13 +11,16 @@
     <p>Telefone: {{ candidate.phoneNumber }} - {{ candidate.phoneNumber2 }}</p>
     <p>CPF: {{ candidate.cpf }} - RG: {{ candidate.rg }}</p>
     <p>{{ candidate.availableToTravel ? 'Disponivel para viagem' : 'Indisponivel para viagem' }}</p>
-    <p>{{ candidate.city }} - {{ candidate.state }} - {{ candidate.country }} - {{ candidate.neighborhood }}</p>
+    <p>
+      {{ candidate.city }} - {{ candidate.state }} - {{ candidate.country }} -
+      {{ candidate.neighborhood }}
+    </p>
     <div v-if="experience.length > 0">
-      <h2>Experiencia</h2>
+      <h2>Experiência</h2>
       <ul>
         <li v-for="(item, index) in experience" :key="index">
-          {{ item.companyName }} - {{ toFormatDate(item.startDate) }} - {{ item.isCurrentJob ? 'Atualmente' :
-            toFormatDate(item.endDate) }}
+          {{ item.companyName }} - {{ toFormatDate(item.startDate) }} -
+          {{ item.isCurrentJob ? 'Atualmente' : toFormatDate(item.endDate) }}
 
           <p>{{ item.position }} - {{ item.department }}</p>
           <p>{{ item.description }}</p>

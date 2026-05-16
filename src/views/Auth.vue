@@ -6,12 +6,12 @@
   </main>
 </template>
 <script lang="ts">
-import RegisterCard from '@/components/auth/RegisterCard.vue'
 import LoginCard from '@/components/auth/LoginCard.vue'
+import RegisterCard from '@/components/auth/RegisterCard.vue'
 import RememberCard from '@/components/auth/RememberCard.vue'
 
 export default {
-  name: 'LoginView',
+  name: 'AuthView',
   components: {
     LoginCard,
     RegisterCard,
@@ -19,10 +19,23 @@ export default {
   },
   data() {
     return {
-      form: { type: 'login' },
+      form: { type: '' },
     }
   },
-  methods: {},
+  mounted() {
+    this.form.type = (() => {
+      switch (this.$route.name) {
+        case 'login':
+          return 'login'
+        case 'register':
+          return 'register'
+        case 'forgot':
+          return 'forgot-password'
+        default:
+          return 'login'
+      }
+    })()
+  },
 }
 </script>
 <style lang="scss" scoped>

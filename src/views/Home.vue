@@ -3,17 +3,27 @@
     <!-- header section start -->
     <header id="navbar">
       <div class="container">
-        <h2>KlikTalent</h2>
-        <RouterLink :to="{ name: 'login' }">Login</RouterLink>
+        <div class="logo">
+          <img src="/assets/imgs/Logo SCA.png" alt="logo" />
+          <h2>Santa Casa de Araraquara</h2>
+        </div>
+        <RouterLink :to="{ name: 'login' }">Área do Candidato</RouterLink>
       </div>
     </header>
     <!-- end header section -->
 
     <!-- banner section -->
     <section id="inicio">
-      <img src="/assets/imgs/SCA.jpeg" alt="banner">
+      <div class="content">
+        <span class="pills">Portal de carreiras · Santa Casa</span>
+        <h1>Cuidar de vidas transforma o mundo.</h1>
+        <p>
+          Sua carreira pode crescer com a gente. Conheça as oportunidades disponíveis e faça parte
+          de uma instituição movida por excelência, humanização e compromisso.
+        </p>
+      </div>
       <div class="centralizer">
-        <img src="/assets/imgs/Logo SCA.png" alt="logo">
+        <img src="/assets/imgs/Logo SCA.png" alt="logo" />
       </div>
     </section>
     <!-- end banner section -->
@@ -21,24 +31,28 @@
     <!-- visão section -->
     <section id="visao">
       <div class="container">
-        <h2>Santa Casa</h2>
-        <p><b>CUIDAR DE VIDAS TRANSFORMA O MUNDO, E SUA CARREIRA PODE CRESCER COM A GENTE!</b></p>
-        <p>
-          Construir a sua trajetória na Santa Casa de Araraquara começa agora. Somos movidos pelo propósito de cuidar de
-          vidas com excelência, humanização e compromisso, e acreditamos que grandes histórias profissionais nascem em
-          ambientes onde propósito e desenvolvimento caminham juntos.
-        </p>
-        <p>
-          Aqui, cada pessoa faz a diferença. Mais do que um hospital, somos uma instituição centenária que impacta
-          diariamente a vida de milhares de pessoas, promovendo saúde, acolhimento e transformação social. Fazer parte
-          da Santa Casa é integrar um time comprometido, que trabalha com empatia, inovação, ética e espírito
-          colaborativo.
-        </p>
-        <p>
-          Aqui, você encontra oportunidades para desenvolver sua carreira em uma instituição sólida, reconhecida e
-          movida por um propósito maior: cuidar de pessoas. São os talentos que fazem a nossa história acontecer todos
-          os dias, e podem ajudar a escrever os próximos capítulos.
-        </p>
+        <h2>Santa Casa de Araraquara</h2>
+        <article class="card">
+          <p><b>CUIDAR DE VIDAS TRANSFORMA O MUNDO, E SUA CARREIRA PODE CRESCER COM A GENTE!</b></p>
+          <p>
+            Construir a sua trajetória na Santa Casa de Araraquara começa agora. Somos movidos pelo
+            propósito de cuidar de vidas com excelência, humanização e compromisso, e acreditamos
+            que grandes histórias profissionais nascem em ambientes onde propósito e desenvolvimento
+            caminham juntos.
+          </p>
+          <p>
+            Aqui, cada pessoa faz a diferença. Mais do que um hospital, somos uma instituição
+            centenária que impacta diariamente a vida de milhares de pessoas, promovendo saúde,
+            acolhimento e transformação social. Fazer parte da Santa Casa é integrar um time
+            comprometido, que trabalha com empatia, inovação, ética e espírito colaborativo.
+          </p>
+          <p>
+            Aqui, você encontra oportunidades para desenvolver sua carreira em uma instituição
+            sólida, reconhecida e movida por um propósito maior: cuidar de pessoas. São os talentos
+            que fazem a nossa história acontecer todos os dias, e podem ajudar a escrever os
+            próximos capítulos.
+          </p>
+        </article>
       </div>
     </section>
     <!-- end visão section -->
@@ -46,29 +60,64 @@
     <!-- vagas section -->
     <section id="vagas">
       <div class="container">
-        <h2>Vagas em Destaque</h2>
+        <h2>
+          Se você quer acompanhar o nosso movimento de crescimento e evoluir na sua carreira, venha
+          fazer parte do nosso time! Confira abaixo as vagas disponíveis:
+        </h2>
+
         <form @submit.prevent="handleSearch">
-          <FormInput label="Título" type="text" placeholder="Desenvolvedor Frontend" v-model="search" />
+          <FormInput
+            label="Busca de vagas"
+            type="text"
+            placeholder="Digite o nome da vaga"
+            v-model="search"
+          />
 
           <div class="flex">
-            <MySelect v-if="departmentList.length > 0" label="Departamento" :options="departmentList"
-              v-model="departmentId" />
-            <MySelect v-if="positionList.length > 0" label="Cargo" :options="positionList" v-model="positionId" />
+            <MySelect
+              v-if="departmentList.length > 0"
+              label="Departamento"
+              :options="departmentList"
+              v-model="departmentId"
+            />
+            <MySelect
+              v-if="positionList.length > 0"
+              label="Cargo"
+              :options="positionList"
+              v-model="positionId"
+            />
           </div>
 
           <div class="flex">
             <FormInput label="Cidade" type="text" placeholder="São Paulo" v-model="city" />
             <FormInput label="Estado" type="text" placeholder="SP" v-model="state" />
+            <MyButton class="btn success" type="submit" :loading="loading">Filtrar</MyButton>
           </div>
-
-          <MyButton class="btn success" type="submit" :loading="loading">Filtrar</MyButton>
         </form>
 
-        <DataTable :items="vagas" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
-          :showFilter="false" :currentPage="page" @onNextPage="handleLoadmore(+1)" @onPreviousPage="handleLoadmore(-1)">
+        <div class="flex">
+          <p>Exibindo vagas públicas disponíveis</p>
+          <p>Use o botão de visualização para acessar os detalhes da vaga</p>
+        </div>
+
+        <DataTable
+          :items="vagas"
+          :columns="columns"
+          :loading="loading"
+          :totalItems="total"
+          :totalPage="totalPage"
+          :showFilter="false"
+          :currentPage="page"
+          @onNextPage="handleLoadmore(+1)"
+          @onPreviousPage="handleLoadmore(-1)"
+        >
           <template #actions="{ item }">
-            <RouterLink class="rounded primary" :to="{ name: 'jobDetail', params: { slug: item.slug } }" target="_blank"
-              title="Ver Vaga">
+            <RouterLink
+              class="rounded primary"
+              :to="{ name: 'jobDetail', params: { slug: item.slug } }"
+              target="_blank"
+              title="Ver Vaga"
+            >
               <Icon icon="mdi:eye" />
             </RouterLink>
           </template>
@@ -77,10 +126,19 @@
     </section>
     <!-- end vagas section -->
 
+    <!-- talent bank section -->
+    <section id="bank">
+      <div class="container">
+        <p>Não encontrou a vaga que procurava? Participe do nosso banco de talentos!</p>
+        <RouterLink :to="{ name: 'register' }">Participar do banco de talentos</RouterLink>
+      </div>
+    </section>
+    <!-- end talent bank section -->
+
     <!-- footer section -->
     <section id="footer">
       <div class="container">
-        <p>&copy; 2020 All Rights Reserved By</p>
+        <p>Powered by Kliklabs {{ new Date().getFullYear() }}. Todos os direitos reservados.</p>
       </div>
     </section>
     <!-- end footer section -->
@@ -88,41 +146,12 @@
     <!-- lgpd section -->
     <section v-if="lgpd" id="lgpd">
       <div>
-        <h1>Política de Privacidade e Cookies</h1>
         <div>
-          <p>
+          <strong>Política de Privacidade e Cookies</strong>
+          <span>
             Nós da <b><i>KlikTalent</i></b> levamos a sua privacidade a sério e estamos
-            comprometidos em proteger os seus dados pessoais. De acordo com a Lei Geral de Proteção
-            de Dados (LGPD), queremos garantir que você tenha total transparência sobre como
-            tratamos suas informações.
-          </p>
-          <h3>Uso de Cookies</h3>
-          <p>
-            Para oferecer uma melhor experiência em nosso site, utilizamos cookies para armazenar e
-            coletar informações sobre a navegação, como preferências de idioma, páginas visitadas e
-            interações no site. Esses dados são utilizados para personalizar conteúdos, melhorar a
-            performance do site e possibilitar um atendimento mais eficiente.
-          </p>
-          <p>
-            Os cookies são pequenos arquivos armazenados no seu dispositivo que nos permitem lembrar
-            suas preferências e proporcionar uma navegação mais rápida e eficiente. Caso não deseje
-            que seus dados sejam coletados através de cookies, você pode ajustar as configurações do
-            seu navegador para bloqueá-los ou excluí-los. No entanto, vale ressaltar que, ao
-            desabilitar os cookies, algumas funcionalidades do site podem não funcionar corretamente
-          </p>
-          <h3>Consentimento</h3>
-          <p>
-            Ao acessar nosso site, você consente com o uso de cookies conforme descrito nesta
-            política. Se você não concorda com o uso de cookies, pedimos que ajuste as configurações
-            de seu navegador ou nos avise para que possamos fornecer mais informações ou suporte.
-          </p>
-          <h3>Seus Direitos</h3>
-          <p>
-            Você tem o direito de acessar, corrigir ou excluir seus dados pessoais a qualquer
-            momento, conforme prevê a LGPD. Para mais informações sobre como gerenciamos seus dados
-            ou caso tenha alguma dúvida, entre em contato conosco por meio de nossos canais de
-            atendimento.
-          </p>
+            comprometidos em proteger os seus dados pessoais conforme a LGPD.
+          </span>
         </div>
         <button class="btn primary" @click="setLgpd">Ok</button>
       </div>
@@ -153,7 +182,7 @@ export default {
       columns: [
         { key: 'title', title: 'Título' },
         { key: 'employmentType', title: 'Tipo' },
-        { key: 'expirationDate', title: 'Validade', type: 'date' }
+        { key: 'expirationDate', title: 'Validade', type: 'date' },
       ] as IVacancyColumnItem[],
       vagas: [] as IVacancyItem[],
       departmentList: [] as { id: string; title: string }[],
@@ -187,11 +216,11 @@ export default {
         const [departments, positions] = await Promise.all([getDepartments(), getPositions()])
         this.departmentList = departments.data?.map((dept: { id: string; name: string }) => ({
           id: dept.id,
-          title: dept.name
+          title: dept.name,
         }))
         this.positionList = positions.data?.map((pos: { id: string; name: string }) => ({
           id: pos.id,
-          title: pos.name
+          title: pos.name,
         }))
       } catch (error) {
         this.$snotify.error(error)
@@ -220,7 +249,7 @@ export default {
     handleLoadmore(pageChange: number) {
       this.page += pageChange
       this.getVacancies()
-    }
+    },
   },
   computed: {
     filters() {
@@ -230,21 +259,21 @@ export default {
         city: this.city,
         state: this.state,
         departmentId: this.departmentId,
-        positionId: this.positionId
+        positionId: this.positionId,
       }
     },
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 main {
-
   :not(#navbar) {
     .container {
-      padding: 100px 0;
-      max-width: 1440px;
-      margin: auto;
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+      padding-top: 100px;
+      padding-bottom: 100px;
 
       h2 {
         font-weight: 700;
@@ -271,7 +300,7 @@ main {
   }
 
   #navbar {
-    padding: 15px 0;
+    padding: 15px;
 
     .container {
       max-width: 1440px;
@@ -280,19 +309,31 @@ main {
       align-items: center;
       justify-content: space-between;
 
-      h2 {
-        font-weight: 500;
-        font-size: 30px;
-        line-height: 100%;
-        letter-spacing: 0%;
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        img {
+          width: 40px;
+          height: auto;
+          margin-right: 10px;
+        }
+
+        h2 {
+          font-weight: 800;
+          font-size: 22px;
+          line-height: 1.1;
+          letter-spacing: -0.045em;
+        }
       }
 
       a {
-        border-radius: 20px;
+        border-radius: 999px;
         border: 1px solid var(--blue);
         padding: 10px 20px;
-        font-weight: 500;
-        font-size: 30px;
+        font-size: 16px;
+        font-weight: 750;
         line-height: 100%;
         letter-spacing: 0%;
       }
@@ -300,23 +341,69 @@ main {
   }
 
   #inicio {
-    width: 100%;
-    height: 30vw;
+    position: relative;
+    min-height: 430px;
+    background-image:
+      linear-gradient(
+        90deg,
+        rgba(19, 41, 61, 0.76),
+        rgba(19, 41, 61, 0.3) 50%,
+        rgba(19, 41, 61, 0.08)
+      ),
+      url('/assets/imgs/SCA.jpeg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    overflow: visible;
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
+    .content {
+      width: min(1180px, calc(100% - 48px));
+      margin-left: 35px;
+      padding: 72px 0 86px;
+      color: white;
+      max-width: 600px;
+
+      span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--link);
+        border: 1px solid var(--grey);
+        border-radius: 999px;
+        padding: 8px 12px;
+        margin-bottom: 16px;
+        font-size: 13px;
+        font-weight: 800;
+        backdrop-filter: blur(8px);
+      }
+
+      h1 {
+        margin: 0 0 14px;
+        font-size: clamp(40px, 5vw, 64px);
+        line-height: 0.98;
+        letter-spacing: -0.07em;
+      }
+
+      p {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.55;
+        color: var(--white);
+        max-width: 640px;
+      }
     }
 
     .centralizer {
       position: absolute;
       left: 50%;
+      top: 100%;
       transform: translate(-50%, -50%);
       display: flex;
       background-color: var(--white);
-      box-shadow: var(--text) 0px 6px 12px -2px, var(--black) 0px 3px 7px -3px;
+      box-shadow:
+        var(--text) 0px 6px 12px -2px,
+        var(--black) 0px 3px 7px -3px;
       padding: 0.75rem;
       border-radius: 1rem;
 
@@ -329,35 +416,59 @@ main {
 
   #visao {
     .container {
-      p {
-        font-weight: 400;
-        font-style: Regular;
-        font-size: 20px;
-        line-height: 28px;
-        letter-spacing: 0%;
-        text-align: left;
-        color: #4B5563;
-        margin-bottom: 10px;
-        text-wrap: balance;
+      .card {
+        border: 1px solid var(--glass);
+        border-radius: 26px;
+        padding: 34px 38px;
+        box-shadow: 0 6px 15px var(--grey);
+        max-width: 1040px;
+        margin: 0 auto;
 
-        b {
-          font-weight: 600;
+        &::before {
+          content: '';
+          position: absolute;
+          left: -1px;
+          top: 28px;
+          bottom: 28px;
+          width: 5px;
+          border-radius: 999px;
+          background: var(--red);
+        }
+
+        p {
+          font-weight: 400;
+          font-style: Regular;
+          font-size: 20px;
+          line-height: 28px;
+          letter-spacing: 0%;
+          text-align: left;
+          color: #4b5563;
+          margin-bottom: 10px;
+          text-wrap: balance;
+
+          b {
+            font-weight: 600;
+          }
         }
       }
     }
   }
 
   #vagas {
-    p {
-      font-weight: 400;
-      font-style: Regular;
-      font-size: 20px;
-      leading-trim: NONE;
-      line-height: 28px;
-      letter-spacing: 0%;
-      text-align: center;
-      color: #4B5563;
-      margin-bottom: 20px;
+    h2 {
+      max-width: 980px;
+      margin: 0 auto;
+      font-size: clamp(24px, 3vw, 34px) !important;
+
+      &::before {
+        content: '';
+        display: block;
+        width: 72px;
+        height: 4px;
+        border-radius: 999px;
+        background: var(--red);
+        margin: 0 auto 18px;
+      }
     }
 
     form {
@@ -365,6 +476,11 @@ main {
       flex-direction: column;
       gap: 1rem;
       margin-bottom: 15px;
+      background: var(--white);
+      border: 1px solid var(--glass);
+      border-radius: 26px;
+      padding: 22px;
+      box-shadow: 0 6px 15px var(--grey);
 
       .flex {
         display: flex;
@@ -372,88 +488,97 @@ main {
 
         main {
           flex: 1;
+
+          label {
+            font-weight: 600;
+          }
+        }
+
+        button {
+          align-self: flex-end;
         }
       }
     }
 
-    .actions {
-
-      button,
-      a {
-        padding: 5px;
-        border: none;
-        display: flex;
-
-        .iconify {
-          font-size: 15px;
-        }
-      }
-    }
-  }
-
-  #tecnologias {
-    figure {
+    .container > .flex {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 40px;
-      margin-bottom: 50px;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 20px auto;
 
-      svg {
-        font-size: 80px;
+      p {
+        font-weight: 400;
+        font-style: Regular;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0%;
+        color: #4b5563;
       }
     }
 
-    p {
-      font-weight: 400;
-      font-style: Regular;
-      font-size: 20px;
-      leading-trim: NONE;
-      line-height: 28px;
-      letter-spacing: 0%;
-      text-align: center;
-      color: #4B5563;
-      margin-bottom: 20px;
-    }
+    .data-table {
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: 0 0px 5px var(--grey);
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      margin-bottom: 20px;
+      .actions {
+        button,
+        a {
+          padding: 5px;
+          border: none;
+          display: flex;
 
-      li {
-        font-weight: 400;
-        font-style: Regular;
-        font-size: 18px;
-        leading-trim: NONE;
-        line-height: 28px;
-        letter-spacing: 0%;
-        color: #4B5563;
-
-        b {
-          font-weight: 600;
+          .iconify {
+            font-size: 15px;
+          }
         }
       }
     }
   }
 
-  #sobre {
-    p {
-      font-weight: 400;
-      font-style: Regular;
-      font-size: 20px;
-      leading-trim: NONE;
-      line-height: 28px;
-      letter-spacing: 0%;
+  #bank {
+    margin-bottom: 15px;
+
+    .container {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 34px 24px 38px;
       text-align: center;
-      color: #4B5563;
+      border: 1px solid rgba(31, 127, 191, 0.18);
+      border-top-width: 1px;
+      border-top-style: solid;
+      border-top-color: rgba(31, 127, 191, 0.18);
+      border-top: 4px solid var(--red);
+      box-shadow: 0 10px 28px var(--grey);
+
+      p {
+        margin: 0 0 22px;
+        color: var(--text);
+        font-size: 20px;
+        line-height: 1.45;
+        font-weight: 500;
+      }
+
+      a {
+        background: linear-gradient(135deg, var(--blue), var(--text));
+        color: white;
+        border-radius: 12px;
+        padding: 15px 34px;
+        font-size: 16px;
+        font-weight: 750;
+        display: inline-block;
+      }
     }
   }
 
   #footer {
-    background: #13293D;
+    background: #13293d;
+    text-align: center;
+    color: var(--white);
+
+    .container {
+      padding: 26px 0;
+    }
   }
 }
 
@@ -469,33 +594,34 @@ main {
   align-items: center;
   z-index: 1000;
 
-  >div {
+  > div {
     background: var(--white);
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid #ccc;
     border-radius: 8px;
+    gap: 20px;
 
-    h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      text-align: center;
+    div {
+      display: flex;
+      flex-direction: column;
+
+      strong {
+        font-size: 22px;
+      }
+
+      strong,
+      b i {
+        font-weight: 600 !important;
+      }
     }
 
-    h3 {
-      font-size: 20px;
-      margin-top: 10px;
+    button {
+      padding: 10px 20px;
+      border-radius: 999px;
+      align-self: flex-end;
     }
-
-    p {
-      margin-bottom: 10px;
-    }
-
-    button {}
   }
 }
 </style>
