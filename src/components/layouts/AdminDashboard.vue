@@ -69,6 +69,11 @@ export default {
           icon: 'mdi:leads',
         },
         {
+          label: 'Recrutadores',
+          name: 'recruiterFreeController',
+          icon: 'mdi:account-multiple',
+        },
+        {
           label: 'Log',
           name: 'logsController',
           icon: 'icon-park-outline:log',
@@ -144,7 +149,7 @@ export default {
     }
   }
 
-  >main {
+  > main {
     display: flex;
     flex: 1;
 

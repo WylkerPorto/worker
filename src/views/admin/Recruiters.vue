@@ -2,10 +2,7 @@
   <main>
     <section class="card">
       <header>
-        <h1>Supervisores</h1>
-        <button class="rounded" @click="showFormSupervisorModal = true">
-          <Icon icon="tdesign:user-add"></Icon>
-        </button>
+        <h1>Recrutadores Livres</h1>
       </header>
       <DataTable
         :items="items"
@@ -19,57 +16,49 @@
         @onPreviousPage="handleLoadMore(-1)"
       >
         <template #actions="{ item }">
-          <button class="rounded success" @click="handleEditSupervisor(item)">
-            <Icon icon="carbon:edit"></Icon>
-          </button>
-          <button class="rounded danger" @click="handleConfirmDelete(item)">
-            <Icon icon="carbon:trash-can"></Icon>
+          <button
+            class="rounded success"
+            @click="handleLinkRecruiter(item)"
+            title="Vincular Supervisor"
+          >
+            <Icon icon="material-symbols:group-add-outline-rounded"></Icon>
           </button>
         </template>
       </DataTable>
     </section>
   </main>
-  <FormSupervisorModal
-    :show="showFormSupervisorModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onSave="refresh"
-  />
-  <DeleteSupervisorModal
-    :show="showDeleteSupervisorModal"
+  <LinkRecruiterModal
+    :show="showLinkRecruiterModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
     @onConfirm="refresh"
   />
 </template>
 <script lang="ts">
-import { list } from '@/api/supervisor'
-import DeleteSupervisorModal from '@/components/admin/DeleteSupervisorModal.vue'
-import FormSupervisorModal from '@/components/admin/FormSupervisorModal.vue'
+import { listFree } from '@/api/recruiter'
+import LinkRecruiterModal from '@/components/admin/LinkRecruiterModal.vue'
 import DataTable from '@/components/core/DataTable.vue'
-import { type ISupervisorColumnItem, type ISupervisorItem } from '@/interfaces/ISupervisor'
+import { type IRecruiterColumnItem, type IRecruiterItem } from '@/interfaces/IRecruiter'
 import { Icon } from '@iconify/vue'
 
 export default {
-  name: 'SupervisorController',
+  name: 'RecruiterFreeController',
   components: {
     DataTable,
     Icon,
-    FormSupervisorModal,
-    DeleteSupervisorModal,
+    LinkRecruiterModal,
   },
   data() {
     return {
-      showDeleteSupervisorModal: false,
-      showFormSupervisorModal: false,
+      showLinkRecruiterModal: false,
       loading: false,
       columns: [
         { key: 'name', title: 'Nome' },
         { key: 'email', title: 'Email' },
         { key: 'createdAt', title: 'Criado em', type: 'date' },
-      ] as ISupervisorColumnItem[],
-      items: [] as ISupervisorItem[],
-      editItem: {} as ISupervisorItem,
+      ] as IRecruiterColumnItem[],
+      items: [] as IRecruiterItem[],
+      editItem: {} as IRecruiterItem,
       total: 0,
       page: 1,
       totalPage: 0,
@@ -77,18 +66,18 @@ export default {
     }
   },
   mounted() {
-    this.getSupervisors()
+    this.getRecruiters()
   },
   methods: {
     refresh() {
       this.items = []
-      this.getSupervisors()
+      this.getRecruiters()
     },
-    async getSupervisors() {
+    async getRecruiters() {
       this.closeAllModals()
       this.loading = true
       try {
-        const { data } = await list(this.filters)
+        const { data } = await listFree(this.filters)
         this.items = data
         this.total = data.length //data.total
         this.totalPage = 0 //Math.ceil(data.total / data.per_page)
@@ -102,28 +91,19 @@ export default {
       this.search = el
       this.page = 1
       this.items = []
-      this.getSupervisors()
+      this.getRecruiters()
     },
-    handleNewSupervisor() {
-      this.editItem = {} as ISupervisorItem
-      this.showFormSupervisorModal = true
-    },
-    handleEditSupervisor(item: ISupervisorItem) {
+    handleLinkRecruiter(item: IRecruiterItem) {
       this.editItem = item
-      this.showFormSupervisorModal = true
-    },
-    handleConfirmDelete(item: ISupervisorItem) {
-      this.editItem = item
-      this.showDeleteSupervisorModal = true
+      this.showLinkRecruiterModal = true
     },
     closeAllModals() {
-      this.editItem = {} as ISupervisorItem
-      this.showFormSupervisorModal = false
-      this.showDeleteSupervisorModal = false
+      this.editItem = {} as IRecruiterItem
+      this.showLinkRecruiterModal = false
     },
     handleLoadMore(pageChange: number) {
       this.page += pageChange
-      this.getSupervisors()
+      this.getRecruiters()
     },
   },
   computed: {

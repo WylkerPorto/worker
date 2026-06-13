@@ -67,6 +67,12 @@ export default [
         meta: { title: 'Supervisores' },
       },
       {
+        path: 'recruitersFree',
+        name: 'recruiterFreeController',
+        component: () => import('@/views/admin/Recruiters.vue'),
+        meta: { title: 'Recrutadores Livres' },
+      },
+      {
         path: 'logs',
         name: 'logsController',
         component: () => import('@/views/admin/Logs.vue'),
