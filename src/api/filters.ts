@@ -18,7 +18,7 @@ export const getEmploymentTypes = () => http.authApi().get('/filter/employment-t
 
 export const getWorkModels = () => http.authApi().get('/filter/work-model')
 
-export const getAplicationStatus = () => http.authApi().get('/filter/application-status')
+export const getAplicacaoStatus = () => http.authApi().get('/filter/application-status')
 
 export const getVacancyStatus = () => http.authApi().get('/filter/vacancy-status')
 

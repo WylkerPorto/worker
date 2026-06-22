@@ -42,11 +42,11 @@
   </main>
 </template>
 <script lang="ts">
-import { create as apply, update as remove } from '@/api/aplication'
+import { create as apply, update as remove } from '@/api/aplicacao'
 import { get } from '@/api/vacancy'
 import MyButton from '@/components/core/MyButton.vue'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
-import { toFormatDate } from '@/utils/conversors'
+import { toFormatDate } from '@/utils/conversores'
 import { Icon } from '@iconify/vue'
 
 export default {

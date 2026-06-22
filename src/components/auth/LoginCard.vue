@@ -119,7 +119,7 @@ export default {
         case 4:
           // verifica se tem o parametro de redirecionamento na rota, se tiver manda para rota da vaga se não manda para a home do usuario
           const redirect = this.$route.query.redirect
-          this.$router.push(redirect ? { name: 'userVacancyDetail', params: { id: redirect } } : { name: 'userAplication' })
+          this.$router.push(redirect ? { name: 'userVacancyDetail', params: { id: redirect } } : { name: 'userAplicacao' })
           return
         default:
           this.$snotify.error('Erro ao logar: Regra invalida')

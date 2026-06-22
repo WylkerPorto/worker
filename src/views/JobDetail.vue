@@ -37,9 +37,9 @@
 <script lang="ts">
 import { Icon } from '@iconify/vue'
 import { getBySlug } from '@/api/vacancy'
-import { create as apply, update as remove } from '@/api/aplication'
+import { create as apply, update as remove } from '@/api/aplicacao'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
-import { toFormatDate } from '@/utils/conversors'
+import { toFormatDate } from '@/utils/conversores'
 import MyButton from '@/components/core/MyButton.vue'
 
 export default {

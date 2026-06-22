@@ -13,13 +13,13 @@
   </main>
 </template>
 <script lang="ts">
-import { getAplicationsByVacancy } from '@/api/aplication'
+import { getAplicacoesByVacancy } from '@/api/aplicacao'
 import { get } from '@/api/vacancy'
 import DataTable from '@/components/core/DataTable.vue'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
 
 export default {
-  name: 'AplicationsVacancy',
+  name: 'AplicacoesVacancy',
   components: {
     DataTable,
   },
@@ -41,14 +41,14 @@ export default {
     }
   },
   mounted() {
-    this.getAplicationsByVacancy()
+    this.getAplicacoesByVacancy()
     this.getVacancyDetail()
   },
   methods: {
-    async getAplicationsByVacancy() {
+    async getAplicacoesByVacancy() {
       this.loading = true
       try {
-        const { data } = await getAplicationsByVacancy(this.$route.params.id, this.filters)
+        const { data } = await getAplicacoesByVacancy(this.$route.params.id, this.filters)
         this.items = data.data
         this.total = data.meta.total
         this.totalPage = data.meta.totalPages
@@ -71,13 +71,13 @@ export default {
     },
     handleLoadMore(pageChange: number) {
       this.page += pageChange
-      this.getAplicationsByVacancy()
+      this.getAplicacoesByVacancy()
     },
     handleSearch(search: string) {
       this.search = search
       this.page = 1
       this.items = []
-      this.getAplicationsByVacancy()
+      this.getAplicacoesByVacancy()
     }
   },
   computed: {

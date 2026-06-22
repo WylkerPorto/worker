@@ -1,5 +1,5 @@
 import http from './http'
-import { toQueryString } from '@/utils/conversors'
+import { toQueryString } from '@/utils/conversores'
 
 export const create = (params: string) => http.authApi().post('/application', params)
 
@@ -12,8 +12,8 @@ export const update = (id: string, params: string) =>
 
 export const remove = (id: string) => http.authApi().delete(`/application/${id}`)
 
-export const getAplicationsByVacancy = (id: string, params: string) =>
+export const getAplicacoesByVacancy = (id: string, params: string) =>
   http.authApi().get(`/application/vacancy/${id}?${toQueryString(params)}`)
 
-export const getAplicationByUser = (id: string, params: string) =>
+export const getAplicacaoByUser = (id: string, params: string) =>
   http.authApi().get(`/application/person/${id}?${toQueryString(params)}`)

@@ -1,5 +1,10 @@
 <template>
-  <ModalBase :open="show" :loading="loading" title="Confirmar Exclusão" @onClose="$emit('onClose')">
+  <ModalBase
+    :open="show"
+    :loading="loading"
+    title="Confirmar Atribuição"
+    @onClose="$emit('onClose')"
+  >
     <template #content>
       <section>
         <Icon icon="carbon:warning" />

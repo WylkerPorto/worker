@@ -2,10 +2,7 @@
   <main>
     <section class="card">
       <header>
-        <h1>Recrutadores</h1>
-        <button class="rounded" @click="showRecruiterModal = true">
-          <Icon icon="tdesign:user-add"></Icon>
-        </button>
+        <h1>Transferir Recrutadores</h1>
       </header>
       <DataTable
         :items="items"
@@ -18,53 +15,42 @@
         @onNextPage="handleLoadMore(+1)"
         @onPreviousPage="handleLoadMore(-1)"
       >
-        <template #createdAt="{ item }">
-          <p>{{ item }}</p>
-        </template>
         <template #actions="{ item }">
-          <button class="rounded success" @click="handleEditRecruiter(item)">
-            <Icon icon="carbon:edit"></Icon>
-          </button>
-          <button class="rounded danger" @click="handleConfirmDelete(item)">
-            <Icon icon="carbon:trash-can"></Icon>
+          <button
+            class="rounded success"
+            @click="handleLinkRecruiter(item)"
+            title="Transferir Recrutador"
+          >
+            <Icon icon="material-symbols:group-add-outline-rounded"></Icon>
           </button>
         </template>
       </DataTable>
     </section>
   </main>
-  <FormRecruiterModal
-    :show="showRecruiterModal"
-    :dataForm="editItem"
-    @onClose="closeAllModals"
-    @onSave="refresh"
-  />
-  <DeleteRecruiterModal
-    :show="showDeleteRecruiterModal"
+  <LinkRecruiterModal
+    :show="showLinkRecruiterModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
     @onConfirm="refresh"
   />
 </template>
 <script lang="ts">
-import DataTable from '@/components/core/DataTable.vue'
-import { Icon } from '@iconify/vue'
-import FormRecruiterModal from '@/components/supervisor/FormRecruiterModal.vue'
-import DeleteRecruiterModal from '@/components/supervisor/DeleteRecruiterModal.vue'
-import { type IRecruiterItem, type IRecruiterColumnItem } from '@/interfaces/IRecruiter'
 import { list } from '@/api/recruiter'
+import LinkRecruiterModal from '@/components/admin/LinkRecruiterModal.vue'
+import DataTable from '@/components/core/DataTable.vue'
+import { type IRecruiterColumnItem, type IRecruiterItem } from '@/interfaces/IRecruiter'
+import { Icon } from '@iconify/vue'
 
 export default {
-  name: 'SupervisorController',
+  name: 'RecruiterFreeController',
   components: {
     DataTable,
     Icon,
-    FormRecruiterModal,
-    DeleteRecruiterModal,
+    LinkRecruiterModal,
   },
   data() {
     return {
-      showDeleteRecruiterModal: false,
-      showRecruiterModal: false,
+      showLinkRecruiterModal: false,
       loading: false,
       columns: [
         { key: 'name', title: 'Nome' },
@@ -93,8 +79,8 @@ export default {
       try {
         const { data } = await list(this.filters)
         this.items = data
-        this.total = data.length
-        this.totalPage = Math.ceil(data.length / data.per_page)
+        this.total = data.length //data.total
+        this.totalPage = 0 //Math.ceil(data.total / data.per_page)
       } catch (error) {
         this.$snotify.error('Erro ao buscar os recrutadores: ' + error)
       } finally {
@@ -107,22 +93,13 @@ export default {
       this.items = []
       this.getRecruiters()
     },
-    handleNewSupervisor() {
-      this.editItem = {} as IRecruiterItem
-      this.showRecruiterModal = true
-    },
-    handleEditRecruiter(item: IRecruiterItem) {
+    handleLinkRecruiter(item: IRecruiterItem) {
       this.editItem = item
-      this.showRecruiterModal = true
-    },
-    handleConfirmDelete(item: IRecruiterItem) {
-      this.editItem = item
-      this.showDeleteRecruiterModal = true
+      this.showLinkRecruiterModal = true
     },
     closeAllModals() {
       this.editItem = {} as IRecruiterItem
-      this.showRecruiterModal = false
-      this.showDeleteRecruiterModal = false
+      this.showLinkRecruiterModal = false
     },
     handleLoadMore(pageChange: number) {
       this.page += pageChange

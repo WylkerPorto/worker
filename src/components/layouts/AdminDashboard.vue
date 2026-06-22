@@ -74,6 +74,11 @@ export default {
           icon: 'mdi:account-multiple',
         },
         {
+          label: 'Transferência',
+          name: 'transferRecruitersController',
+          icon: 'mdi:transit-transfer',
+        },
+        {
           label: 'Log',
           name: 'logsController',
           icon: 'icon-park-outline:log',

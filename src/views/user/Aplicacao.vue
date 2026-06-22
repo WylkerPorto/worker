@@ -37,15 +37,15 @@
   </main>
 </template>
 <script lang="ts">
-import { getAplicationByUser } from '@/api/aplication'
+import { getAplicacaoByUser } from '@/api/aplicacao'
 import SearchInput from '@/components/core/SearchInput.vue'
 import { Icon } from '@iconify/vue'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
 import MyButton from '@/components/core/MyButton.vue'
-import { update } from '@/api/aplication'
+import { update } from '@/api/aplicacao'
 
 export default {
-  name: 'UserAplication',
+  name: 'UserAplicacao',
   components: {
     SearchInput,
     Icon,
@@ -68,7 +68,7 @@ export default {
     async getApplications() {
       this.loading = true
       try {
-        const data = await getAplicationByUser(localStorage.getItem('uid'), this.filters)
+        const data = await getAplicacaoByUser(localStorage.getItem('uid'), this.filters)
         this.total = data.data.meta.total
         this.items.push(...data.data.data)
       } catch (error) {

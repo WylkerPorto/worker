@@ -71,7 +71,7 @@
 <script lang="ts">
 import SearchInput from './SearchInput.vue'
 import { Icon } from '@iconify/vue'
-import { toFormatDate } from '@/utils/conversors'
+import { toFormatDate } from '@/utils/conversores'
 import MyButton from './MyButton.vue'
 
 export default {

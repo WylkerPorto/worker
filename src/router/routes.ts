@@ -73,6 +73,12 @@ export default [
         meta: { title: 'Recrutadores Livres' },
       },
       {
+        path: 'transferRecruiters',
+        name: 'transferRecruitersController',
+        component: () => import('@/views/admin/TransferRecruiters.vue'),
+        meta: { title: 'Transferir Recrutadores' },
+      },
+      {
         path: 'logs',
         name: 'logsController',
         component: () => import('@/views/admin/Logs.vue'),
@@ -110,7 +116,7 @@ export default [
       {
         path: 'vacancy/:id/detail',
         name: 'supervisorVacancyDetail',
-        component: () => import('@/views/supervisor/AplicationsVacancy.vue'),
+        component: () => import('@/views/supervisor/AplicacoesVacancy.vue'),
         meta: { title: 'Detalhes da vaga' },
       },
       {
@@ -151,7 +157,7 @@ export default [
       {
         path: 'vacancy/:id/detail',
         name: 'recruiterVacancyDetail',
-        component: () => import('@/views/recruiter/AplicationsVacancy.vue'),
+        component: () => import('@/views/recruiter/AplicacoesVacancy.vue'),
         meta: { title: 'Detalhes da Vaga' },
       },
       {
@@ -196,16 +202,16 @@ export default [
         redirect: { name: 'userDashboard' }, // redireciona de /user para /user/dashboard
       },
       {
-        path: '/user/aplication',
+        path: '/user/aplicacao',
         name: 'userDashboard',
-        redirect: { name: 'userAplication' },
-        component: () => import('@/views/user/Aplication.vue'),
+        redirect: { name: 'userAplicacao' },
+        component: () => import('@/views/user/Aplicacao.vue'),
         meta: { title: 'Dashboard' },
       },
       {
-        path: '/user/aplication',
-        name: 'userAplication',
-        component: () => import('@/views/user/Aplication.vue'),
+        path: '/user/aplicacao',
+        name: 'userAplicacao',
+        component: () => import('@/views/user/Aplicacao.vue'),
         meta: { title: 'Candidaturas' },
       },
       {

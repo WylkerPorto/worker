@@ -60,7 +60,7 @@ export default {
           icon: 'stash:dashboard',
         },
         {
-          label: 'Recrutadors',
+          label: 'Recrutadores',
           name: 'recruiterController',
           icon: 'fluent-mdl2:recruitment-management',
         },
@@ -140,7 +140,7 @@ export default {
     }
   }
 
-  >main {
+  > main {
     display: flex;
     flex: 1;
 

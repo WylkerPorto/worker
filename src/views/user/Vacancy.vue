@@ -34,7 +34,7 @@ import SearchInput from '@/components/core/SearchInput.vue'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
 import { publicList as getVacancy } from '@/api/vacancy'
 import { Icon } from '@iconify/vue'
-import { toFormatDate } from '@/utils/conversors'
+import { toFormatDate } from '@/utils/conversores'
 import MyButton from '@/components/core/MyButton.vue'
 
 export default {

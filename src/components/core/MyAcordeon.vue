@@ -1,5 +1,5 @@
 <template>
-  <div class="accordeon">
+  <div class="acordeon">
     <div class="header" @click="toggle" :class="{ expanded: expanded }">
       <span class="title">{{ title }}</span>
       <Icon icon="bx:down-arrow" />
@@ -13,7 +13,7 @@
 <script lang="ts">
 import { Icon } from '@iconify/vue'
 export default {
-  name: 'MyAccordeon',
+  name: 'MyAcordeon',
   props: {
     title: {
       type: String,
@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.accordeon {
+.acordeon {
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--white);

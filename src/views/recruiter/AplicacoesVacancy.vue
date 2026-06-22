@@ -23,7 +23,7 @@
     </section>
     <article v-if="openDropdownItem" ref="dropdown" :style="dropdownStyles" class="dropdown-status">
       <ul>
-        <li v-for="status in aplicationStatus" :key="status.id"
+        <li v-for="status in aplicacaoStatus" :key="status.id"
           @click="handleToggleStatus(openDropdownItem, status.title)">
           {{ status.title }}
         </li>
@@ -32,15 +32,15 @@
   </main>
 </template>
 <script lang="ts">
-import { getAplicationsByVacancy, update } from '@/api/aplication'
-import { getAplicationStatus } from '@/api/filters'
+import { getAplicacoesByVacancy, update } from '@/api/aplicacao'
+import { getAplicacaoStatus } from '@/api/filters'
 import { get } from '@/api/vacancy'
 import DataTable from '@/components/core/DataTable.vue'
 import { Icon } from '@iconify/vue'
 import { type IVacancyItem } from '@/interfaces/IVacancy'
 
 export default {
-  name: 'AplicationsVacancy',
+  name: 'AplicacoesVacancy',
   components: {
     DataTable,
     Icon,
@@ -61,7 +61,7 @@ export default {
         { key: 'status', title: 'Estado' },
         { key: 'createdAt', title: 'Criado em', type: 'date' },
       ],
-      aplicationStatus: [] as string[],
+      aplicacaoStatus: [] as string[],
       loading: false,
       total: 0,
       page: 1,
@@ -70,27 +70,27 @@ export default {
     }
   },
   mounted() {
-    this.getAplicationsByVacancy()
+    this.getAplicacoesByVacancy()
     this.getVacancyDetail()
-    this.getAplicationStatus()
+    this.getAplicacaoStatus()
     document.addEventListener('click', this.handleClickOutside)
   },
   beforeUnmount() {
     document.removeEventListener('click', this.handleClickOutside)
   },
   methods: {
-    async getAplicationStatus() {
+    async getAplicacaoStatus() {
       try {
-        const response = await getAplicationStatus()
-        this.aplicationStatus = response.data
+        const response = await getAplicacaoStatus()
+        this.aplicacaoStatus = response.data
       } catch (error) {
         this.$snotify.error(error)
       }
     },
-    async getAplicationsByVacancy() {
+    async getAplicacoesByVacancy() {
       this.loading = true
       try {
-        const { data } = await getAplicationsByVacancy(this.$route.params.id, this.filters)
+        const { data } = await getAplicacoesByVacancy(this.$route.params.id, this.filters)
         this.items = data.data
         this.total = data.meta.total
         this.totalPage = data.meta.totalPages
@@ -113,13 +113,13 @@ export default {
     },
     handleLoadMore(pageChange: number) {
       this.page += pageChange
-      this.getAplicationsByVacancy()
+      this.getAplicacoesByVacancy()
     },
     handleSearch(search: string) {
       this.search = search
       this.page = 1
       this.items = []
-      this.getAplicationsByVacancy()
+      this.getAplicacoesByVacancy()
     },
     async handleToggleStatus(item, status: string) {
       this.loading = true

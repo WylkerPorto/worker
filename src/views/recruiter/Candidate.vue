@@ -73,7 +73,7 @@ import { list as getGraduation } from '@/api/graduation'
 import { list as getCourse } from '@/api/course'
 import { list as getLanguage } from '@/api/language'
 import { getMaritalstatus } from '@/api/filters'
-import { toFormatDate } from '@/utils/conversors'
+import { toFormatDate } from '@/utils/conversores'
 
 export default {
   name: 'CandidateView',
@@ -88,7 +88,7 @@ export default {
       course: [] as ICourseItem[],
       language: [] as ILanguageItem[],
       maritalStatus: [],
-      aplicationStatus: [],
+      aplicacaoStatus: [],
     }
   },
   mounted() {

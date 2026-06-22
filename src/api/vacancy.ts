@@ -1,5 +1,5 @@
+import { toQueryString } from '@/utils/conversores'
 import http from './http'
-import { toQueryString } from '@/utils/conversors'
 
 export const create = (params: string) => http.authApi().post('/vacancy', params)
 
@@ -15,3 +15,8 @@ export const getBySlug = (slug: string) => http.authApi().get(`/vacancy/slug/${s
 
 export const publicList = (params: string) =>
   http.api().get(`/vacancy/public?${toQueryString(params)}`)
+
+export const transfer = (id: string, recruiterId: string) =>
+  http.authApi().patch(`/vacancy/${id}/recruiter`, { recruiterId })
+
+export const log = (id: string) => http.authApi().get(`/vacancy/${id}/activity-log`)

@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="validate">
-    <MyAccordeon title="Dados pessoais" :isOpen="true">
+    <MyAcordeon title="Dados pessoais" :isOpen="true">
       <div class="group">
         <FormInput
           v-model="form.name"
@@ -136,9 +136,9 @@
       <MyButton class="primary" :loading="loading" type="button" @click="validatePerson"
         >Salvar</MyButton
       >
-    </MyAccordeon>
+    </MyAcordeon>
 
-    <MyAccordeon title="Sobre" class="about">
+    <MyAcordeon title="Sobre" class="about">
       <div class="group">
         <textarea
           class="textarea"
@@ -147,13 +147,13 @@
           :error="errors.presentation"
           placeholder="Sou um profissional dedicado, com interesse em desenvolver minhas habilidades e contribuir de forma positiva para a equipe. Tenho facilidade em aprender, boa comunicação e comprometimento com resultados. Busco oportunidades que me permitam crescer profissionalmente e agregar valor à empresa."
         />
-        <span>{{ form.presentation.length }} / 1500</span>
+        <span>{{ form.presentation?.length || 0 }} / 1500</span>
       </div>
 
       <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
-    </MyAccordeon>
+    </MyAcordeon>
 
-    <MyAccordeon title="Localidade">
+    <MyAcordeon title="Localidade">
       <div class="group flex">
         <FormInput
           v-model="form.postalCode"
@@ -231,9 +231,9 @@
       <MyButton class="primary" :loading="loading" type="button" @click="validateLocation"
         >Salvar</MyButton
       >
-    </MyAccordeon>
+    </MyAcordeon>
 
-    <MyAccordeon title="Escolaridade" class="school">
+    <MyAcordeon title="Escolaridade" class="school">
       <div class="flex">
         <h2>Graduações</h2>
         <MyButton class="primary" type="button" @click="() => (showGraduationModal = true)">
@@ -317,9 +317,9 @@
       </ul>
 
       <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
-    </MyAccordeon>
+    </MyAcordeon>
 
-    <MyAccordeon title="Profissional" class="school">
+    <MyAcordeon title="Profissional" class="school">
       <div class="group">
         <span class="text-red">*Para Araraquara</span>
 
@@ -395,9 +395,9 @@
       </ul>
 
       <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
-    </MyAccordeon>
+    </MyAcordeon>
 
-    <MyAccordeon title="Social">
+    <MyAcordeon title="Social">
       <div class="group flex">
         <FormInput
           v-model="form.facebookUrl"
@@ -433,7 +433,7 @@
       </div>
 
       <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
-    </MyAccordeon>
+    </MyAcordeon>
   </form>
 
   <GraduationModal
@@ -473,7 +473,7 @@
 <script lang="ts">
 import * as yup from 'yup'
 import FormInput from '../core/FormInput.vue'
-import MyAccordeon from '../core/MyAccordeon.vue'
+import MyAcordeon from '../core/MyAcordeon.vue'
 import MyButton from '../core/MyButton.vue'
 import MySelect from '../core/MySelect.vue'
 import MySwitch from '../core/SwitchButton.vue'
@@ -504,7 +504,7 @@ import { type IGraduationItem } from '@/interfaces/IGraduation'
 import { type ILanguageItem } from '@/interfaces/ILanguages'
 import { type IPersonForm } from '@/interfaces/IPerson'
 import { type IWorkItem } from '@/interfaces/IWork'
-import { toFormatDate } from '@/utils/conversors'
+import { toFormatDate } from '@/utils/conversores'
 
 export default {
   name: 'UserCurriculum',
@@ -540,7 +540,7 @@ export default {
     MySwitch,
     MySelect,
     MyButton,
-    MyAccordeon,
+    MyAcordeon,
     GraduationModal,
     CoursesModal,
     LanguageModal,

@@ -1,5 +1,5 @@
 import http from './http'
-import { toQueryString } from '@/utils/conversors'
+import { toQueryString } from '@/utils/conversores'
 
 export const create = (params: string) => http.authApi().post('/position', params)
 
