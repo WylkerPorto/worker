@@ -14,6 +14,8 @@
         :totalItems="total"
         :totalPage="totalPage"
         :currentPage="page"
+        nested="recruiters"
+        :nestedColumns="nestedColumn"
         @onSearch="handleSearch"
         @onNextPage="handleLoadMore(+1)"
         @onPreviousPage="handleLoadMore(-1)"
@@ -43,7 +45,7 @@
   />
 </template>
 <script lang="ts">
-import { list } from '@/api/supervisor'
+import { hierarchy } from '@/api/supervisor'
 import DeleteSupervisorModal from '@/components/admin/DeleteSupervisorModal.vue'
 import FormSupervisorModal from '@/components/admin/FormSupervisorModal.vue'
 import DataTable from '@/components/core/DataTable.vue'
@@ -66,8 +68,8 @@ export default {
       columns: [
         { key: 'name', title: 'Nome' },
         { key: 'email', title: 'Email' },
-        { key: 'createdAt', title: 'Criado em', type: 'date' },
       ] as ISupervisorColumnItem[],
+      nestedColumn: ['name', 'email'],
       items: [] as ISupervisorItem[],
       editItem: {} as ISupervisorItem,
       total: 0,
@@ -88,10 +90,10 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        const { data } = await list(this.filters)
-        this.items = data
-        this.total = data.length //data.total
-        this.totalPage = 0 //Math.ceil(data.total / data.per_page)
+        const { data } = await hierarchy(this.filters)
+        this.items = data.data
+        this.total = data.total //data.total
+        this.totalPage = Math.ceil(data.total / data.per_page)
       } catch (error) {
         this.$snotify.error('Erro ao buscar os recrutadores: ' + error)
       } finally {

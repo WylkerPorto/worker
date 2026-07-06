@@ -77,7 +77,7 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        const { data } = await list(this.filters)
+        const { data } = await list()
         this.items = data
         this.total = data.length //data.total
         this.totalPage = 0 //Math.ceil(data.total / data.per_page)

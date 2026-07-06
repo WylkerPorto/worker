@@ -2,8 +2,8 @@
   <main class="data-table">
     <table>
       <colgroup>
-        <col v-for="(column, index) in columns" :key="index" style="width: 1fr;" />
-        <col v-if="$slots['actions']" style="width: auto;" />
+        <col v-for="(column, index) in columns" :key="index" style="width: 1fr" />
+        <col v-if="$slots['actions']" style="width: auto" />
       </colgroup>
       <thead>
         <tr v-if="showFilter">
@@ -22,22 +22,41 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in items" :key="index">
-          <td v-for="(column, colIndex) in columns" :key="colIndex">
-            {{
-              column?.type === 'date'
-                ? toFormatDate(item[column?.key])
-                : column?.type === 'boolean'
-                  ? item[column?.key]
-                    ? 'Ativo'
-                    : 'Inativo'
-                  : getNestedValue(item, column?.key)
-            }}
-          </td>
-          <td class="actions" v-if="$slots['actions']">
-            <slot name="actions" :item="item"></slot>
-          </td>
-        </tr>
+        <template v-for="(item, index) in items" :key="index">
+          <tr>
+            <td v-for="(column, colIndex) in columns" :key="colIndex">
+              <button
+                v-if="colIndex === 0 && nested && hasNestedItems(item)"
+                class="expand-toggle"
+                type="button"
+                @click="toggleRow(index)"
+                :title="isRowExpanded(index) ? 'Recolher' : 'Expandir'"
+              >
+                <Icon icon="lucide:chevron-right" :class="{ 'is-open': isRowExpanded(index) }" />
+              </button>
+              {{
+                column?.type === 'date'
+                  ? toFormatDate(item[column?.key])
+                  : column?.type === 'boolean'
+                    ? item[column?.key]
+                      ? 'Ativo'
+                      : 'Inativo'
+                    : getNestedValue(item, column?.key)
+              }}
+            </td>
+            <td class="actions" v-if="$slots['actions']">
+              <slot name="actions" :item="item"></slot>
+            </td>
+          </tr>
+          <template v-if="nested && isRowExpanded(index) && hasNestedItems(item)">
+            <tr v-for="(nestedItem, nestedIndex) in getNestedItems(item)" :key="nestedIndex">
+              <td><Icon class="nested-indent" icon="si:down-right-fill" /></td>
+              <td v-for="(column, colIndex) in nestedColumns" :key="colIndex">
+                {{ getNestedCellValue(nestedItem, column) }}
+              </td>
+            </tr>
+          </template>
+        </template>
       </tbody>
       <tbody v-if="loading">
         <tr>
@@ -49,15 +68,22 @@
       <tfoot v-if="totalPage > 1 && !loading">
         <tr>
           <td :colspan="columns?.length + ($slots['actions'] ? 1 : 0)">
-
             <div class="pagination">
-              <MyButton v-if="currentPage > 1" :loading="loading" class="light" @click="$emit('onPreviousPage')">
+              <MyButton
+                v-if="currentPage > 1"
+                :loading="loading"
+                class="light"
+                @click="$emit('onPreviousPage')"
+              >
                 <Icon icon="icons8:left-round" />
               </MyButton>
-              <MyButton class="light" disabled>
-                {{ currentPage }} / {{ totalPage }}
-              </MyButton>
-              <MyButton v-if="currentPage < totalPage" :loading="loading" class="light" @click="$emit('onNextPage')">
+              <MyButton class="light" disabled> {{ currentPage }} / {{ totalPage }} </MyButton>
+              <MyButton
+                v-if="currentPage < totalPage"
+                :loading="loading"
+                class="light"
+                @click="$emit('onNextPage')"
+              >
                 <Icon icon="icons8:right-round" />
               </MyButton>
             </div>
@@ -69,10 +95,10 @@
 </template>
 
 <script lang="ts">
-import SearchInput from './SearchInput.vue'
-import { Icon } from '@iconify/vue'
 import { toFormatDate } from '@/utils/conversores'
+import { Icon } from '@iconify/vue'
 import MyButton from './MyButton.vue'
+import SearchInput from './SearchInput.vue'
 
 export default {
   name: 'DataTableComponent',
@@ -80,6 +106,7 @@ export default {
     return {
       toFormatDate,
       search: '',
+      expandedRows: {} as Record<number, boolean>,
     }
   },
   props: {
@@ -107,7 +134,14 @@ export default {
     showFilter: {
       type: Boolean,
       default: true,
-    }
+    },
+    nested: {
+      type: String,
+      default: '',
+    },
+    nestedColumns: {
+      type: Array,
+    },
   },
   components: {
     SearchInput,
@@ -119,8 +153,43 @@ export default {
     handleSearch() {
       this.$emit('onSearch', this.search)
     },
-    getNestedValue(obj: object, path: string) {
-      return path.split('.').reduce((acc, key) => acc?.[key], obj)
+    toggleRow(index: number) {
+      this.expandedRows[index] = !this.expandedRows[index]
+    },
+    isRowExpanded(index: number) {
+      return !!this.expandedRows[index]
+    },
+    hasNestedItems(item: unknown) {
+      return this.getNestedItems(item).length > 0
+    },
+    getNestedItems(item: unknown): Record<string, unknown>[] {
+      const record = this.toRecord(item)
+      const nestedItems = record[this.nested]
+
+      if (!Array.isArray(nestedItems)) {
+        return []
+      }
+
+      return nestedItems.filter(
+        (nestedItem): nestedItem is Record<string, unknown> =>
+          typeof nestedItem === 'object' && nestedItem !== null,
+      )
+    },
+    getNestedCellValue(nestedItem: Record<string, unknown>, column: unknown) {
+      const key = typeof column === 'string' ? column : ''
+      return key ? nestedItem[key] : ''
+    },
+    toRecord(value: unknown): Record<string, unknown> {
+      return typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : {}
+    },
+    getNestedValue(obj: unknown, path: string) {
+      return path.split('.').reduce((acc: unknown, key: string) => {
+        if (typeof acc !== 'object' || acc === null) {
+          return undefined
+        }
+
+        return (acc as Record<string, unknown>)[key]
+      }, obj)
     },
   },
   computed: {
@@ -192,6 +261,28 @@ main.data-table {
           text-wrap: nowrap;
           overflow-x: clip;
           text-overflow: ellipsis;
+
+          .expand-toggle {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            margin-right: 0.35rem;
+            display: inline-flex;
+            align-items: center;
+            padding: 0;
+
+            svg {
+              transition: transform 0.2s ease;
+            }
+
+            .is-open {
+              transform: rotate(90deg);
+            }
+          }
+
+          .nested-indent {
+            font-size: 0.95rem;
+          }
 
           .loader {
             font-size: 30px;

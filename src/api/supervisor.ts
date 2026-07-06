@@ -11,3 +11,6 @@ export const list = (params: string) =>
 export const update = (id: string, params: string) => http.authApi().put(`/user/${id}`, params)
 
 export const remove = (id: string) => http.authApi().delete(`/user/${id}`)
+
+export const hierarchy = (params: string) =>
+  http.authApi().get(`/user/hierarchies?${toQueryString(params)}`)

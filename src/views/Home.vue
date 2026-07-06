@@ -135,6 +135,36 @@
     </section>
     <!-- end talent bank section -->
 
+    <!-- gallery section -->
+
+    <section id="gallery">
+      <div class="container">
+        <div class="header">
+          <h3>Pessoas que fazem a diferença todos os dias</h3>
+          <p>
+            Acreditamos que grandes resultados nascem de pessoas comprometidas, acolhedoras e
+            alinhadas com o propósito de cuidar.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="people-card" v-for="person in peopleGallery" :key="person.title">
+            <div
+              class="image"
+              :style="{ backgroundImage: 'url(' + person.image + ')' }"
+              role="img"
+              :aria-label="person.title"
+            ></div>
+            <div class="content">
+              <strong>{{ person.title }}</strong>
+              <span>{{ person.text }}</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <!-- end gallery section -->
+
     <!-- footer section -->
     <section id="footer">
       <div class="container">
@@ -195,6 +225,32 @@ export default {
       state: '',
       departmentId: null,
       positionId: null,
+      peopleGallery: [
+        {
+          image:
+            'https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80',
+          title: 'Cuidado com propósito',
+          text: 'Profissionais que atuam com dedicação, empatia e compromisso com a vida.',
+        },
+        {
+          image:
+            'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=80',
+          title: 'Trabalho em equipe',
+          text: 'A colaboração entre pessoas é essencial para entregar excelência todos os dias.',
+        },
+        {
+          image:
+            'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=80',
+          title: 'Desenvolvimento profissional',
+          text: 'Valorizamos talentos que desejam crescer e evoluir em sua trajetória profissional.',
+        },
+        {
+          image:
+            'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=80',
+          title: 'Humanização no atendimento',
+          text: 'Nosso ambiente é construído por pessoas que acolhem, apoiam e transformam realidades.',
+        },
+      ],
     }
   },
   mounted() {
@@ -352,7 +408,7 @@ main {
       ),
       url('/assets/imgs/SCA.jpeg');
     background-size: cover;
-    background-position: center;
+    background-position: initial;
     display: flex;
     align-items: center;
     overflow: visible;
@@ -567,6 +623,87 @@ main {
         font-size: 16px;
         font-weight: 750;
         display: inline-block;
+      }
+    }
+  }
+
+  #gallery {
+    margin-top: 34px;
+    margin-bottom: 34px;
+
+    .header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 24px;
+
+      h3 {
+        margin: 0 0 10px;
+        color: var(--navy);
+        font-size: 30px;
+        line-height: 1.15;
+        letter-spacing: -0.04em;
+        font-weight: 800;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.55;
+      }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+
+      article {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+
+        .image {
+          width: 100%;
+          height: 245px;
+          background-size: cover;
+          background-position: center;
+          display: block;
+          position: relative;
+
+          &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+              180deg,
+              rgba(19, 41, 61, 0) 45%,
+              rgba(19, 41, 61, 0.24) 100%
+            );
+            pointer-events: none;
+          }
+        }
+
+        .content {
+          padding: 16px;
+
+          strong {
+            display: block;
+            color: var(--navy);
+            font-size: 16px;
+            line-height: 1.3;
+            margin-bottom: 6px;
+          }
+
+          span {
+            display: block;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+          }
+        }
       }
     }
   }
