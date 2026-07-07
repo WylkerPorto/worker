@@ -70,13 +70,28 @@ export default {
         },
         {
           label: 'Recrutadores',
-          name: 'recruiterFreeController',
+          name: 'adminRecruiterController',
+          icon: 'mdi:account-group-outline',
+        },
+        {
+          label: 'Vincular',
+          name: 'linkFreeController',
           icon: 'mdi:account-multiple',
         },
         {
-          label: 'Transferência',
-          name: 'transferRecruitersController',
-          icon: 'mdi:transit-transfer',
+          label: 'Cargos',
+          name: 'adminPosition',
+          icon: 'ic:outline-workspace-premium',
+        },
+        {
+          label: 'Setor',
+          name: 'adminDepartment',
+          icon: 'streamline-sharp:workspace-desk',
+        },
+        {
+          label: 'Banco de Talentos',
+          name: 'adminTalentPool',
+          icon: 'solar:star-line-duotone',
         },
         {
           label: 'Log',

@@ -1,3 +1,4 @@
+import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import routes from './routes'
 
@@ -5,7 +6,7 @@ const useHash = import.meta.env.VITE_ROUTER_MODE === 'hash'
 
 const router = createRouter({
   history: useHash ? createWebHashHistory() : createWebHistory(),
-  routes,
+  routes: routes as unknown as RouteRecordRaw[],
 })
 
 router.beforeEach((to, from, next) => {
@@ -25,10 +26,15 @@ router.beforeEach((to, from, next) => {
 
   // Se o usuário estiver logado e a rota exigir um tipo específico de usuário
   if (login && to.matched.some((record) => record.meta.role)) {
-    const requiredRole = to.meta.role
+    const requiredRole = to.meta.role as string | string[]
+
+    // Aceita role única ou lista de roles permitidas no meta da rota.
+    const hasAccess = Array.isArray(requiredRole)
+      ? !!userRole && requiredRole.includes(userRole)
+      : userRole === requiredRole
 
     // Verifica se o papel do usuário corresponde ao papel necessário para acessar a rota
-    if (userRole !== requiredRole) {
+    if (!hasAccess) {
       return next('/invalid') // ou redirecione para uma página de erro
     }
   }

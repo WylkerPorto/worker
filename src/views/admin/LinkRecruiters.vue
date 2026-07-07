@@ -2,10 +2,7 @@
   <main>
     <section class="card">
       <header>
-        <h1>Recrutadores</h1>
-        <button class="rounded" @click="showRecruiterModal = true">
-          <Icon icon="tdesign:user-add"></Icon>
-        </button>
+        <h1>Vincular Recrutadores Livres</h1>
       </header>
       <DataTable
         :items="items"
@@ -18,46 +15,42 @@
         @onNextPage="handleLoadMore(+1)"
         @onPreviousPage="handleLoadMore(-1)"
       >
-        <template #createdAt="{ item }">
-          <p>{{ item }}</p>
-        </template>
         <template #actions="{ item }">
-          <button class="rounded success" @click="handleEditRecruiter(item)">
-            <Icon icon="carbon:edit"></Icon>
+          <button
+            class="rounded success"
+            @click="handleLinkRecruiter(item)"
+            title="Vincular Supervisor"
+          >
+            <Icon icon="material-symbols:group-add-outline-rounded"></Icon>
           </button>
-          <RouterLink :to="{ name: 'KPIRecruiterController', query: { recruiterId: item.id } }">
-            <button class="rounded primary">
-              <Icon icon="ix:kpi"></Icon>
-            </button>
-          </RouterLink>
         </template>
       </DataTable>
     </section>
   </main>
-  <FormRecruiterModal
-    :show="showRecruiterModal"
+  <LinkRecruiterModal
+    :show="showLinkRecruiterModal"
     :dataForm="editItem"
     @onClose="closeAllModals"
-    @onSave="refresh"
+    @onConfirm="refresh"
   />
 </template>
 <script lang="ts">
-import { list } from '@/api/recruiter'
+import { listFree } from '@/api/recruiter'
+import LinkRecruiterModal from '@/components/admin/LinkRecruiterModal.vue'
 import DataTable from '@/components/core/DataTable.vue'
-import FormRecruiterModal from '@/components/supervisor/FormRecruiterModal.vue'
 import { type IRecruiterColumnItem, type IRecruiterItem } from '@/interfaces/IRecruiter'
 import { Icon } from '@iconify/vue'
 
 export default {
-  name: 'AdminRecruitersController',
+  name: 'LinkRecruiters',
   components: {
     DataTable,
     Icon,
-    FormRecruiterModal,
+    LinkRecruiterModal,
   },
   data() {
     return {
-      showRecruiterModal: false,
+      showLinkRecruiterModal: false,
       loading: false,
       columns: [
         { key: 'name', title: 'Nome' },
@@ -84,10 +77,10 @@ export default {
       this.closeAllModals()
       this.loading = true
       try {
-        const { data } = await list(this.filters)
+        const { data } = await listFree(this.filters)
         this.items = data
-        this.total = data.length
-        this.totalPage = Math.ceil(data.length / data.per_page)
+        this.total = data.length //data.total
+        this.totalPage = 0 //Math.ceil(data.total / data.per_page)
       } catch (error) {
         this.$snotify.error('Erro ao buscar os recrutadores: ' + error)
       } finally {
@@ -100,18 +93,13 @@ export default {
       this.items = []
       this.getRecruiters()
     },
-    handleNewSupervisor() {
-      this.editItem = {} as IRecruiterItem
-      this.showRecruiterModal = true
-    },
-    handleEditRecruiter(item: IRecruiterItem) {
+    handleLinkRecruiter(item: IRecruiterItem) {
       this.editItem = item
-      this.showRecruiterModal = true
+      this.showLinkRecruiterModal = true
     },
     closeAllModals() {
       this.editItem = {} as IRecruiterItem
-      this.showRecruiterModal = false
-      this.showDeleteRecruiterModal = false
+      this.showLinkRecruiterModal = false
     },
     handleLoadMore(pageChange: number) {
       this.page += pageChange

@@ -86,7 +86,7 @@
       <DataTable :items="users" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
         :currentPage="page" @onNextPage="handleLoadMore(+1)" @onPreviousPage="handleLoadMore(-1)" :showFilter="false">
         <template #actions="{ item }">
-          <RouterLink class="rounded primary" :to="{ name: 'recruiterCandidateDetail', params: { id: item.id } }"
+          <RouterLink class="rounded primary" :to="{ name: 'internalCandidateDetail', params: { id: item.id } }"
             title="Ver Candidato" target="_blank">
             <Icon icon="mdi:user" />
           </RouterLink>

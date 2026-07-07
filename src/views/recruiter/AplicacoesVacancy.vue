@@ -14,7 +14,7 @@
           <button class="rounded" @click="toggleDropdown($event, item)" title="Editar Status">
             <Icon icon="fluent:status-12-filled" />
           </button>
-          <RouterLink class="rounded primary" :to="{ name: 'recruiterCandidateDetail', params: { id: item.person.id } }"
+          <RouterLink class="rounded primary" :to="{ name: 'internalCandidateDetail', params: { id: item.person.id } }"
             title="Ver Candidato" target="_blank">
             <Icon icon="mdi:user" />
           </RouterLink>

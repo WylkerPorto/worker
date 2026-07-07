@@ -27,6 +27,13 @@
           <button class="rounded danger" @click="handleConfirmDelete(item)">
             <Icon icon="carbon:trash-can"></Icon>
           </button>
+          <button
+            class="rounded success"
+            @click="handleTransferRecruiter(item)"
+            title="Transferir Recrutador"
+          >
+            <Icon icon="material-symbols:group-add-outline-rounded"></Icon>
+          </button>
         </template>
       </DataTable>
     </section>
@@ -43,12 +50,20 @@
     @onClose="closeAllModals"
     @onConfirm="refresh"
   />
+  <TransferRecruiterModal
+    :show="showTransferRecruiterModal"
+    :dataForm="editItem"
+    @onClose="closeAllModals"
+    @onConfirm="refresh"
+  />
 </template>
 <script lang="ts">
 import { hierarchy } from '@/api/supervisor'
 import DeleteSupervisorModal from '@/components/admin/DeleteSupervisorModal.vue'
 import FormSupervisorModal from '@/components/admin/FormSupervisorModal.vue'
+import TransferRecruiterModal from '@/components/admin/TransferRecruiterModal.vue'
 import DataTable from '@/components/core/DataTable.vue'
+import type { IRecruiterItem } from '@/interfaces/IRecruiter'
 import { type ISupervisorColumnItem, type ISupervisorItem } from '@/interfaces/ISupervisor'
 import { Icon } from '@iconify/vue'
 
@@ -59,11 +74,13 @@ export default {
     Icon,
     FormSupervisorModal,
     DeleteSupervisorModal,
+    TransferRecruiterModal,
   },
   data() {
     return {
       showDeleteSupervisorModal: false,
       showFormSupervisorModal: false,
+      showTransferRecruiterModal: false,
       loading: false,
       columns: [
         { key: 'name', title: 'Nome' },
@@ -122,10 +139,15 @@ export default {
       this.editItem = {} as ISupervisorItem
       this.showFormSupervisorModal = false
       this.showDeleteSupervisorModal = false
+      this.showTransferRecruiterModal = false
     },
     handleLoadMore(pageChange: number) {
       this.page += pageChange
       this.getSupervisors()
+    },
+    handleTransferRecruiter(item: IRecruiterItem) {
+      this.editItem = item
+      this.showTransferRecruiterModal = true
     },
   },
   computed: {

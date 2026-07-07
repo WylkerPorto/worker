@@ -41,6 +41,19 @@ export default [
   },
 
   {
+    path: '/internal',
+    meta: { layout: 'empty', requiresAuth: true, role: ['1', '2', '3'] },
+    children: [
+      {
+        path: 'candidate/:id',
+        name: 'internalCandidateDetail',
+        component: () => import('@/views/recruiter/Candidate.vue'),
+        meta: { title: 'Detalhes do Candidato' },
+      },
+    ],
+  },
+
+  {
     path: '/admin',
     meta: { layout: 'adminDashboard', requiresAuth: true, role: '1' },
     children: [
@@ -68,15 +81,45 @@ export default [
       },
       {
         path: 'recruitersFree',
-        name: 'recruiterFreeController',
+        name: 'linkFreeController',
+        component: () => import('@/views/admin/LinkRecruiters.vue'),
+        meta: { title: 'Vincular Recrutadores' },
+      },
+      {
+        path: 'recruiters',
+        name: 'adminRecruiterController',
         component: () => import('@/views/admin/Recruiters.vue'),
-        meta: { title: 'Recrutadores Livres' },
+        meta: { title: 'Recrutadores' },
       },
       {
         path: 'transferRecruiters',
         name: 'transferRecruitersController',
         component: () => import('@/views/admin/TransferRecruiters.vue'),
         meta: { title: 'Transferir Recrutadores' },
+      },
+      {
+        path: 'KPIRecruiter',
+        name: 'KPIRecruiterController',
+        component: () => import('@/views/admin/RecruiterKPI.vue'),
+        meta: { title: 'KPI Recrutador' },
+      },
+      {
+        path: 'positions',
+        name: 'adminPosition',
+        component: () => import('@/views/recruiter/Position.vue'),
+        meta: { title: 'Cargos' },
+      },
+      {
+        path: 'departments',
+        name: 'adminDepartment',
+        component: () => import('@/views/recruiter/Department.vue'),
+        meta: { title: 'Departamentos' },
+      },
+      {
+        path: 'talent-pool',
+        name: 'adminTalentPool',
+        component: () => import('@/views/recruiter/TalentPool.vue'),
+        meta: { title: 'Lista de Talentos' },
       },
       {
         path: 'logs',
@@ -159,12 +202,6 @@ export default [
         name: 'recruiterVacancyDetail',
         component: () => import('@/views/recruiter/AplicacoesVacancy.vue'),
         meta: { title: 'Detalhes da Vaga' },
-      },
-      {
-        path: 'candidate/:id',
-        name: 'recruiterCandidateDetail',
-        component: () => import('@/views/recruiter/Candidate.vue'),
-        meta: { title: 'Detalhes do Candidato' },
       },
       {
         path: 'positions',
