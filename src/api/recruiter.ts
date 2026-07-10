@@ -19,5 +19,5 @@ export const linkSupervisor = (id: string, supervisorId: string) =>
 
 export const remove = (id: string) => http.authApi().delete(`/user/${id}`)
 
-export const getRecruiterKPI = (recruiterId: string, period: string) =>
+export const getRecruiterKPI = (period: string, recruiterId?: string) =>
   http.authApi().get(`/dashboard/summary?${toQueryString({ period, recruiterId })}`)

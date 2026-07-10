@@ -198,13 +198,18 @@ export default {
     },
   },
   mounted() {
-    this.getRecruiterKPI()
+    const id = this.$route.query.recruiterId as string
+    if (id) {
+      this.getRecruiterKPI(id)
+    } else {
+      this.getRecruiterKPI()
+    }
   },
   methods: {
-    async getRecruiterKPI() {
+    async getRecruiterKPI(id?: string) {
       this.loading = true
       try {
-        const { data } = await getRecruiterKPI(this.$route.query.recruiterId as string, this.period)
+        const { data } = await getRecruiterKPI(this.period, id)
         this.chartData = data.charts
         this.comparasionData = data.comparisonPreviousMonth
         this.recruiter = data.filteredRecruiter

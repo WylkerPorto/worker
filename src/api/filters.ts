@@ -25,3 +25,7 @@ export const getVacancyStatus = () => http.authApi().get('/filter/vacancy-status
 export const getTimeAvailability = () => http.authApi().get('/filter/time-availability')
 
 export const getHiringContractTypes = () => http.authApi().get('/filter/hiring-contract-type')
+
+export const getPersonEducation = () => http.authApi().get('/filter/person-education')
+
+export const getPersonEducationLevels = () => http.authApi().get('/filter/person-education-level')

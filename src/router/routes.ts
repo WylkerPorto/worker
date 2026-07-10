@@ -64,7 +64,7 @@ export default [
       {
         path: 'dashboard',
         name: 'adminDashboard',
-        component: () => import('@/views/admin/Index.vue'),
+        component: () => import('@/views/admin/RecruiterKPI.vue'),
         meta: { title: 'Dashboard' },
       },
       {

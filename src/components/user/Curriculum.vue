@@ -133,6 +133,21 @@
         </div>
       </div>
 
+      <div class="group flex">
+        <MySelect
+          :options="personEducation"
+          v-model="form.education"
+          label="Formação*"
+          :error="errors.education"
+        />
+        <MySelect
+          :options="personEducationLevels"
+          v-model="form.educationLevel"
+          label="Nível de Formação*"
+          :error="errors.educationLevel"
+        />
+      </div>
+
       <MyButton class="primary" :loading="loading" type="button" @click="validatePerson"
         >Salvar</MyButton
       >
@@ -492,6 +507,8 @@ import {
   getGenders,
   getMaritalstatus,
   getNationalities,
+  getPersonEducation,
+  getPersonEducationLevels,
   getTimeAvailability,
 } from '@/api/filters'
 import { list as listGraduation, remove as removeGraduation } from '@/api/graduation'
@@ -533,6 +550,8 @@ export default {
       showLanguageModal: false,
       showWorkExperienceModal: false,
       selectedWorkExperience: null as number | null,
+      personEducation: [],
+      personEducationLevels: [],
     }
   },
   components: {
@@ -720,12 +739,22 @@ export default {
         const maritalStatus = await getMaritalstatus()
         const nationality = await getNationalities()
         const times = await getTimeAvailability()
+        const personEducation = await getPersonEducation()
+        const personEducationLevels = await getPersonEducationLevels()
 
         this.disabilities = disabilities.data.map((data) => ({ id: data.title, title: data.title }))
         this.genders = genders.data.map((data) => ({ id: data.title, title: data.title }))
         this.maritalStatus = maritalStatus.data.map((data) => ({ id: data.id, title: data.title }))
         this.nationalities = nationality.data.map((data) => ({ id: data.title, title: data.title }))
         this.timeAvailability = times.data.map((time) => ({ id: time.title, title: time.title }))
+        this.personEducation = personEducation.data.map((data) => ({
+          id: data.title,
+          title: data.title,
+        }))
+        this.personEducationLevels = personEducationLevels.data.map((data) => ({
+          id: data.title,
+          title: data.title,
+        }))
       } catch (error) {
         console.error('Error loading filters:', error)
       }
