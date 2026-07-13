@@ -85,7 +85,9 @@ export default {
       const status = await getLanguageLevels()
       this.languageStatus = status.data
     } catch (error) {
-      this.$snotify.error('Erro ao carregar os níveis de proficiência: ' + error)
+      this.$snotify.error(
+        'Erro ao carregar os níveis de proficiência: ' + error.response.data.message,
+      )
     }
   },
   methods: {
@@ -139,7 +141,7 @@ export default {
         this.$emit('onSave')
         this.closeModal()
       } catch (error) {
-        this.$snotify.error('Erro ao salvar idioma:', error)
+        this.$snotify.error('Erro ao salvar idioma: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

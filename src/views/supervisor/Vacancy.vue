@@ -109,7 +109,7 @@ export default {
         this.total = data.total
         this.totalPage = Math.ceil(data.total / data.rows)
       } catch (error) {
-        this.$snotify.error('Erro ao buscar vagas: ' + error)
+        this.$snotify.error('Erro ao buscar vagas: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

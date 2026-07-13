@@ -68,7 +68,7 @@ export default {
           },
         ]
       } catch (error) {
-        this.$snotify.error('Erro ao buscar os logs: ' + error)
+        this.$snotify.error('Erro ao buscar os logs: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

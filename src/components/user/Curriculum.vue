@@ -7,7 +7,7 @@
           :error="errors.name"
           type="text"
           placeholder="Digite seu nome"
-          label="Name*"
+          label="Nome*"
         />
       </div>
 
@@ -133,21 +133,6 @@
         </div>
       </div>
 
-      <div class="group flex">
-        <MySelect
-          :options="personEducation"
-          v-model="form.education"
-          label="Formação*"
-          :error="errors.education"
-        />
-        <MySelect
-          :options="personEducationLevels"
-          v-model="form.educationLevel"
-          label="Nível de Formação*"
-          :error="errors.educationLevel"
-        />
-      </div>
-
       <MyButton class="primary" :loading="loading" type="button" @click="validatePerson"
         >Salvar</MyButton
       >
@@ -160,7 +145,7 @@
           maxlength="1500"
           v-model="form.presentation"
           :error="errors.presentation"
-          placeholder="Sou um profissional dedicado, com interesse em desenvolver minhas habilidades e contribuir de forma positiva para a equipe. Tenho facilidade em aprender, boa comunicação e comprometimento com resultados. Busco oportunidades que me permitam crescer profissionalmente e agregar valor à empresa."
+          placeholder="Conte um pouco sobre você, sua trajetória profissional, principais experiências, habilidades, objetivos de carreira e outras informações que considere relevantes para sua apresentação."
         />
         <span>{{ form.presentation?.length || 0 }} / 1500</span>
       </div>
@@ -249,6 +234,21 @@
     </MyAcordeon>
 
     <MyAcordeon title="Escolaridade" class="school">
+      <div class="group flex">
+        <MySelect
+          :options="personEducation"
+          v-model="form.education"
+          label="Formação*"
+          :error="errors.education"
+        />
+        <MySelect
+          :options="personEducationLevels"
+          v-model="form.educationLevel"
+          label="Nível de Formação*"
+          :error="errors.educationLevel"
+        />
+      </div>
+
       <div class="flex">
         <h2>Graduações</h2>
         <MyButton class="primary" type="button" @click="() => (showGraduationModal = true)">
@@ -361,7 +361,7 @@
 
           <div>
             <span>Disponibilidade de horário</span>
-            <MySelect :options="timeAvailability" v-model="form.timeAvailability" />
+            <MyMultSelect :options="timeAvailability" v-model="form.timeAvailability" />
           </div>
         </div>
       </div>
@@ -490,6 +490,7 @@ import * as yup from 'yup'
 import FormInput from '../core/FormInput.vue'
 import MyAcordeon from '../core/MyAcordeon.vue'
 import MyButton from '../core/MyButton.vue'
+import MyMultSelect from '../core/MyMultSelect.vue'
 import MySelect from '../core/MySelect.vue'
 import MySwitch from '../core/SwitchButton.vue'
 import CoursesModal from './CoursesModal.vue'
@@ -558,6 +559,7 @@ export default {
     FormInput,
     MySwitch,
     MySelect,
+    MyMultSelect,
     MyButton,
     MyAcordeon,
     GraduationModal,
@@ -723,6 +725,9 @@ export default {
         delete this.form.updatedAt
         delete this.form.deletedAt
 
+        this.form.phoneNumber = this.form.phoneNumber.replace(/\D/g, '')
+        this.form.phoneNumber2 = this.form.phoneNumber2.replace(/\D/g, '')
+
         await updateUser(this.id, this.form)
 
         this.$snotify.success('Perfil atualizado com sucesso!')
@@ -782,7 +787,7 @@ export default {
         const response = await listGraduation(this.id)
         this.graduations = response.data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar graduação:', error)
+        this.$snotify.error('Erro ao carregar graduação: ' + error.response.data.message)
       }
     },
     editGraduation(graduation: IGraduationItem) {
@@ -798,7 +803,7 @@ export default {
       try {
         await removeGraduation(this.id, this.selectedGraduation.id)
       } catch (error) {
-        this.$snotify.error('Erro ao excluir graduação:', error)
+        this.$snotify.error('Erro ao excluir graduação: ' + error.response.data.message)
       } finally {
         this.loadGraduations()
       }
@@ -831,7 +836,7 @@ export default {
         const response = await listCourses(this.id)
         this.courses = response.data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar cursos:', error)
+        this.$snotify.error('Erro ao carregar cursos: ' + error.response.data.message)
       }
     },
     editCourse(course: ICourseItem) {
@@ -847,7 +852,7 @@ export default {
       try {
         await removeCourse(this.id, this.selectedCourse.id)
       } catch (error) {
-        this.$snotify.error('Erro ao excluir curso:', error)
+        this.$snotify.error('Erro ao excluir curso: ' + error.response.data.message)
       } finally {
         this.loadCourses()
       }
@@ -858,7 +863,7 @@ export default {
         const response = await listLanguages(this.id)
         this.languages = response.data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar idiomas:', error)
+        this.$snotify.error('Erro ao carregar idiomas: ' + error.response.data.message)
       }
     },
     editLanguage(language: ILanguageItem) {
@@ -874,7 +879,7 @@ export default {
       try {
         await removeLanguage(this.id, this.selectedLanguage.id)
       } catch (error) {
-        this.$snotify.error('Erro ao excluir idioma:', error)
+        this.$snotify.error('Erro ao excluir idioma: ' + error.response.data.message)
       } finally {
         this.loadLanguages()
       }
@@ -885,7 +890,9 @@ export default {
         const response = await listWork(this.id)
         this.workExperiences = response.data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar experiências de trabalho:', error)
+        this.$snotify.error(
+          'Erro ao carregar experiências de trabalho: ' + error.response.data.message,
+        )
       }
     },
     editWorkExperience(work: IWorkItem) {
@@ -901,7 +908,9 @@ export default {
       try {
         await removeWork(this.id, this.selectedWorkExperience.id)
       } catch (error) {
-        this.$snotify.error('Erro ao excluir experiência de trabalho:', error)
+        this.$snotify.error(
+          'Erro ao excluir experiência de trabalho: ' + error.response.data.message,
+        )
       } finally {
         this.loadWorkExperiences()
       }

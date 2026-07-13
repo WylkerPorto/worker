@@ -57,7 +57,7 @@ export default {
         this.$emit('onConfirm')
         this.$emit('onClose')
       } catch (error) {
-        this.$snotify.error('Erro ao excluir o administrador: ' + error)
+        this.$snotify.error('Erro ao excluir o administrador: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

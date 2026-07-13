@@ -126,7 +126,7 @@ export default {
         this.$emit('onSave')
         this.closeModal()
       } catch (error) {
-        this.$snotify.error('Erro ao salvar o recrutador: ' + error)
+        this.$snotify.error('Erro ao salvar o recrutador: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

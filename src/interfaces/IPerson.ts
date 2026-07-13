@@ -3,6 +3,8 @@ export interface IPersonForm {
   name: string
   socialName: string
   password: string
+  education: string
+  educationLevel: string
   cpf: string
   rg: string
   cnh: string
@@ -29,11 +31,14 @@ export interface IPersonForm {
   willingToRelocateToAraraquara: boolean
   availableToTravel: boolean
   acceptsTalentPool: boolean
-  timeAvailability: string
+  timeAvailability: string[]
   firstJob: boolean
   salaryClaim: number
   facebookUrl: string
   instagramUrl: string
   linkedinUrl: string
   personalUrl: string
+  createdAt?: string | Date | null
+  updatedAt?: string | Date | null
+  deletedAt?: string | Date | null
 }

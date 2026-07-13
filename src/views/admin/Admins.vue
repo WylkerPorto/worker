@@ -7,9 +7,17 @@
           <Icon icon="tdesign:user-add" />
         </button>
       </header>
-      <DataTable :items="items" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
-        :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
-        @onPreviousPage="handleLoadMore(-1)">
+      <DataTable
+        :items="items"
+        :columns="columns"
+        :loading="loading"
+        :totalItems="total"
+        :totalPage="totalPage"
+        :currentPage="page"
+        @onSearch="handleSearch"
+        @onNextPage="handleLoadMore(+1)"
+        @onPreviousPage="handleLoadMore(-1)"
+      >
         <template #actions="{ item }">
           <button class="rounded success" @click="handleEditAdmin(item)">
             <Icon icon="carbon:edit" />
@@ -21,8 +29,18 @@
       </DataTable>
     </section>
   </main>
-  <FormAdminModal :show="showFormAdminModal" :dataForm="editItem" @onClose="closeAllModals" @onSave="refresh" />
-  <DeleteAdminModal :show="showDeleteAdminModal" :dataForm="editItem" @onClose="closeAllModals" @onConfirm="refresh" />
+  <FormAdminModal
+    :show="showFormAdminModal"
+    :dataForm="editItem"
+    @onClose="closeAllModals"
+    @onSave="refresh"
+  />
+  <DeleteAdminModal
+    :show="showDeleteAdminModal"
+    :dataForm="editItem"
+    @onClose="closeAllModals"
+    @onConfirm="refresh"
+  />
 </template>
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'
@@ -75,7 +93,7 @@ export default {
         this.total = data.total
         this.totalPage = Math.ceil(data.total / data.per_page)
       } catch (error) {
-        this.$snotify.error('Erro ao buscar os administradores: ' + error)
+        this.$snotify.error('Erro ao buscar os administradores: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

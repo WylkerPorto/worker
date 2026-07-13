@@ -98,7 +98,7 @@ export default {
         this.$emit('onSave')
         this.closeModal()
       } catch (error) {
-        this.$snotify.error('Erro ao salvar o setor: ' + error)
+        this.$snotify.error('Erro ao salvar o setor: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

@@ -148,7 +148,7 @@ export default {
         this.$snotify.success(`Vaga ${this.isEditMode ? 'atualizada' : 'criada'} com sucesso!`)
         this.$router.push({ name: 'recruiterVacancy' })
       } catch (error) {
-        this.$snotify.error('Erro ao salvar a vaga: ' + error.message)
+        this.$snotify.error('Erro ao salvar a vaga: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

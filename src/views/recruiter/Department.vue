@@ -7,8 +7,13 @@
           <Icon icon="qlementine-icons:new-16" />
         </button>
       </header>
-      <DataTable :items="filteredItems" :columns="columns" :loading="loading" :totalItems="total"
-        @onSearch="handleSearch">
+      <DataTable
+        :items="filteredItems"
+        :columns="columns"
+        :loading="loading"
+        :totalItems="total"
+        @onSearch="handleSearch"
+      >
         <template #actions="{ item }">
           <button class="rounded success" @click="handleEditDepartment(item)">
             <Icon icon="carbon:edit" />
@@ -20,10 +25,18 @@
       </DataTable>
     </section>
   </main>
-  <FormDepartmentModal :show="showFormDepartmentModal" :dataForm="editItem" @onClose="closeAllModals"
-    @onSave="refresh" />
-  <DeleteDepartmentModal :show="showDeleteDepartmentModal" :dataForm="editItem" @onClose="closeAllModals"
-    @onConfirm="refresh" />
+  <FormDepartmentModal
+    :show="showFormDepartmentModal"
+    :dataForm="editItem"
+    @onClose="closeAllModals"
+    @onSave="refresh"
+  />
+  <DeleteDepartmentModal
+    :show="showDeleteDepartmentModal"
+    :dataForm="editItem"
+    @onClose="closeAllModals"
+    @onConfirm="refresh"
+  />
 </template>
 <script lang="ts">
 import DataTable from '@/components/core/DataTable.vue'
@@ -73,7 +86,7 @@ export default {
         this.items = data
         this.total = data.length
       } catch (error) {
-        this.$snotify.error('Erro ao buscar os setor: ' + error)
+        this.$snotify.error('Erro ao buscar os setor: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
@@ -102,7 +115,7 @@ export default {
   computed: {
     filteredItems() {
       return this.items.filter((item) =>
-        item.name.toLowerCase().includes(this.search.toLowerCase())
+        item.name.toLowerCase().includes(this.search.toLowerCase()),
       )
     },
   },

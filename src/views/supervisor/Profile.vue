@@ -91,7 +91,7 @@ export default {
         await update(localStorage.getItem('uid'), this.form)
         this.$snotify.success(`Perfil atualizado com sucesso`)
       } catch (error) {
-        this.$snotify.error('Erro ao salvar o perfil: ' + error)
+        this.$snotify.error('Erro ao salvar o perfil: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

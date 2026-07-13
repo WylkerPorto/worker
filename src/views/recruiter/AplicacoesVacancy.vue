@@ -7,15 +7,27 @@
         </button>
         <h1>Candidatos a vaga {{ vaga.title }}</h1>
       </header>
-      <DataTable :items="items" :columns="columns" :loading="loading" :totalItems="total" :totalPage="totalPage"
-        :currentPage="page" @onSearch="handleSearch" @onNextPage="handleLoadMore(+1)"
-        @onPreviousPage="handleLoadMore(-1)">
+      <DataTable
+        :items="items"
+        :columns="columns"
+        :loading="loading"
+        :totalItems="total"
+        :totalPage="totalPage"
+        :currentPage="page"
+        @onSearch="handleSearch"
+        @onNextPage="handleLoadMore(+1)"
+        @onPreviousPage="handleLoadMore(-1)"
+      >
         <template #actions="{ item }">
           <button class="rounded" @click="toggleDropdown($event, item)" title="Editar Status">
             <Icon icon="fluent:status-12-filled" />
           </button>
-          <RouterLink class="rounded primary" :to="{ name: 'internalCandidateDetail', params: { id: item.person.id } }"
-            title="Ver Candidato" target="_blank">
+          <RouterLink
+            class="rounded primary"
+            :to="{ name: 'internalCandidateDetail', params: { id: item.person.id } }"
+            title="Ver Candidato"
+            target="_blank"
+          >
             <Icon icon="mdi:user" />
           </RouterLink>
         </template>
@@ -23,8 +35,11 @@
     </section>
     <article v-if="openDropdownItem" ref="dropdown" :style="dropdownStyles" class="dropdown-status">
       <ul>
-        <li v-for="status in aplicacaoStatus" :key="status.id"
-          @click="handleToggleStatus(openDropdownItem, status.title)">
+        <li
+          v-for="status in aplicacaoStatus"
+          :key="status.id"
+          @click="handleToggleStatus(openDropdownItem, status.title)"
+        >
           {{ status.title }}
         </li>
       </ul>
@@ -131,12 +146,12 @@ export default {
         delete newItem.createdAt
         delete newItem.vacancy
         delete newItem.person
-        console.log('Atualizando candidatura:', newItem);
+        console.log('Atualizando candidatura:', newItem)
         await update(item.id, newItem)
         this.$snotify.success('Candidatura atualizada com sucesso!')
         item.status = status
       } catch (error) {
-        this.$snotify.error('Erro ao atualizar candidatura: ' + error)
+        this.$snotify.error('Erro ao atualizar candidatura: ' + error.response.data.message)
       } finally {
         this.openDropdownItem = null
         this.loading = false
@@ -163,15 +178,11 @@ export default {
         const target = event.target as Node
         const buttonClicked = (event.target as HTMLElement).closest('.actions')
 
-        if (
-          dropdown &&
-          !dropdown.contains(target) &&
-          !buttonClicked
-        ) {
+        if (dropdown && !dropdown.contains(target) && !buttonClicked) {
           this.openDropdownItem = null
         }
       }, 0)
-    }
+    },
   },
   computed: {
     filters() {
@@ -223,7 +234,6 @@ main {
     }
 
     .actions {
-
       button,
       a {
         padding: 5px;

@@ -162,7 +162,7 @@ export default {
         const response = await getVacancyStatus()
         this.vacancyStatus = response.data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar status de vagas: ' + error)
+        this.$snotify.error('Erro ao carregar status de vagas: ' + error.response.data.message)
       }
     },
     async getVacancies() {
@@ -174,7 +174,7 @@ export default {
         this.total = data.total
         this.totalPage = Math.ceil(data.total / data.rows)
       } catch (error) {
-        this.$snotify.error(error)
+        this.$snotify.error('Erro ao carregar vagas: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
@@ -214,7 +214,7 @@ export default {
         this.$snotify.success('Vaga atualizada com sucesso!')
         this.refresh()
       } catch (error) {
-        this.$snotify.error('Erro ao atualizar a vaga: ' + error)
+        this.$snotify.error('Erro ao atualizar a vaga: ' + error.response.data.message)
       } finally {
         this.openDropdownItem = null
         this.loading = false
@@ -269,7 +269,7 @@ export default {
         this.$snotify.success('Vaga duplicada com sucesso!')
         this.refresh()
       } catch (error) {
-        this.$snotify.error('Erro ao duplicar a vaga: ' + error)
+        this.$snotify.error('Erro ao duplicar a vaga: ' + error.response.data.message)
       } finally {
         this.openDropdownItem = null
         this.loading = false

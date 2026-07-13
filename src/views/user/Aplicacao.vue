@@ -19,15 +19,29 @@
         </p>
 
         <div class="btn-group">
-          <RouterLink class="btn primary" :to="{ name: 'userVacancyDetail', params: { id: item.vacancy.id } }"
-            target="_blank">
+          <RouterLink
+            class="btn primary"
+            :to="{ name: 'userVacancyDetail', params: { id: item.vacancy.id } }"
+            target="_blank"
+          >
             Ver detalhes
           </RouterLink>
-          <MyButton v-if="item.status === 'Candidatura Retirada'" class="btn success" type="button" :loading="loading"
-            @click="reApply(item)">
+          <MyButton
+            v-if="item.status === 'Candidatura Retirada'"
+            class="btn success"
+            type="button"
+            :loading="loading"
+            @click="reApply(item)"
+          >
             Recandidatar
           </MyButton>
-          <MyButton v-else class="btn danger" type="button" :loading="loading" @click="removeApplication(item)">
+          <MyButton
+            v-else
+            class="btn danger"
+            type="button"
+            :loading="loading"
+            @click="removeApplication(item)"
+          >
             Desistir
           </MyButton>
         </div>
@@ -37,12 +51,11 @@
   </main>
 </template>
 <script lang="ts">
-import { getAplicacaoByUser } from '@/api/aplicacao'
-import SearchInput from '@/components/core/SearchInput.vue'
-import { Icon } from '@iconify/vue'
-import { type IVacancyItem } from '@/interfaces/IVacancy'
+import { getAplicacaoByUser, update } from '@/api/aplicacao'
 import MyButton from '@/components/core/MyButton.vue'
-import { update } from '@/api/aplicacao'
+import SearchInput from '@/components/core/SearchInput.vue'
+import { type IVacancyItem } from '@/interfaces/IVacancy'
+import { Icon } from '@iconify/vue'
 
 export default {
   name: 'UserAplicacao',
@@ -72,7 +85,7 @@ export default {
         this.total = data.data.meta.total
         this.items.push(...data.data.data)
       } catch (error) {
-        this.$snotify.error('Erro ao buscar as vagas: ' + error)
+        this.$snotify.error('Erro ao buscar as vagas: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
@@ -93,7 +106,7 @@ export default {
         this.$snotify.success('Candidatura removida com sucesso!')
         item.status = 'Candidatura Retirada'
       } catch (error) {
-        this.$snotify.error('Erro ao remover candidatura: ' + error)
+        this.$snotify.error('Erro ao remover candidatura: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
@@ -105,7 +118,7 @@ export default {
         this.$snotify.success('Candidatura reenviada com sucesso!')
         item.status = 'Candidatura Enviada'
       } catch (error) {
-        this.$snotify.error('Erro ao reenviar candidatura: ' + error)
+        this.$snotify.error('Erro ao reenviar candidatura: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

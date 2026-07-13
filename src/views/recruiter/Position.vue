@@ -72,7 +72,7 @@ export default {
         this.items = data
         this.total = data.length
       } catch (error) {
-        this.$snotify.error('Erro ao buscar os cargos: ' + error)
+        this.$snotify.error('Erro ao buscar os cargos: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

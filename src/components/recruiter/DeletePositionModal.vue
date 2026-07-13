@@ -57,7 +57,7 @@ export default {
         this.$emit('onConfirm')
         this.$emit('onClose')
       } catch (error) {
-        this.$snotify.error('Erro ao excluir o cargo: ' + error)
+        this.$snotify.error('Erro ao excluir o cargo: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

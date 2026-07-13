@@ -106,7 +106,9 @@ export default {
       this.educationLevels = levels.data.map((level) => ({ id: level.title, title: level.title }))
       this.educationStatus = stats.data.map((status) => ({ id: status.title, title: status.title }))
     } catch (error) {
-      this.$snotify.error('Erro ao carregar os níveis e status de educação: ' + error)
+      this.$snotify.error(
+        'Erro ao carregar os níveis e status de educação: ' + error.response.data.message,
+      )
     }
   },
   methods: {
@@ -169,7 +171,7 @@ export default {
         this.$emit('onSave')
         this.closeModal()
       } catch (error) {
-        this.$snotify.error('Erro ao salvar a graduação: ' + error)
+        this.$snotify.error('Erro ao salvar a graduação: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

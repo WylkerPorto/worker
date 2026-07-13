@@ -112,7 +112,7 @@ export default {
         this.total = data.total //data.total
         this.totalPage = Math.ceil(data.total / data.per_page)
       } catch (error) {
-        this.$snotify.error('Erro ao buscar os recrutadores: ' + error)
+        this.$snotify.error('Erro ao buscar os recrutadores: ' + error.response.data.message)
       } finally {
         this.loading = false
       }

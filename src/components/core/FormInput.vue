@@ -3,19 +3,41 @@
     <label :for="label">{{ label }}</label>
     <div class="money-wrapper" v-if="mask === 'money'">
       <span class="money-prefix">R$</span>
-      <input type="text" inputmode="numeric" autocomplete="off" :placeholder="placeholder"
-        :value="type === 'date' ? moment(modelValue).format('YYYY-MM-DD') : formatMoneyDisplay(modelValue)"
-        @input="handleInput" :id="label" ref="input" :class="{ error: error }" :readonly="readonly"
-        :disabled="readonly" />
+      <input
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        :placeholder="placeholder"
+        :value="
+          type === 'date' ? moment(modelValue).format('YYYY-MM-DD') : formatMoneyDisplay(modelValue)
+        "
+        @input="handleInput"
+        :id="label"
+        ref="input"
+        :class="{ error: error }"
+        :readonly="readonly"
+        :disabled="readonly"
+      />
     </div>
-    <input v-else :type="type" :placeholder="placeholder"
-      :value="type === 'date' ? moment(modelValue).format('YYYY-MM-DD') : modelValue" @input="handleInput" :id="label"
-      ref="input" :class="{ error: error }" :readonly="readonly" :disabled="readonly" />
+    <input
+      v-else
+      :type="type"
+      :placeholder="placeholder"
+      :value="
+        type === 'date' ? moment(modelValue).format('YYYY-MM-DD') : formatDisplayValue(modelValue)
+      "
+      @input="handleInput"
+      :id="label"
+      ref="input"
+      :class="{ error: error }"
+      :readonly="readonly"
+      :disabled="readonly"
+    />
     <span>{{ error }}</span>
   </main>
 </template>
 <script lang="ts">
-import moment from 'moment';
+import moment from 'moment'
 
 export default {
   name: 'FormInput',
@@ -145,17 +167,83 @@ export default {
         }
       }
 
+      if (this.mask && this.mask !== 'money') {
+        emittedValue = value
+      }
+
       input.value = value
       this.$emit('update:modelValue', emittedValue)
+    },
+    formatDisplayValue(value: string | number) {
+      if (value === null || value === undefined) {
+        return ''
+      }
+
+      if (!this.mask || this.mask === 'money') {
+        return value
+      }
+
+      const digits = String(value).replace(/\D/g, '')
+
+      if (this.mask === 'tel') {
+        const limited = digits.slice(0, 11)
+        const match = limited.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/)
+        if (!match) {
+          return ''
+        }
+
+        return !match[2] ? match[1] : `(${match[1]}) ${match[2]}` + (match[3] ? `-${match[3]}` : '')
+      }
+
+      if (this.mask === 'rg') {
+        const limited = digits.slice(0, 9)
+        const match = limited.match(/^(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,1})$/)
+        if (!match) {
+          return ''
+        }
+
+        return (
+          (match[1] ? match[1] : '') +
+          (match[2] ? '.' + match[2] : '') +
+          (match[3] ? '.' + match[3] : '') +
+          (match[4] ? '-' + match[4] : '')
+        )
+      }
+
+      if (this.mask === 'cpf') {
+        const limited = digits.slice(0, 11)
+        const match = limited.match(/^(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})$/)
+        if (!match) {
+          return ''
+        }
+
+        return (
+          (match[1] ? match[1] : '') +
+          (match[2] ? '.' + match[2] : '') +
+          (match[3] ? '.' + match[3] : '') +
+          (match[4] ? '-' + match[4] : '')
+        )
+      }
+
+      if (this.mask === 'cnh') {
+        return digits.slice(0, 11)
+      }
+
+      return value
     },
     formatMoneyDisplay(value: string | number) {
       if (value === null || value === undefined || value === '') {
         return ''
       }
 
-      const numberValue = typeof value === 'number'
-        ? value
-        : Number(String(value).replace(',', '.').replace(/[^\d.-]/g, ''))
+      const numberValue =
+        typeof value === 'number'
+          ? value
+          : Number(
+              String(value)
+                .replace(',', '.')
+                .replace(/[^\d.-]/g, ''),
+            )
 
       if (Number.isNaN(numberValue)) {
         return ''

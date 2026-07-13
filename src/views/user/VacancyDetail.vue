@@ -26,7 +26,7 @@
       <p><b>Requisitos:</b></p>
       <div v-html="vacancy.requirements"></div>
       <MyButton
-        v-if="vacancy.status === 'Ativa' && !vacancy.isApplied"
+        v-if="vacancy.status === 'Publicada' && !vacancy.isApplied"
         class="btn success"
         type="button"
         :loading="loading"

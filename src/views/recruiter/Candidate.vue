@@ -106,7 +106,7 @@ export default {
         const { data } = await getPerson(this.uid)
         this.candidate = data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar o candidato: ' + error)
+        this.$snotify.error('Erro ao carregar o candidato: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
@@ -117,7 +117,7 @@ export default {
         const { data } = await getExperience(this.uid)
         this.experience = data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar as experiências: ' + error)
+        this.$snotify.error('Erro ao carregar as experiências: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
@@ -128,7 +128,7 @@ export default {
         const { data } = await getGraduation(this.uid)
         this.graduation = data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar as graduações: ' + error)
+        this.$snotify.error('Erro ao carregar as graduações: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
@@ -139,7 +139,7 @@ export default {
         const { data } = await getCourse(this.uid)
         this.course = data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar os cursos: ' + error)
+        this.$snotify.error('Erro ao carregar os cursos: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
@@ -150,7 +150,7 @@ export default {
         const { data } = await getLanguage(this.uid)
         this.language = data
       } catch (error) {
-        this.$snotify.error('Erro ao carregar os idiomas: ' + error)
+        this.$snotify.error('Erro ao carregar os idiomas: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
@@ -160,7 +160,7 @@ export default {
         const maritalStatus = await getMaritalstatus()
         this.maritalStatus = maritalStatus.data
       } catch (error) {
-        console.error('Error loading filters:', error)
+        console.error('Error loading filters:', error.response.data.message)
       }
     },
   },

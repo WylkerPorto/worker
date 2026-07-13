@@ -79,7 +79,7 @@ export default {
           title: supervisor.name,
         }))
       } catch (error) {
-        this.$snotify.error('Erro ao buscar supervisores: ' + error)
+        this.$snotify.error('Erro ao buscar supervisores: ' + error.response.data.message)
       }
     },
     async getRecruiters(id: string) {
@@ -90,7 +90,7 @@ export default {
           title: recruiter.name,
         }))
       } catch (error) {
-        this.$snotify.error('Erro ao buscar recrutadores: ' + error)
+        this.$snotify.error('Erro ao buscar recrutadores: ' + error.response.data.message)
       }
     },
     async linkRecruiter() {
@@ -105,7 +105,7 @@ export default {
           this.$snotify.error('Selecione um supervisor para vincular o recrutador.')
         }
       } catch (error) {
-        this.$snotify.error('Erro ao vincular o recrutador: ' + error)
+        this.$snotify.error('Erro ao vincular o recrutador: ' + error.response.data.message)
       } finally {
         this.selectedSupervisor = null
         this.loading = false

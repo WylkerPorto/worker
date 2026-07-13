@@ -63,7 +63,7 @@ export default {
           title: recruiter.name,
         }))
       } catch (error) {
-        this.$snotify.error('Erro ao buscar recrutadores: ' + error)
+        this.$snotify.error('Erro ao buscar recrutadores: ' + error.response.data.message)
       }
     },
     async linkVacancy() {
