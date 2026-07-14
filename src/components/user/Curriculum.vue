@@ -824,7 +824,9 @@ export default {
         delete this.form.deletedAt
 
         this.form.phoneNumber = this.form.phoneNumber.replace(/\D/g, '')
-        this.form.phoneNumber2 = this.form.phoneNumber2.replace(/\D/g, '')
+        this.form.phoneNumber2 = this.form.phoneNumber2
+          ? this.form.phoneNumber2.replace(/\D/g, '')
+          : null
 
         await updateUser(this.id, this.form)
 
