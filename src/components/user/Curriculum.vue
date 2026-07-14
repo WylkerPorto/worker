@@ -151,7 +151,9 @@
         <span>{{ form.presentation?.length || 0 }} / 1500</span>
       </div>
 
-      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
+      <MyButton class="primary" :loading="loading" type="button" @click="validateAbout"
+        >Salvar</MyButton
+      >
     </MyAcordeon>
 
     <MyAcordeon title="Localidade">
@@ -332,7 +334,9 @@
         </li>
       </ul>
 
-      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
+      <MyButton class="primary" :loading="loading" type="button" @click="validateSchool"
+        >Salvar</MyButton
+      >
     </MyAcordeon>
 
     <MyAcordeon title="Profissional" class="school">
@@ -410,7 +414,9 @@
         </li>
       </ul>
 
-      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
+      <MyButton class="primary" :loading="loading" type="submit" @click="validateProfessional"
+        >Salvar</MyButton
+      >
     </MyAcordeon>
 
     <MyAcordeon title="Social">
@@ -642,6 +648,35 @@ export default {
           .typeError('Data de nascimento inválida')
           .required('Data de nascimento é obrigatória')
           .max(new Date(), 'Data de nascimento inválida'),
+
+        nationality: yup
+          .string()
+          .min(1, 'Selecione uma nacionalidade')
+          .required('Nacionalidade é obrigatória'),
+      })
+
+      schema
+        .validate(this.form, { abortEarly: false })
+        .then(() => {
+          this.errors = {}
+          this.submitForm()
+        })
+        .catch((err) => {
+          const errors: Record<string, string> = {}
+          err.inner.forEach((error) => {
+            errors[error.path] = error.message
+          })
+          this.errors = errors
+        })
+    },
+    validateAbout() {
+      const schema = yup.object({
+        about: yup
+          .string()
+          .nullable()
+          .min(3, 'Sobre mim deve ter pelo menos 3 caracteres')
+          .max(1500, 'Sobre mim deve ter no máximo 1500 caracteres')
+          .required('Sobre mim é obrigatório'),
       })
 
       schema
@@ -689,6 +724,62 @@ export default {
           .string()
           .min(3, 'País deve ter pelo menos 3 caracteres')
           .required('País é obrigatório'),
+      })
+
+      schema
+        .validate(this.form, { abortEarly: false })
+        .then(() => {
+          this.errors = {}
+          this.submitForm()
+        })
+        .catch((err) => {
+          const errors = {}
+          err.inner.forEach((error) => {
+            errors[error.path] = error.message
+          })
+          this.errors = errors
+        })
+    },
+    validateSchool() {
+      const schema = yup.object({
+        education: yup.string().min(1, 'Selecione uma formação').required('Formação é obrigatória'),
+        educationLevel: yup
+          .string()
+          .min(1, 'Selecione um nível de formação')
+          .required('Nível de formação é obrigatório'),
+      })
+
+      schema
+        .validate(this.form, { abortEarly: false })
+        .then(() => {
+          this.errors = {}
+          this.submitForm()
+        })
+        .catch((err) => {
+          const errors = {}
+          err.inner.forEach((error) => {
+            errors[error.path] = error.message
+          })
+          this.errors = errors
+        })
+    },
+    validateProfessional() {
+      const schema = yup.object({
+        availableToCommuteToAraraquara: yup
+          .boolean()
+          .required('Disponibilidade para viagem é obrigatória'),
+
+        willingToRelocateToAraraquara: yup
+          .boolean()
+          .required('Disponibilidade para mudança é obrigatória'),
+
+        availableToTravel: yup.boolean().required('Disponibilidade para viagem é obrigatória'),
+
+        timeAvailability: yup
+          .array()
+          .of(yup.string())
+          .min(1, 'Selecione pelo menos uma disponibilidade de horário')
+          .required('Disponibilidade de horário é obrigatória'),
       })
 
       schema
