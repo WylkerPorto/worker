@@ -62,6 +62,7 @@
         <FormInput
           v-model="form.birthDate"
           :error="errors.birthDate"
+          np
           type="date"
           placeholder="Digite sua data de nascimento"
           label="Data de Nascimento*"
@@ -635,6 +636,12 @@ export default {
             const digits = onlyDigits(val)
             return digits.length >= 10 && digits.length <= 11 // aceita fixo (10) ou celular (11)
           }),
+
+        birthDate: yup
+          .date()
+          .typeError('Data de nascimento inválida')
+          .required('Data de nascimento é obrigatória')
+          .max(new Date(), 'Data de nascimento inválida'),
       })
 
       schema
@@ -732,7 +739,7 @@ export default {
 
         this.$snotify.success('Perfil atualizado com sucesso!')
       } catch (error) {
-        console.log(error)
+        this.$snotify.error('Erro ao atualizar perfil: ' + error.response.data.message)
       } finally {
         this.loading = false
       }
