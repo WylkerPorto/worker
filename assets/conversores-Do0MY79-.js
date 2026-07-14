@@ -1,0 +1,1 @@
+import{j as e}from"./index-BAuGmJAs.js";const s=t=>{if(!t)return"";const o=Object.fromEntries(Object.entries(t).filter(([n,r])=>r!=null&&r!==""));return new URLSearchParams(o).toString()},c=t=>t?e.utc(t).format("DD/MM/YYYY"):"";export{s as a,c as t};
