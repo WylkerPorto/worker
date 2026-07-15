@@ -6,6 +6,15 @@
 <script lang="ts">
 export default {
   name: 'SupervisorIndex',
+  data() {
+    return {
+      id: localStorage.getItem('uid'),
+    }
+  },
+  mounted() {},
+  methods: {
+    async getKPI() {},
+  },
 }
 </script>
 <style lang="scss" scoped>

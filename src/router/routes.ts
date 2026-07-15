@@ -98,12 +98,6 @@ export default [
         meta: { title: 'Transferir Recrutadores' },
       },
       {
-        path: 'KPIRecruiter',
-        name: 'KPIRecruiterController',
-        component: () => import('@/views/admin/RecruiterKPI.vue'),
-        meta: { title: 'KPI Recrutador' },
-      },
-      {
         path: 'positions',
         name: 'adminPosition',
         component: () => import('@/views/recruiter/Position.vue'),
@@ -151,10 +145,22 @@ export default [
         meta: { title: 'Recrutadores' },
       },
       {
+        path: 'recruitersKPI',
+        name: 'superRecruiterKPI',
+        component: () => import('@/views/supervisor/RecruiterKPI.vue'),
+        meta: { title: 'Dashboard' },
+      },
+      {
         path: 'vacancys',
         name: 'vacancyController',
         component: () => import('@/views/supervisor/Vacancy.vue'),
         meta: { title: 'Vagas' },
+      },
+      {
+        path: 'vacancy/:id',
+        name: 'vacancyEdit',
+        component: () => import('@/views/supervisor/VacancyEdit.vue'),
+        meta: { title: 'Editar Vaga' },
       },
       {
         path: 'vacancy/:id/detail',
@@ -167,6 +173,24 @@ export default [
         name: 'supervisorProfile',
         component: () => import('@/views/supervisor/Profile.vue'),
         meta: { title: 'Perfil' },
+      },
+      {
+        path: 'positions',
+        name: 'superPosition',
+        component: () => import('@/views/recruiter/Position.vue'),
+        meta: { title: 'Cargos' },
+      },
+      {
+        path: 'departments',
+        name: 'superDepartment',
+        component: () => import('@/views/recruiter/Department.vue'),
+        meta: { title: 'Departamentos' },
+      },
+      {
+        path: 'talent-pool',
+        name: 'superTalentPool',
+        component: () => import('@/views/recruiter/TalentPool.vue'),
+        meta: { title: 'Lista de Talentos' },
       },
     ],
   },

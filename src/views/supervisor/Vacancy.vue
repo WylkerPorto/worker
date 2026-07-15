@@ -17,34 +17,58 @@
       >
         <template #actions="{ item }">
           <RouterLink
-            class="rounded primary"
-            :to="{ name: 'supervisorVacancyDetail', params: { id: item.id } }"
-            title="Ver Candidatos"
-          >
-            <Icon icon="mdi:user" />
-          </RouterLink>
-          <RouterLink
             class="rounded success"
-            :to="{ name: 'jobDetail', params: { slug: item.slug } }"
-            target="_blank"
-            title="Compartilhar Vaga"
+            :to="{ name: 'vacancyEdit', params: { id: item.id } }"
+            title="Editar"
           >
-            <Icon icon="mdi:share" />
+            <Icon icon="carbon:edit" />
           </RouterLink>
-          <button
-            class="rounded warning"
-            @click="handleTransferVacancy(item)"
-            title="Transferir Vaga"
-          >
-            <Icon icon="carbon:follow-up-work-order" />
-          </button>
-          <button class="rounded secondary" @click="handleViewLog(item)" title="Ver Log">
-            <Icon icon="mdi:history" />
+
+          <button class="rounded" @click="toggleDropdown($event, item)" title="Mais Ações">
+            <Icon icon="tabler:dots" />
           </button>
         </template>
       </DataTable>
     </section>
+
+    <article v-if="openDropdownItem" ref="dropdown" :style="dropdownStyles" class="dropdown-status">
+      <ul>
+        <li>
+          <RouterLink
+            :to="{ name: 'supervisorVacancyDetail', params: { id: openDropdownItem.id } }"
+          >
+            <Icon icon="mdi:user" />
+            <span>Ver Candidatos</span>
+          </RouterLink>
+        </li>
+
+        <li>
+          <RouterLink
+            :to="{ name: 'jobDetail', params: { slug: openDropdownItem.slug } }"
+            target="_blank"
+          >
+            <Icon icon="mdi:share" />
+            <span>Compartilhar Vaga</span>
+          </RouterLink>
+        </li>
+
+        <li>
+          <button @click="handleTransferVacancy(openDropdownItem)">
+            <Icon icon="carbon:follow-up-work-order" />
+            <span>Transferir Vaga</span>
+          </button>
+        </li>
+
+        <li>
+          <button @click="handleViewLog(openDropdownItem)">
+            <Icon icon="mdi:history" />
+            <span>Ver Log</span>
+          </button>
+        </li>
+      </ul>
+    </article>
   </main>
+
   <TransferVacancyModal
     :show="showTransferVacancyModal"
     :dataForm="selectedVacancy"
@@ -75,6 +99,12 @@ export default {
   },
   data() {
     return {
+      openDropdownItem: null as IVacancyItem | null,
+      dropdownStyles: {
+        position: 'absolute',
+        top: '0px',
+        left: '0px',
+      },
       showTransferVacancyModal: false,
       showVacancyLogModal: false,
       loading: false,
@@ -94,6 +124,10 @@ export default {
   },
   mounted() {
     this.getVacancies()
+    document.addEventListener('click', this.handleClickOutside)
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleClickOutside)
   },
   methods: {
     refresh() {
@@ -136,6 +170,37 @@ export default {
     handleLoadMore(pageChange: number) {
       this.page += pageChange
       this.getVacancies()
+    },
+    toggleDropdown(event: Event, item: IVacancyItem) {
+      const rect = (event.target as HTMLElement).getBoundingClientRect()
+
+      // Toggle
+      if (this.openDropdownItem === item) {
+        this.openDropdownItem = null
+        return
+      }
+
+      this.dropdownStyles = {
+        position: 'absolute',
+        top: `${rect.bottom + window.scrollY + 5}px`,
+        left: `${rect.left + window.scrollX - 150}px`,
+      }
+      this.openDropdownItem = item
+    },
+    handleClickOutside(event: MouseEvent) {
+      setTimeout(() => {
+        const dropdown = this.$refs.dropdown as HTMLElement | undefined
+        const target = event.target as Node
+        const buttonClicked = (event.target as HTMLElement).closest('.actions')
+
+        if (
+          dropdown &&
+          !dropdown.contains(target) &&
+          !buttonClicked // garante que o botão também não foi clicado
+        ) {
+          this.openDropdownItem = null
+        }
+      }, 0)
     },
   },
   computed: {
@@ -181,6 +246,44 @@ main {
         .iconify {
           font-size: 15px;
         }
+      }
+    }
+  }
+}
+
+article {
+  background: var(--background);
+  border: 1px solid var(--text);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    a,
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      border: 0;
+      color: var(--link);
+
+      &:hover {
+        background-color: var(--blue);
+        color: white;
+      }
+
+      .iconify {
+        font-size: 20px;
+      }
+
+      span {
+        font-size: 16px;
       }
     }
   }

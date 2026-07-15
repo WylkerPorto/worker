@@ -28,6 +28,11 @@
           <button class="rounded danger" @click="handleConfirmDelete(item)">
             <Icon icon="carbon:trash-can"></Icon>
           </button>
+          <RouterLink :to="{ name: 'superRecruiterKPI', query: { recruiterId: item.id } }">
+            <button class="rounded primary">
+              <Icon icon="ix:kpi"></Icon>
+            </button>
+          </RouterLink>
         </template>
       </DataTable>
     </section>

@@ -70,6 +70,21 @@ export default {
           icon: 'material-symbols:work-outline',
         },
         {
+          label: 'Cargos',
+          name: 'superPosition',
+          icon: 'ic:outline-workspace-premium',
+        },
+        {
+          label: 'Setor',
+          name: 'superDepartment',
+          icon: 'streamline-sharp:workspace-desk',
+        },
+        {
+          label: 'Banco de Talentos',
+          name: 'superTalentPool',
+          icon: 'solar:star-line-duotone',
+        },
+        {
           label: 'Sair',
           name: 'logout',
           icon: 'mdi:login',

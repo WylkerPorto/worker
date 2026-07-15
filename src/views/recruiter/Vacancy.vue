@@ -92,13 +92,13 @@
   </main>
 </template>
 <script lang="ts">
-import DataTable from '@/components/core/DataTable.vue'
-import { Icon } from '@iconify/vue'
-import { type IVacancyItem, type IVacancyColumnItem } from '@/interfaces/IVacancy'
-import { list, update, create } from '@/api/vacancy'
 import { getVacancyStatus } from '@/api/filters'
-import DeleteVacancyModal from '@/components/recruiter/DeleteVacancyModal.vue'
+import { create, list, update } from '@/api/vacancy'
+import DataTable from '@/components/core/DataTable.vue'
 import MyButton from '@/components/core/MyButton.vue'
+import DeleteVacancyModal from '@/components/recruiter/DeleteVacancyModal.vue'
+import { type IVacancyColumnItem, type IVacancyItem } from '@/interfaces/IVacancy'
+import { Icon } from '@iconify/vue'
 
 export default {
   name: 'RecruiterVacancy',
@@ -132,7 +132,7 @@ export default {
       page: 1,
       totalPage: 0,
       search: '',
-      status: 'Ativa',
+      status: 'Publicada',
     }
   },
   mounted() {
