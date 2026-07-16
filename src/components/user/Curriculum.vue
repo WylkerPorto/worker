@@ -142,13 +142,16 @@
     <MyAcordeon title="Sobre" class="about">
       <div class="group">
         <textarea
-          class="textarea"
+          :class="['textarea', { error: errors.presentation }]"
           maxlength="1500"
           v-model="form.presentation"
           :error="errors.presentation"
           placeholder="Conte um pouco sobre você, sua trajetória profissional, principais experiências, habilidades, objetivos de carreira e outras informações que considere relevantes para sua apresentação."
         />
-        <span>{{ form.presentation?.length || 0 }} / 1500</span>
+        <div>
+          <span v-if="errors.presentation" class="text-red">{{ errors.presentation }}</span>
+          <span class="counter"> {{ form.presentation?.length || 0 }} / 1500 </span>
+        </div>
       </div>
 
       <MyButton class="primary" :loading="loading" type="button" @click="validateAbout"
@@ -414,7 +417,7 @@
         </li>
       </ul>
 
-      <MyButton class="primary" :loading="loading" type="submit" @click="validateProfessional"
+      <MyButton class="primary" :loading="loading" type="button" @click="validateProfessional"
         >Salvar</MyButton
       >
     </MyAcordeon>
@@ -454,7 +457,9 @@
         />
       </div>
 
-      <MyButton class="primary" :loading="loading" type="submit">Salvar</MyButton>
+      <MyButton class="primary" :loading="loading" type="button" @click="validateSocial"
+        >Salvar</MyButton
+      >
     </MyAcordeon>
   </form>
 
@@ -659,7 +664,24 @@ export default {
         .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          this.submitForm()
+          this.submitFormSection([
+            'name',
+            'socialName',
+            'cpf',
+            'rg',
+            'cnh',
+            'typeCnh',
+            'birthDate',
+            'hasDisability',
+            'typeDisability',
+            'gender',
+            'maritalStatusId',
+            'email',
+            'phoneNumber',
+            'phoneNumber2',
+            'nationality',
+            'acceptsTalentPool',
+          ])
         })
         .catch((err) => {
           const errors: Record<string, string> = {}
@@ -671,7 +693,7 @@ export default {
     },
     validateAbout() {
       const schema = yup.object({
-        about: yup
+        presentation: yup
           .string()
           .nullable()
           .min(3, 'Sobre mim deve ter pelo menos 3 caracteres')
@@ -683,7 +705,7 @@ export default {
         .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          this.submitForm()
+          this.submitFormSection(['presentation'])
         })
         .catch((err) => {
           const errors: Record<string, string> = {}
@@ -730,7 +752,17 @@ export default {
         .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          this.submitForm()
+          this.submitFormSection([
+            'nationality',
+            'postalCode',
+            'street',
+            'number',
+            'complement',
+            'neighborhood',
+            'city',
+            'state',
+            'country',
+          ])
         })
         .catch((err) => {
           const errors = {}
@@ -753,7 +785,7 @@ export default {
         .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          this.submitForm()
+          this.submitFormSection(['education', 'educationLevel'])
         })
         .catch((err) => {
           const errors = {}
@@ -786,7 +818,31 @@ export default {
         .validate(this.form, { abortEarly: false })
         .then(() => {
           this.errors = {}
-          this.submitForm()
+          this.submitFormSection([
+            'availableToCommuteToAraraquara',
+            'willingToRelocateToAraraquara',
+            'availableToTravel',
+            'timeAvailability',
+            'firstJob',
+            'salaryClaim',
+          ])
+        })
+        .catch((err) => {
+          const errors = {}
+          err.inner.forEach((error) => {
+            errors[error.path] = error.message
+          })
+          this.errors = errors
+        })
+    },
+    validateSocial() {
+      const schema = yup.object({})
+
+      schema
+        .validate(this.form, { abortEarly: false })
+        .then(() => {
+          this.errors = {}
+          this.submitFormSection(['facebookUrl', 'instagramUrl', 'linkedinUrl', 'personalUrl'])
         })
         .catch((err) => {
           const errors = {}
@@ -797,38 +853,44 @@ export default {
         })
     },
     validate() {
-      const schema = yup.object({})
-
-      schema
-        .validate(this.form, { abortEarly: false })
-        .then(() => {
-          this.errors = {}
-          this.submitForm()
-        })
-        .catch((err) => {
-          const errors = {}
-          err.inner.forEach((error) => {
-            errors[error.path] = error.message
-          })
-          this.errors = errors
-        })
+      this.validateSocial()
     },
-    async submitForm() {
-      // Handle form submission logic here
+    buildSectionPayload(fields: (keyof IPersonForm)[]) {
+      const payload: Partial<IPersonForm> = {}
+
+      fields.forEach((field) => {
+        ;(payload as Record<string, unknown>)[field] = this.form[field]
+      })
+
+      return payload
+    },
+    normalizeSectionPayload(payload: Partial<IPersonForm>) {
+      const nextPayload = { ...payload }
+
+      if (typeof nextPayload.phoneNumber === 'string') {
+        nextPayload.phoneNumber = nextPayload.phoneNumber.replace(/\D/g, '')
+      }
+
+      if (typeof nextPayload.phoneNumber2 === 'string') {
+        nextPayload.phoneNumber2 = nextPayload.phoneNumber2
+          ? nextPayload.phoneNumber2.replace(/\D/g, '')
+          : ''
+      }
+
+      return nextPayload
+    },
+    async submitFormSection(fields: (keyof IPersonForm)[]) {
       this.loading = true
       try {
-        delete this.form.id
-        delete this.form.password
-        delete this.form.createdAt
-        delete this.form.updatedAt
-        delete this.form.deletedAt
+        if (!this.id) {
+          this.$snotify.error('Usuário não identificado para atualização do currículo.')
+          return
+        }
 
-        this.form.phoneNumber = this.form.phoneNumber.replace(/\D/g, '')
-        this.form.phoneNumber2 = this.form.phoneNumber2
-          ? this.form.phoneNumber2.replace(/\D/g, '')
-          : null
+        const payload = this.buildSectionPayload(fields)
+        const normalizedPayload = this.normalizeSectionPayload(payload)
 
-        await updateUser(this.id, this.form)
+        await updateUser(this.id, normalizedPayload)
 
         this.$snotify.success('Perfil atualizado com sucesso!')
       } catch (error) {
@@ -1063,11 +1125,25 @@ form {
   }
 
   .about {
-    span {
-      float: right;
-      font-size: 0.875rem;
-      color: var(--grey);
-      margin: 5px 15px;
+    .group {
+      div {
+        display: flex;
+        align-items: center;
+        margin: 5px 15px;
+
+        span {
+          font-size: 0.875rem;
+          color: var(--grey);
+        }
+
+        .text-red {
+          color: var(--red);
+        }
+
+        .counter {
+          margin-left: auto;
+        }
+      }
     }
   }
 
