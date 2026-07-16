@@ -1,0 +1,1 @@
+import{_ as t,c as o,a,o as s}from"./index-BrUrr7fJ.js";const n={name:"SupervisorIndex",data(){return{id:localStorage.getItem("uid")}},mounted(){},methods:{async getKPI(){}}},r={class:"container"};function c(d,e,i,p,_,u){return s(),o("main",r,e[0]||(e[0]=[a("div",null,"supervisor dashboard",-1)]))}const m=t(n,[["render",c],["__scopeId","data-v-9cc30085"]]);export{m as default};
