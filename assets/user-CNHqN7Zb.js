@@ -1,1 +1,0 @@
-import"./index-BrUrr7fJ.js";import{h as e}from"./http-B5Pul71M.js";const a=t=>e.authApi().post("/person",t),r=t=>e.authApi().get(`/person/${t}`),n=(t,p)=>e.authApi().put(`/person/${t}`,p),u=t=>e.authApi().delete(`/person/${t}`);export{a as c,r as g,u as r,n as u};
