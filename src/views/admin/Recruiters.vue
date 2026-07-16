@@ -25,7 +25,7 @@
           <button class="rounded success" @click="handleEditRecruiter(item)">
             <Icon icon="carbon:edit"></Icon>
           </button>
-          <RouterLink :to="{ name: 'KPIRecruiterController', query: { recruiterId: item.id } }">
+          <RouterLink :to="{ name: 'adminRecruiterKpi', query: { recruiterId: item.id } }">
             <button class="rounded primary">
               <Icon icon="ix:kpi"></Icon>
             </button>

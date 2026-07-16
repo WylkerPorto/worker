@@ -92,6 +92,12 @@ export default [
         meta: { title: 'Recrutadores' },
       },
       {
+        path: 'recruitersKPI',
+        name: 'adminRecruiterKpi',
+        component: () => import('@/views/admin/RecruiterKPI.vue'),
+        meta: { title: 'Recrutadores KPI' },
+      },
+      {
         path: 'transferRecruiters',
         name: 'transferRecruitersController',
         component: () => import('@/views/admin/TransferRecruiters.vue'),
