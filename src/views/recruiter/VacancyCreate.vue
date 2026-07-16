@@ -9,46 +9,113 @@
       </header>
 
       <form @submit.prevent="validate">
-        <FormInput label="Título" type="text" placeholder="Analista de Sistemas Sênior" v-model="form.title"
-          :error="errors.title" required />
-        <Editor label="Descrição" placeholder="Descrição completa da vaga." v-model="form.description"
-          :error="errors.description" required />
+        <FormInput
+          label="Título"
+          type="text"
+          placeholder="Analista de Sistemas Sênior"
+          v-model="form.title"
+          :error="errors.title"
+          required
+        />
+        <Editor
+          label="Descrição"
+          placeholder="Descrição completa da vaga."
+          v-model="form.description"
+          :error="errors.description"
+          required
+        />
         <div class="flex">
-          <MySelect label="Departamento" :options="departmentList" v-model="form.departmentId"
-            :error="errors.departmentId" required />
-          <MySelect label="Cargo" :options="positionList" v-model="form.positionId" :error="errors.positionId"
-            required />
+          <MySelect
+            label="Departamento"
+            :options="departmentList"
+            v-model="form.departmentId"
+            :error="errors.departmentId"
+            required
+          />
+          <MySelect
+            label="Cargo"
+            :options="positionList"
+            v-model="form.positionId"
+            :error="errors.positionId"
+            required
+          />
         </div>
-        <Editor label="Conhecimento Desejável" placeholder="Experiência com Docker, Kubernetes."
-          v-model="form.niceToHave" :error="errors.niceToHave" required />
-        <Editor label="Responsabilidades" placeholder="Descrição completa da vaga." v-model="form.responsibilities"
-          :error="errors.responsibilities" required />
-        <Editor label="Requisitos" placeholder="Descrição completa da vaga." v-model="form.requirements"
-          :error="errors.requirements" required />
+        <Editor
+          label="Conhecimento Desejável"
+          placeholder="Experiência com Docker, Kubernetes."
+          v-model="form.niceToHave"
+          :error="errors.niceToHave"
+          required
+        />
+        <Editor
+          label="Responsabilidades"
+          placeholder="Descrição completa da vaga."
+          v-model="form.responsibilities"
+          :error="errors.responsibilities"
+          required
+        />
+        <Editor
+          label="Requisitos"
+          placeholder="Descrição completa da vaga."
+          v-model="form.requirements"
+          :error="errors.requirements"
+          required
+        />
         <div class="flex">
-          <MySelect label="Modelo de Trabalho" :options="workModelList" v-model="form.workModel"
-            :error="errors.workModel" required />
-          <MySelect label="Tipo de Contratação" :options="employmentTypeList" v-model="form.employmentType"
-            :error="errors.employmentType" required />
+          <MySelect
+            label="Modelo de Trabalho"
+            :options="workModelList"
+            v-model="form.workModel"
+            :error="errors.workModel"
+            required
+          />
+          <MySelect
+            label="Tipo de Contratação"
+            :options="employmentTypeList"
+            v-model="form.employmentType"
+            :error="errors.employmentType"
+            required
+          />
         </div>
         <div class="flex">
-          <FormInput label="Validade" type="date" v-model="form.expirationDate" :error="errors.expirationDate" />
-          <FormInput label="Salário (R$)" type="number" placeholder="5000" v-model.number="form.salary"
-            :error="errors.salary" />
+          <FormInput
+            label="Validade"
+            type="date"
+            v-model="form.expirationDate"
+            :error="errors.expirationDate"
+          />
+          <FormInput
+            label="Salário (R$)"
+            type="number"
+            placeholder="5000"
+            v-model.number="form.salary"
+            :error="errors.salary"
+          />
           <div class="column">
             <span>Esconder salário</span>
             <SwitchButton v-model="form.hideSalary" />
           </div>
         </div>
-        <FormInput label="Cidade" type="text" placeholder="São Paulo" v-model="form.city" :error="errors.city" />
-        <FormInput label="Estado" type="text" placeholder="SP" v-model="form.state" :error="errors.state" />
+        <FormInput
+          label="Cidade"
+          type="text"
+          placeholder="São Paulo"
+          v-model="form.city"
+          :error="errors.city"
+        />
+        <FormInput
+          label="Estado"
+          type="text"
+          placeholder="SP"
+          v-model="form.state"
+          :error="errors.state"
+        />
 
         <MyButton class="btn success" type="submit" :loading="loading"> Salvar Vaga </MyButton>
         <MyButton class="btn danger" @click="$router.push({ name: 'recruiterVacancy' })">
           Cancelar
         </MyButton>
       </form>
-
     </section>
   </main>
 </template>
@@ -137,6 +204,7 @@ export default {
           delete this.form.createdAt
           delete this.form.updatedAt
           delete this.form.deletedAt
+          delete this.form.publishedAt
           delete this.form.slug
           delete this.form.applications
           delete this.form.isApplied
